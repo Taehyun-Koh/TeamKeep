@@ -119,25 +119,21 @@
 		let tilecontainer = document.querySelector("#alltiles");
 		tilecontainer.appendChild(card);
 
-		
-
 		if(entry.filetype == FileType.Image) {
 			tilecontainer = document.querySelector("#imagetiles");
-			let dupcard = structuredClone(card);
+			let dupcard = card.cloneNode(true);
 			tilecontainer.appendChild(dupcard); // to do : need to append tile to the html
 		}
 		if(entry.filetype == FileType.File) {
 			tilecontainer = document.querySelector("#filetiles");
-			let dupcard = structuredClone(card);
+			let dupcard = card.cloneNode(true);
 			tilecontainer.appendChild(dupcard); // to do : need to append tile to the html
 		}
 		if(entry.filetype == FileType.URL) {
 			tilecontainer = document.querySelector("#urltiles");
-			let dupcard = structuredClone(card);
+			let dupcard = card.cloneNode(true);
 			tilecontainer.appendChild(dupcard); // to do : need to append tile to the html
-		}
-	
-		
+		}		
 	}
 
 	function createCard(entry) {

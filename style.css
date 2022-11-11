@@ -1,5 +1,8 @@
 .tilecontainer {
     width: 480px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
 } /* Container containing the tiles Need to define how to stack up the tiles*/
 .container {
     width: 480px;
@@ -22,13 +25,3 @@ img {
     height: 200px;
     object-fit: contain;
 }	
-
-.tilecontainer {
-    display: flex;
-    flex-wrap: wrap;
-    align-content: space-evenly;
-}
-
-.tilecontainer div {
-    align-self: flex-start;
-}

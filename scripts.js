@@ -1,3 +1,5 @@
+//firebase 이벤트리스너
+
 let entries=[];
 
 const TileType = {
@@ -120,7 +122,9 @@ addentrybutton.addEventListener("click", () => {
     //$('#btn-n-add').show();
 });
 
+
 let fileinput = document.querySelector("#fileinput");
+
 fileinput.addEventListener("change", (event) => {
     let file = event.target.files[0];
     let tok = file.name.lastIndexOf(".");

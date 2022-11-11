@@ -18,10 +18,17 @@
 }
 
 img {
-    max-width: 200px;
-    max-height: inherit;
-}		
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+}	
+
+.tilecontainer {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-evenly;
+}
 
 .tilecontainer div {
-    display: inline-block;
+    align-self: flex-start;
 }

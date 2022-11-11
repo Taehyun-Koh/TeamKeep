@@ -102,7 +102,11 @@ let addentrybutton = document.querySelector("#addentrybutton");
 let addthispagebutton = document.querySelector("#addthispagebutton");
 
 addentrybutton.addEventListener("click", () => {
-    document.querySelector("#fileinput").click();
+    // document.querySelector("#fileinput").click();
+    console.log("hi");
+    $('#addnotesmodal').modal('show'); //show modal
+    $('#btn-n-save').hide();
+    $('#btn-n-add').show();
 });
 
 let fileinput = document.querySelector("#fileinput");

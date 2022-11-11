@@ -162,11 +162,38 @@
 		title.appendChild(titletext);
 		cardbody.appendChild(title);
 
-		let desc = document.createElement("h7");
-		desc.className = "card-text";
-		let desctext = document.createTextNode(entry.desc);
-		desc.appendChild(desctext);
-		cardbody.appendChild(desc);
+		let inputarea = document.createElement("div");
+		inputarea.className = "input-group mb-3";
+		cardbody.appendChild(inputarea);
+
+		let inputtext = document.createElement("input");
+		inputtext.className = "form-control";
+		inputtext.type = "text";
+		inputtext.placeholder = "Provide a description of the file";
+		inputarea.appendChild(inputtext);
+
+		let appendarea = document.createElement("div");
+		appendarea.className = "input-group-append";
+		inputarea.appendChild(appendarea);
+
+		let uploadbutton = document.createElement("button");
+		uploadbutton.className = "btn btn-outline-secondary";
+		uploadbutton.type = "button";
+		let uploadicon = document.createElement("i");
+		uploadicon.className="bi bi-file-earmark-arrow-up";
+		uploadbutton.appendChild(uploadicon);
+		appendarea.appendChild(uploadbutton);
+		
+		uploadicon.addEventListener("click", () => {
+			entry.desc = inputtext.value;
+			inputarea.remove();
+			let desc = document.createElement("h7");
+			desc.className = "card-text";
+			desc.style = "color: grey;"
+			let desctext = document.createTextNode(entry.desc);
+			desc.appendChild(desctext);
+			cardbody.appendChild(desc);
+		});
 
 		return card;
 	}

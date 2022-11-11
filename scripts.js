@@ -18,22 +18,68 @@ function addEntry(entry) {
 
     let card = createCard(entry);
     let tilecontainer = document.querySelector("#alltiles");
-    tilecontainer.appendChild(card);
+    let tilecontainer2 = document.querySelector("#alltiles2");
+    let card1list = tilecontainer.getElementsByClassName("card");
+    let card2list = tilecontainer2.getElementsByClassName("card");
+    let sum1 = 0;
+    let sum2 = 0;
+    for(let i = 0; i < card1list.length; i++) {
+        sum1 += card1list[i].offsetHeight;
+    }
+    for(let i = 0; i < card2list.length; i++) {
+        sum2 += card2list[i].offsetHeight;
+    }
+
+    sum1 <= sum2 ? tilecontainer.appendChild(card) : tilecontainer2.appendChild(card);
+    
 
     if(entry.filetype == FileType.Image) {
         tilecontainer = document.querySelector("#imagetiles");
+        tilecontainer2 = document.querySelector("#imagetiles2");
+        card1list = tilecontainer.getElementsByClassName("card");
+        card2list = tilecontainer2.getElementsByClassName("card");
+        sum1 = 0;
+        sum2 = 0;
+        for(let i = 0; i < card1list.length; i++) {
+            sum1 += card1list.i.offsetHeight;
+        }
+        for(let i = 0; i < card2list.length; i++) {
+            sum2 += card2list[i].offsetHeight;
+        }
         let dupcard = card.cloneNode(true);
-        tilecontainer.appendChild(dupcard); // to do : need to append tile to the html
+        sum1 <= sum2 ? tilecontainer.appendChild(dupcard) : tilecontainer2.appendChild(dupcard); // to do : need to append tile to the html
     }
     if(entry.filetype == FileType.File) {
         tilecontainer = document.querySelector("#filetiles");
+        tilecontainer2 = document.querySelector("#filetiles2");
+        card1list = tilecontainer.getElementsByClassName("card");
+        card2list = tilecontainer2.getElementsByClassName("card");
+        sum1 = 0;
+        sum2 = 0;
+        for(let i = 0; i < card1list.length; i++) {
+            sum1 += card1list[i].offsetHeight;
+        }
+        for(let i = 0; i < card2list.length; i++) {
+            sum2 += card2list[i].offsetHeight;
+        }
         let dupcard = card.cloneNode(true);
-        tilecontainer.appendChild(dupcard); // to do : need to append tile to the html
+        sum1 <= sum2 ? tilecontainer.appendChild(dupcard) : tilecontainer2.appendChild(dupcard); // to do : need to append tile to the html
     }
     if(entry.filetype == FileType.URL) {
         tilecontainer = document.querySelector("#urltiles");
+        tilecontainer2 = document.querySelector("#urltiles2");
+        card1list = tilecontainer.getElementsByClassName("card");
+        card2list = tilecontainer2.getElementsByClassName("card");
+        sum1 = 0;
+        sum2 = 0;
+        for(let i = 0; i < card1list.length; i++) {
+            sum1 += card1list[i].offsetHeight;
+        }
+        for(let i = 0; i < card2list.length; i++) {
+            sum2 += card2list[i].offsetHeight;
+        }
         let dupcard = card.cloneNode(true);
-        tilecontainer.appendChild(dupcard); // to do : need to append tile to the html
+        sum1 <= sum2 ? tilecontainer.appendChild(dupcard) : tilecontainer2.appendChild(dupcard); // to do : need to append tile to the html
     }		
 }
 

@@ -46,12 +46,13 @@ function createCard(entry) {
     let card = document.createElement("div");
     card.className = "card";
     
-    let img = document.createElement("img");
-    img.class = "card-img-top";
-    img.src = entry.file;
-    console.log(entry);
-    if(entry.filetype === FileType.Image)
+    if(entry.filetype === FileType.Image) {
+        let img = document.createElement("img");
+        img.class = "card-img-top";
+        img.src = entry.file;
+        console.log(entry);
         card.appendChild(img);
+    }
 
     let cardbody = document.createElement("div");
     cardbody.className = "card-body";
@@ -80,29 +81,47 @@ function createCard(entry) {
         inputarea.appendChild(appendarea);
 
         let uploadbutton = document.createElement("button");
-        uploadbutton.className = "btn btn-outline-secondary";
+        uploadbutton.className = "btn btn-outline-warning";
         uploadbutton.type = "button";
+        appendarea.appendChild(uploadbutton);
+
         let uploadicon = document.createElement("i");
         uploadicon.className="bi bi-file-earmark-arrow-up";
         uploadbutton.appendChild(uploadicon);
-        appendarea.appendChild(uploadbutton);
-    
+        
         uploadicon.addEventListener("click", () => {
+            card.remove();
+            entries =entries.filter((element) => element !== entry);
             entry.desc = inputtext.value;
             entry.tiletype = entry.filetype;
-            card.remove();
             addEntry(entry);
         });
 
         return card;
     }
 
+    let descarea = document.createElement("div");
+    cardbody.appendChild(descarea);
+
     let desc = document.createElement("h7");
     desc.className = "card-text";
-    desc.style = "color: grey; font-size: smaller;"
+    desc.style = "color: grey; font-size: smaller";
+    descarea.appendChild(desc);
+
     let desctext = document.createTextNode(entry.desc);
-    desc.appendChild(desctext);
-    cardbody.appendChild(desc);
+    desc.appendChild(desctext);    
+
+    let optionsarea = document.createElement("div");
+    optionsarea.style = "display: flex; float: right; margin: 10px;";
+    cardbody.appendChild(optionsarea);
+
+    let downloadbutton = document.createElement("button");
+    downloadbutton.className = "btn btn-outline-primary btn-sm";
+    optionsarea.appendChild(downloadbutton);
+    
+    let downloadicon = document.createElement("i");
+    downloadicon.className="bi bi-cloud-arrow-down-fill";
+    downloadbutton.appendChild(downloadicon);
 
     return card;
 }

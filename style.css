@@ -1,27 +1,43 @@
-.tilecontainer {
+.cardcontainer {
     width: 480px;
+    max-height: 480px;
+    overflow-y: scroll;
+    overflow-x: hidden;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-gap: 20px;
-} /* Container containing the tiles Need to define how to stack up the tiles*/
+    justify-items: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+} 
+
 .container {
     width: 480px;
 }
 
+.cardlist {
+    width: 240px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+}
+
 .card {
-    width: 200px;
-    background-color:whitesmoke;
-    box-shadow: 0px 0px 10px lightgrey;
+    background-color: whitesmoke;
+    box-shadow: 0px 0px 5px lightgrey;
     border: 0px;
-    border-radius: 0px;
+    width: 220px;
 }
 
 .card-body {
-    width: inherit;
+    width: inherit; 
+    flex-direction: column;
+    row-gap: 5px;
 }
 
 img {
-    width: 200px;
-    height: 200px;
-    object-fit: contain;
+    width: inherit;
+    max-height: 360px;
+    object-fit: cover;
 }	

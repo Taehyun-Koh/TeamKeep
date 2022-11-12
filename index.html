@@ -15,7 +15,7 @@
 </head>
 
 <body>
-	<div class="container">
+	<div class="container" style="display:flex; flex-direction: column; row-gap: 20px; justify-items: center;">
 		<nav>
 			<div class="nav nav-tabs" id="nav-tab" role="tablist" style="width: 480px;">
 				<button class="nav-link active" id="nav-group1-tab" data-bs-toggle="tab" data-bs-target="#group1"
@@ -142,12 +142,12 @@
 				</div>
 			</div>
 		</div>
-		<input type="file" id="fileinput" style="display:none;">
+		<div class="container">
+			<button type="button" class="btn btn-warning" id="addentrybutton" style="border-radius: 15px; box-shadow: 0px 0px 5px grey;"><i class="bi bi-file-plus-fill"></i></button>
+			<button type="button" class="btn btn-warning" id="addthispagebutton" style="border-radius: 15px; box-shadow: 0px 0px 5px grey;">이 페이지 추가</button>
+		</div>
 	</div>
-	<div class="container">
-		<button type="button" class="btn" id="addentrybutton" style="background-color:orange; font-size:small; font-weight:bolder; color: white; border-radius: 30px;">+</button>
-		<button type="button" class="btn" id="addthispagebutton" style="background-color:orange; font-size: small; font-weight:bolder; color: white; border-radius: 30px;">이 페이지 추가</button>
-	</div>
+	<input type="file" id="fileinput" style="display:none;">
 </body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>

@@ -103,18 +103,14 @@ function createCard(entry) {
         inputtext.placeholder = "파일 설명";
         inputarea.appendChild(inputtext);        
 
-
         // UPLOAD BUTTON
         let uploadbutton = document.createElement("button");
         uploadbutton.className = "btn btn-primary";
         uploadbutton.type = "button";
+        uploadbutton.innerHTML = '<i class = "bi bi-file-earmark-arrow-up"></i>';
         inputarea.appendChild(uploadbutton);
 
-        let uploadicon = document.createElement("i");
-        uploadicon.className = "bi bi-file-earmark-arrow-up";
-        uploadbutton.appendChild(uploadicon);
-
-        uploadicon.addEventListener("click", () => {
+        uploadbutton.addEventListener("click", () => {
             entry.desc = inputtext.value; // ADD PROVIDED DESC
             entry.cardtype = entry.filetype; // CARD READY TO UPLOAD
 
@@ -134,25 +130,22 @@ function createCard(entry) {
     let desc = document.createElement("h7");
     desc.className = "card-text";
     desc.style = "font-size: smaller; opacity: 0.6";
+    desc.innerText = entry.desc;
     descarea.appendChild(desc);
-
-    let desctext = document.createTextNode(entry.desc);
-    desc.appendChild(desctext);
 
 
     // CARD OPERATION OPTIONS
     let optionsarea = document.createElement("div");
     optionsarea.style = "display: flex; column-gap: 5px; float: right; margin: 2px;";
     cardbody.appendChild(optionsarea);
+    
 
+    // DELETE BUTTON
     let deletebutton = document.createElement("button");
     deletebutton.className = "btn btn-light";
     deletebutton.style.opacity = "50%";
+    deletebutton.innerHTML = '<i class = "bi bi-trash3-fill"></i>';
     optionsarea.appendChild(deletebutton);
-
-    let deleteicon = document.createElement("i");
-    deleteicon.className = "bi bi-trash3-fill";
-    deletebutton.appendChild(deleteicon);
 
     deletebutton.addEventListener("click", () => {
         card.remove();
@@ -169,29 +162,27 @@ function createCard(entry) {
         deletebutton.style.opacity = "50%";
     })
 
+
+    // COPY BUTTON
     if(entry.cardtype == CardType.URL) {
         let copybutton = document.createElement("button");
         copybutton.className = "btn btn-light";
         copybutton.style.opacity = "50%";
+        copybutton.innerHTML = '<i class = "bi bi-clipboard-fill"></i>';
         optionsarea.appendChild(copybutton);
-
-        let copyicon = document.createElement("i");
-        copyicon.className = "bi bi-clipboard-fill";
-        copybutton.appendChild(copyicon);
 
         copybutton.addEventListener("click", () => {
             navigator.clipboard.writeText(entry.file);
         });
     }
 
+    
+    // DOWNLOAD BUTTON
     let downloadbutton = document.createElement("button");
     downloadbutton.className = "btn btn-light";
     downloadbutton.style.opacity = "50%";
+    downloadbutton.innerHTML = '<i class = "bi bi-cloud-arrow-down-fill"></i>';
     optionsarea.appendChild(downloadbutton);
-
-    let downloadicon = document.createElement("i");
-    downloadicon.className = "bi bi-cloud-arrow-down-fill";
-    downloadbutton.appendChild(downloadicon);
 
     return card;
 }

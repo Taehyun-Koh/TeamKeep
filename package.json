@@ -3,5 +3,23 @@
     "fast-average-color": "^9.1.1",
     "firebase": "^9.14.0",
     "multer": "^1.4.5-lts.1"
-  }
+  },
+  "name": "teamkeep",
+  "version": "1.0.0",
+  "main": "scripts.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Taehyun-Koh/TeamKeep.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Taehyun-Koh/TeamKeep/issues"
+  },
+  "homepage": "https://github.com/Taehyun-Koh/TeamKeep#readme",
+  "description": ""
 }

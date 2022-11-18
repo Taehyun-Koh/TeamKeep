@@ -1,4 +1,4 @@
-//firebase 이벤트리스너
+
 
 let entries = []; // UPLOADED CARDS
 let tempentries = []; // CARDS BEFORE UPLOAD

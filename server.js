@@ -10,7 +10,7 @@ const PORT = 3000;
 
 const WEBPATH = "./webpage";
 
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "./public"));
 
 // app.get("/", (req, res) => {
 //     fs.readFile(`${WEBPATH}/index.html`, (error, data) => {

@@ -1,8 +1,3 @@
-
-
-let entries = []; // UPLOADED CARDS
-let tempentries = []; // CARDS BEFORE UPLOAD
-
 const CardType = {
     Temp: 0, // CARD BEFORE UPLOAD
     Image: 1,
@@ -18,20 +13,26 @@ const FileType = {
 
 
 
+let entries = []; // UPLOADED CARDS
+let tempentries = []; // CARDS BEFORE UPLOAD
+let activetab = [document.querySelector("#pills-group1-all"), CardType.Temp];
+
+
+
 
 /* ADD ENTRIES */
 function addTempEntry(entry) {
     tempentries.push(entry);
     let card = createCard(entry);
     entry.card = card;
-    arrangeCards(CardType.Temp,"pills-group1-all");
+    arrangeCards();
 }
 
 function addEntry(entry) {
     entries.push(entry);
     let card = createCard(entry);
     entry.card = card;
-    arrangeCards(CardType.Temp,"pills-group1-all");
+    arrangeCards();
 }
 /* ADD ENTRIES */
 
@@ -150,15 +151,16 @@ function createCard(entry) {
     deletebutton.addEventListener("click", () => {
         card.remove();
         entries = entries.filter(element => element !== entry);
+        arrangeCards();
     });
 
     deletebutton.addEventListener("mouseover", () => {
-        deletebutton.className = "btn btn-danger";
+        deletebutton.style.color = "red";
         deletebutton.style.opacity = "100%";
     })
 
     deletebutton.addEventListener("mouseout", () => {
-        deletebutton.className = "btn btn-light";
+        deletebutton.style.color = "black";
         deletebutton.style.opacity = "50%";
     })
 
@@ -187,16 +189,16 @@ function createCard(entry) {
     return card;
 }
 
-function arrangeCards(arg1, arg2) {
-    let activetab = document.getElementById(arg2);
-    let cardlists = activetab.querySelectorAll("div.cardlist"); // CARDLISTS[0]: ~CARDS1, CARDLISTS[1]: ~CARDS2
+function arrangeCards() {
+    let type = activetab[1];
+    let cardlists = activetab[0].querySelectorAll("div.cardlist"); // CARDLISTS[0]: ~CARDS1, CARDLISTS[1]: ~CARDS2
 
     let sum1 = 0;
     let sum2 = 0;
 
     let filtered = entries;
 
-    if(arg1 == CardType.Temp) {
+    if(type == CardType.Temp) {
         for(let i = tempentries.length - 1; i >=0; i--) {        
             if(sum1 <= sum2) {
                 cardlists[0].appendChild(tempentries[i].card);
@@ -211,7 +213,7 @@ function arrangeCards(arg1, arg2) {
     }
 
     else
-        filtered = entries.filter(entry => entry.cardtype == arg1);
+        filtered = entries.filter(entry => entry.cardtype == type);
     
     for(let i = filtered.length - 1; i >=0; i--) {        
         if(sum1 <= sum2) {
@@ -237,24 +239,28 @@ let filestab = document.querySelector("#pills-files-tab");
 let urltab = document.querySelector("#pills-url-tab");
 
 alltab.addEventListener("click", () => {
-    arrangeCards(CardType.Temp, "pills-group1-all");
+    activetab[0] = document.querySelector("#pills-group1-all");
+    activetab[1] = CardType.Temp;
+    arrangeCards();
 });
 
 imagestab.addEventListener("click", () => {
-    arrangeCards(CardType.Image, "pills-group1-images");
+    activetab[0] = document.querySelector("#pills-group1-images");
+    activetab[1] = CardType.Image;
+    arrangeCards();
 });
 
 filestab.addEventListener("click", () => {
-    arrangeCards(CardType.File, "pills-group1-files");
+    activetab[0] = document.querySelector("#pills-group1-files");
+    activetab[1] = CardType.File;
+    arrangeCards();
 });
 
 urltab.addEventListener("click", () => {
-    arrangeCards(CardType.URL, "pills-group1-url");
+    activetab[0] = document.querySelector("#pills-group1-url");
+    activetab[1] = CardType.URL;
+    arrangeCards();
 });
-
-function uploadServer(entry) {
-    
-}
 /* FILE TYPE TABS */
 
 
@@ -265,6 +271,7 @@ let addentrybutton = document.querySelector("#addentrybutton");
 addentrybutton.addEventListener("click", () => {
     document.querySelector("#fileinput").click(); // TRIGGER FILE SELECT DIALOGUE
     document.querySelector("#pills-all-tab").click(); // FORCE VIEW ALL TAB
+    
     //$('#addnotesmodal').modal('show'); //show modal
     //$('#btn-n-save').hide();
     //$('#btn-n-add').show();

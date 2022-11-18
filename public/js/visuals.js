@@ -19,7 +19,6 @@ let activetab = [document.querySelector("#pills-group1-all"), CardType.Temp];
 
 
 
-
 /* ADD ENTRIES */
 function addTempEntry(entry) {
     tempentries.push(entry);
@@ -239,26 +238,22 @@ let filestab = document.querySelector("#pills-files-tab");
 let urltab = document.querySelector("#pills-url-tab");
 
 alltab.addEventListener("click", () => {
-    activetab[0] = document.querySelector("#pills-group1-all");
-    activetab[1] = CardType.Temp;
+    activetab = [document.querySelector("#pills-group1-all"), CardType.Temp];
     arrangeCards();
 });
 
 imagestab.addEventListener("click", () => {
-    activetab[0] = document.querySelector("#pills-group1-images");
-    activetab[1] = CardType.Image;
+    activetab = [document.querySelector("#pills-group1-images"), CardType.Image];
     arrangeCards();
 });
 
 filestab.addEventListener("click", () => {
-    activetab[0] = document.querySelector("#pills-group1-files");
-    activetab[1] = CardType.File;
+    activetab = [document.querySelector("#pills-group1-files"), CardType.File];
     arrangeCards();
 });
 
 urltab.addEventListener("click", () => {
-    activetab[0] = document.querySelector("#pills-group1-url");
-    activetab[1] = CardType.URL;
+    activetab = [document.querySelector("#pills-group1-url"), CardType.URL];
     arrangeCards();
 });
 /* FILE TYPE TABS */
@@ -318,7 +313,6 @@ fileinput.addEventListener("change", (event) => {
         addTempEntry(entry);
         fileinput.value = '';
     }
-    // to do : view input tile, add event listner to them to upload, cancel, ... 
 });
 /* FILE ADD BUTTON */
 

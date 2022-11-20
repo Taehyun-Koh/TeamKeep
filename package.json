@@ -2,6 +2,7 @@
   "dependencies": {
     "chokidar": "^3.5.3",
     "ejs": "^3.1.8",
+    "electron-squirrel-startup": "^1.0.0",
     "express": "^4.18.2",
     "fast-average-color": "^9.1.1",
     "firebase": "^9.14.0",
@@ -17,9 +18,12 @@
   },
   "name": "teamkeep",
   "version": "1.0.0",
-  "main": "scripts.js",
+  "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "repository": {
     "type": "git",
@@ -31,5 +35,13 @@
     "url": "https://github.com/Taehyun-Koh/TeamKeep/issues"
   },
   "homepage": "https://github.com/Taehyun-Koh/TeamKeep#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.3",
+    "@electron-forge/maker-deb": "^6.0.3",
+    "@electron-forge/maker-rpm": "^6.0.3",
+    "@electron-forge/maker-squirrel": "^6.0.3",
+    "@electron-forge/maker-zip": "^6.0.3",
+    "electron": "21.3.0"
+  }
 }

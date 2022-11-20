@@ -266,10 +266,6 @@ let addentrybutton = document.querySelector("#addentrybutton");
 addentrybutton.addEventListener("click", () => {
     document.querySelector("#fileinput").click(); // TRIGGER FILE SELECT DIALOGUE
     document.querySelector("#pills-all-tab").click(); // FORCE VIEW ALL TAB
-    
-    //$('#addnotesmodal').modal('show'); //show modal
-    //$('#btn-n-save').hide();
-    //$('#btn-n-add').show();
 });
 
 let fileinput = document.querySelector("#fileinput");
@@ -323,7 +319,10 @@ fileinput.addEventListener("change", (event) => {
 let addthispagebutton = document.querySelector("#addthispagebutton");
 addthispagebutton.addEventListener("click", () => {
     document.querySelector("#pills-all-tab").click();
-
+    $('#addnotesmodal').modal('show'); //show modal
+    $('#btn-n-save').hide();
+    $('#btn-n-add').show();
+/*
     let url = window.location.href;
     let entry = {
         cardtype: CardType.Temp,
@@ -338,5 +337,6 @@ addthispagebutton.addEventListener("click", () => {
     }
 
     addTempEntry(entry);
+*/
 });
 /* ADD THIS PAGE BUTTON */

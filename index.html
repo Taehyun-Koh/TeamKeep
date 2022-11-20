@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+	
+	<link rel="stylesheet" href="style.css">
+	<title>TeamKeep</title>
+</head>
+
+<body>
+	<div class="container" style="display:flex; flex-direction: column; row-gap: 20px; justify-items: center;">
+		<nav>
+			<div class="nav nav-tabs" id="nav-tab" role="tablist" style="width: 480px;">
+				<button class="nav-link active" id="nav-group1-tab" data-bs-toggle="tab" data-bs-target="#group1"
+					type="button" role="tab" aria-controls="nav-home" aria-selected="true">group1</button>
+			</div>
+		</nav>
+		<!-- Modal Add notes -->
+		<div class="modal fade" id="addnotesmodal" tabindex="-1" role="dialog" aria-labelledby="addnotesmodalTitle"
+			style="display: none;" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content border-0">
+					<div class="modal-header">
+						<h4 class="modal-title" id="modal_title">Add New Task</h4>
+						<button type="button" id="modalClose" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">X</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="notes-box">
+							<div class="notes-content">
+								<form action="javascript:void(0);" id="addnotesmodalTitle">
+									<div class="row">
+										<div class="col-md-12 mb-3">
+											<div class="modal-url">
+												<label>Url</label>
+												<input type="text" id="note-has-url" class="form-control" minlength="25"
+													placeholder="https://image.com" />
+											</div>
+										</div>
+
+										<div class="col-md-12">
+											<div class="modal-title mb-3">
+												<label>Title</label>
+												<input type="text" id="note-has-title" class="form-control"
+													minlength="25" placeholder="UI development" />
+											</div>
+										</div>
+
+										<div class="col-md-12">
+											<div class="modal-type mb-3">
+												<label>Task type</label>
+												<input type="text" id="note-has-type" class="form-control"
+													minlength="25" placeholder="study" />
+											</div>
+										</div>
+
+										<div class="col-md-12">
+											<div class="modal-description">
+												<label>Task Description</label>
+												<textarea id="note-has-description" class="form-control" minlength="60"
+													placeholder="Describe your task in detail" rows="5"></textarea>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button id="btn-n-save" class="float-left btn btn-success" style="display: none;">Save</button>
+						<button class="btn btn-secondary" data-dismiss="modal">close</button>
+						<button id="btn-n-add" class="btn btn-primary" disabled="disabled">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="tab-content" id="nav-tabContent" style="width: 480px;">
+			<div class="tab-pane fade show active" id="group1" role="tabpanel" aria-labelledby="nav-home-tab"
+				style="width: 480px;">
+				<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="width: 480px;">
+					<li class="nav-item" role="presentation">
+						<button class="nav-link active" id="pills-all-tab" data-bs-toggle="pill"
+							data-bs-target="#pills-group1-all" type="button" role="tab" aria-controls="pills-group1-all"
+							aria-selected="true">모아보기</button>
+					</li>
+					<li class="nav-item" role="presentation">
+						<button class="nav-link" id="pills-images-tab" data-bs-toggle="pill"
+							data-bs-target="#pills-group1-images" type="button" role="tab"
+							aria-controls="pills-group1-images" aria-selected="false"><i
+								class="bi bi-images"></i>&nbsp;&nbsp;이미지</button>
+					</li>
+					<li class="nav-item" role="presentation">
+						<button class="nav-link" id="pills-files-tab" data-bs-toggle="pill"
+							data-bs-target="#pills-group1-files" type="button" role="tab"
+							aria-controls="pills-group1-files" aria-selected="false"><i
+								class="bi bi-files"></i>&nbsp;&nbsp;파일</button>
+					</li>
+					<li class="nav-item" role="presentation">
+						<button class="nav-link" id="pills-url-tab" data-bs-toggle="pill"
+							data-bs-target="#pills-group1-url" type="button" role="tab" aria-controls="pills-group1-url"
+							aria-selected="false"><i class="bi bi-link"></i>&nbsp;&nbsp;웹페이지</button>
+					</li>
+				</ul>
+
+				<div class="tab-content" id="pills-tabContent">
+					<div class="tab-pane fade show active" id="pills-group1-all" role="tabpanel"
+						aria-labelledby="pills-all-tab" style="width: 480px;">
+						<div class="cardcontainer">
+							<div class="cardlist" id="allcards1"></div>
+							<div class="cardlist" id="allcards2"></div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="pills-group1-images" role="tabpanel"
+						aria-labelledby="pills-images-tab" style="width: 480px;">
+						<div class="cardcontainer">
+							<div class="cardlist" id="imagecards1"></div>
+							<div class="cardlist" id="imagecards2"></div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="pills-group1-files" role="tabpanel" aria-labelledby="pills-files-tab"
+						style="width: 480px;">
+						<div class="cardcontainer">
+							<div class="cardlist" id="filecards1"></div>
+							<div class="cardlist" id="filecards2"></div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="pills-group1-url" role="tabpanel" aria-labelledby="pills-url-tab"
+						style="width: 480px;">
+						<div class="cardcontainer">
+							<div class="cardlist" id="urlcards1"></div>
+							<div class="cardlist" id="urlcards2"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<button type="button" class="btn btn-warning" id="addentrybutton" style="box-shadow: 0px 0px 5px grey;"><i class="bi bi-file-plus-fill"></i></button>
+			<button type="button" class="btn btn-warning" id="addthispagebutton" style="box-shadow: 0px 0px 5px grey;">이 페이지 추가</button>
+		</div>
+	</div>
+	<input type="file" id="fileinput" style="display:none;">
+</body>
+
+<script type="text/javascript" src="visuals.js"></script>
+<script type ="text/javascript" src="comm.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
+
+<script src="https://unpkg.com/fast-average-color/dist/index.browser.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>

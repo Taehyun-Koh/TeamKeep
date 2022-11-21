@@ -20,13 +20,11 @@
 		<!-- Modal Add notes -->
 		<div class="modal fade" id="addnotesmodal" tabindex="-1" role="dialog" aria-labelledby="addnotesmodalTitle"
 			style="display: none;" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-dialog modal-dialog-centered" role="document" style="width: 400px;">
 				<div class="modal-content border-0">
 					<div class="modal-header">
-						<h4 class="modal-title" id="modal_title">Add New Task</h4>
-						<button type="button" id="modalClose" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">X</span>
-						</button>
+						웹페이지 추가
+						<button type="button" id="modalClose" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
 						<div class="notes-box">
@@ -35,33 +33,9 @@
 									<div class="row">
 										<div class="col-md-12 mb-3">
 											<div class="modal-url">
-												<label>Url</label>
-												<input type="text" id="note-has-url" class="form-control" minlength="25"
+												<label>URL</label>
+												<input type="text" id="addressinput" class="form-control" minlength="25"
 													placeholder="https://image.com" />
-											</div>
-										</div>
-
-										<div class="col-md-12">
-											<div class="modal-title mb-3">
-												<label>Title</label>
-												<input type="text" id="note-has-title" class="form-control"
-													minlength="25" placeholder="UI development" />
-											</div>
-										</div>
-
-										<div class="col-md-12">
-											<div class="modal-type mb-3">
-												<label>Task type</label>
-												<input type="text" id="note-has-type" class="form-control"
-													minlength="25" placeholder="study" />
-											</div>
-										</div>
-
-										<div class="col-md-12">
-											<div class="modal-description">
-												<label>Task Description</label>
-												<textarea id="note-has-description" class="form-control" minlength="60"
-													placeholder="Describe your task in detail" rows="5"></textarea>
 											</div>
 										</div>
 									</div>
@@ -71,8 +45,8 @@
 					</div>
 					<div class="modal-footer">
 						<button id="btn-n-save" class="float-left btn btn-success" style="display: none;">Save</button>
-						<button class="btn btn-secondary" data-dismiss="modal">close</button>
-						<button id="btn-n-add" class="btn btn-primary" disabled="disabled">Save changes</button>
+						<button class="btn btn-secondary" data-dismiss="modal">취소</button>
+						<button id="btn-n-add" class="btn btn-primary" disabled="disabled">확인</button>
 					</div>
 				</div>
 			</div>

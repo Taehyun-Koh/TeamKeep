@@ -322,6 +322,8 @@ addthispagebutton.addEventListener("click", () => {
     $('#addnotesmodal').modal('show'); //show modal
     $('#btn-n-save').hide();
     $('#btn-n-add').show();
+
+    let url = document.querySelector("#adressinput").value;
 /*
     let url = window.location.href;
     let entry = {

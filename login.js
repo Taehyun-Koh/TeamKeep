@@ -38,7 +38,6 @@ function resetClass(element, classname){
     resetClass(form, "signup");
     resetClass(form, "signin");
     form.classList.add("reset");
-    
     document.querySelector(".submitBtn").setAttribute("id","reset-btn")
     document.getElementById("reset-btn").innerText = "Reset password";
 
@@ -89,6 +88,7 @@ function resetClass(element, classname){
                     if (results.length > 0) {       // db에서의 반환값이 있으면 로그인 성공
                         console.log("user information")
                         console.log(results)
+                        window.localStorage.setItem("user",id);
                         document.location.href = 'index.html';
                     } else {              
                         alert("로그인 정보가 일치하지 않습니다.")
@@ -119,9 +119,6 @@ function resetClass(element, classname){
                     document.getElementsByClassName("show-signin")[0].click();
                 }            
             });
-    
-
-
     } else {
         alert("아이디를 입력하세요")    
     }

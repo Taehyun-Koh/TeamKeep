@@ -1,6 +1,12 @@
+body {
+    font-family: 'Nanum Gothic Coding', monospace;
+    font-weight: 400;
+}
+
+
 .cardcontainer {
     width: 480px;
-    max-height: 480px;
+    max-height: 80vh;
     min-height: 480px;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -9,12 +15,6 @@
     grid-template-columns: 1fr 1fr;
     justify-items: center;
 } 
-
-.container {
-    width: 480px;
-
-    display: flex;
-}
 
 .cardlist {
     width: 240px;
@@ -38,14 +38,18 @@
 
 .card-body {
     width: 220px; 
-
+    display: flex;
     flex-direction: column;
-    row-gap: 5px;
+}
+
+.card-title {
+    font-family: 'Nanum Gothic Coding', monospace;
+    font-weight: 700;
 }
 
 .card-img-top {
     width: 220px;
-    max-height: 360px;
+    max-height: 180px;
 
     object-fit: cover;
 }	

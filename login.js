@@ -89,6 +89,7 @@ function resetClass(element, classname){
                         console.log("user information")
                         console.log(results)
                         window.localStorage.setItem("user",id);
+                        connection.end();
                         document.location.href = 'index.html';
                     } else {              
                         alert("로그인 정보가 일치하지 않습니다.")

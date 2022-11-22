@@ -72,7 +72,7 @@ function resetClass(element, classname){
             });
     
         } else {        // 입력되지 않은 정보가 있는 경우
-            alert("입력되지 않은 정보가 잇음")
+            alert("입력되지 않은 정보가 있음")
             document.getElementsByClassName("show-signup")[0].click();
 
         }

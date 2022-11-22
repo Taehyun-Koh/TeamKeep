@@ -13,9 +13,26 @@ const FileType = {
 
 
 
+
+let username = 'admin'; // LOGINED USER
+let teamcode = 'teamtest'; // CURRENT TEAM
+// TO DO: GET TEAM INFO FROM SERVER AT COMM.JS THEN IMPORT TO THIS HTML
+
+
+document.querySelector("#teamcodeheader").appendChild(document.createTextNode(teamcode));
+
+let teamcodeinfo = document.createElement("h6");
+teamcodeinfo.style.opacity = "50%";
+teamcodeinfo.innerText = teamcode;
+document.querySelector("#teamcodeinfo").appendChild(teamcodeinfo);
+
+
+
+
 let entries = []; // UPLOADED CARDS
 let tempentries = []; // CARDS BEFORE UPLOAD
-let activetab = [document.querySelector("#pills-group1-all"), CardType.Temp];
+let activetab = [document.querySelector("#pills-all"), CardType.Temp];
+
 
 
 
@@ -26,6 +43,7 @@ function addTempEntry(entry) {
     entry.card = card;
     arrangeCards();
 }
+
 
 function addEntry(entry) {
     entries.push(entry);
@@ -43,6 +61,9 @@ function createCard(entry) {
     // CARD BASE
     let card = document.createElement("div");
     card.className = "card";
+
+
+    // CARD IMAGE
     if (entry.filetype === FileType.Image) {
         let img = document.createElement("img");
         img.className = "card-img-top";
@@ -51,7 +72,7 @@ function createCard(entry) {
 
         const fac = new FastAverageColor();
         fac.getColorAsync(img.src).then(color => {
-            if(color.isDark)
+            if (color.isDark)
                 card.style.color = "white";
             card.style.backgroundColor = color.rgba;
         })
@@ -67,25 +88,21 @@ function createCard(entry) {
     // CARD TITLE
     let title = document.createElement("h6");
     title.className = "card-title";
-    let titletext = document.createTextNode(entry.filename);
-    title.appendChild(titletext);
+    title.innerText = trimString(entry.filename, 43);
     cardbody.appendChild(title);
 
 
     // CARD URL
     if (entry.filetype == FileType.URL) {
-        let urlarea = document.createElement("div");
-        cardbody.appendChild(urlarea);
-
         let url = document.createElement("a");
         url.className = "link-primary";
-        url.href = entry.file;
-        url.target = "_blank";
+        url.href = absoluteURL(entry.file);
+        url.innerText = trimString(entry.file, 25);
         url.style = "font-size: smaller;";
-        urlarea.appendChild(url);
+        cardbody.appendChild(url);
 
-        let urltext = document.createTextNode(entry.file);
-        url.appendChild(urltext);
+        let divider = document.createElement("hr");
+        cardbody.appendChild(divider);
     }
 
 
@@ -96,22 +113,22 @@ function createCard(entry) {
         inputarea.className = "input-group mb-1";
         cardbody.appendChild(inputarea);
 
-        let inputtext = document.createElement("input");
-        inputtext.className = "form-control";
-        inputtext.type = "text";
-        inputtext.style = "font-size: smaller;";
-        inputtext.placeholder = "파일 설명";
-        inputarea.appendChild(inputtext);        
+        let descinput = document.createElement("input");
+        descinput.className = "form-control";
+        descinput.type = "text";
+        descinput.style = "font-size: smaller;";
+        descinput.placeholder = "파일 설명";
+        inputarea.appendChild(descinput);
 
         // UPLOAD BUTTON
         let uploadbutton = document.createElement("button");
         uploadbutton.className = "btn btn-primary";
         uploadbutton.type = "button";
-        uploadbutton.innerHTML = '<i class = "bi bi-file-earmark-arrow-up"></i>';
+        uploadbutton.innerHTML = '<i class="bi bi-file-earmark-arrow-up-fill"></i>';
         inputarea.appendChild(uploadbutton);
 
         uploadbutton.addEventListener("click", () => {
-            entry.desc = inputtext.value; // ADD PROVIDED DESC
+            entry.desc = descinput.value; // ADD PROVIDED DESC
             entry.cardtype = entry.filetype; // CARD READY TO UPLOAD
 
             tempentries = tempentries.filter(element => element !== entry); // REMOVE FROM TEMPENTIRES
@@ -122,23 +139,54 @@ function createCard(entry) {
         return card;
     }
 
-
     // CARD DESC
-    let descarea = document.createElement("div");
-    cardbody.appendChild(descarea);
+    if (entry.desc != '') {
+        let desc = document.createElement("h8");
+        desc.style = "font-size: smaller; opacity: 0.75";
+        desc.innerText = entry.desc;
+        cardbody.appendChild(desc);
 
-    let desc = document.createElement("h7");
-    desc.className = "card-text";
-    desc.style = "font-size: smaller; opacity: 0.6";
-    desc.innerText = entry.desc;
-    descarea.appendChild(desc);
+        //let divider = document.createElement("hr");
+        //cardbody.appendChild(divider);
+    }
+
+
+    // USER NAME & DATE
+    let namedate = document.createElement("h8");
+    namedate.style = "padding-bottom: 10px; font-size: smaller; font-style: italic; opacity: 0.5;";
+    namedate.innerText = '@' + entry.username + ', ' + entry.date;
+    cardbody.appendChild(namedate);
 
 
     // CARD OPERATION OPTIONS
     let optionsarea = document.createElement("div");
-    optionsarea.style = "display: flex; column-gap: 5px; float: right; margin: 2px;";
+    optionsarea.style = "display: flex; flex-direction: row-reverse; column-gap: 5px;";
     cardbody.appendChild(optionsarea);
-    
+
+
+    // DOWNLOAD BUTTON
+    if (entry.cardtype != CardType.URL) {
+        let downloadbutton = document.createElement("button");
+        downloadbutton.className = "btn btn-light";
+        downloadbutton.style.opacity = "50%";
+        downloadbutton.innerHTML = '<i class = "bi bi-cloud-arrow-down-fill"></i>';
+        optionsarea.appendChild(downloadbutton);
+    }
+
+
+    // COPY BUTTON
+    if (entry.cardtype == CardType.URL) {
+        let copybutton = document.createElement("button");
+        copybutton.className = "btn btn-light";
+        copybutton.style.opacity = "50%";
+        copybutton.innerHTML = '<i class = "bi bi-clipboard-fill"></i>';
+        optionsarea.appendChild(copybutton);
+
+        copybutton.addEventListener("click", () => {
+            navigator.clipboard.writeText(entry.file);
+        });
+    }
+
 
     // DELETE BUTTON
     let deletebutton = document.createElement("button");
@@ -164,27 +212,6 @@ function createCard(entry) {
     })
 
 
-    // COPY BUTTON
-    if(entry.cardtype == CardType.URL) {
-        let copybutton = document.createElement("button");
-        copybutton.className = "btn btn-light";
-        copybutton.style.opacity = "50%";
-        copybutton.innerHTML = '<i class = "bi bi-clipboard-fill"></i>';
-        optionsarea.appendChild(copybutton);
-
-        copybutton.addEventListener("click", () => {
-            navigator.clipboard.writeText(entry.file);
-        });
-    }
-
-    
-    // DOWNLOAD BUTTON
-    let downloadbutton = document.createElement("button");
-    downloadbutton.className = "btn btn-light";
-    downloadbutton.style.opacity = "50%";
-    downloadbutton.innerHTML = '<i class = "bi bi-cloud-arrow-down-fill"></i>';
-    optionsarea.appendChild(downloadbutton);
-
     return card;
 }
 
@@ -197,34 +224,34 @@ function arrangeCards() {
 
     let filtered = entries;
 
-    if(type == CardType.Temp) {
-        for(let i = tempentries.length - 1; i >=0; i--) {        
-            if(sum1 <= sum2) {
+    if (type == CardType.Temp) {
+        for (let i = tempentries.length - 1; i >= 0; i--) {
+            if (sum1 <= sum2) {
                 cardlists[0].appendChild(tempentries[i].card);
                 sum1 += tempentries[i].card.offsetHeight;
             }
-            
+
             else {
                 cardlists[1].appendChild(tempentries[i].card);
                 sum2 += tempentries[i].card.offsetHeight;
             }
-        } 
+        }
     }
 
     else
         filtered = entries.filter(entry => entry.cardtype == type);
-    
-    for(let i = filtered.length - 1; i >=0; i--) {        
-        if(sum1 <= sum2) {
+
+    for (let i = filtered.length - 1; i >= 0; i--) {
+        if (sum1 <= sum2) {
             cardlists[0].appendChild(filtered[i].card);
             sum1 += filtered[i].card.offsetHeight;
         }
-        
+
         else {
             cardlists[1].appendChild(filtered[i].card);
             sum2 += filtered[i].card.offsetHeight;
         }
-    } 
+    }
 }
 /* GENERATE AND DISPLAY CARDS */
 
@@ -238,22 +265,22 @@ let filestab = document.querySelector("#pills-files-tab");
 let urltab = document.querySelector("#pills-url-tab");
 
 alltab.addEventListener("click", () => {
-    activetab = [document.querySelector("#pills-group1-all"), CardType.Temp];
+    activetab = [document.querySelector("#pills-all"), CardType.Temp];
     arrangeCards();
 });
 
 imagestab.addEventListener("click", () => {
-    activetab = [document.querySelector("#pills-group1-images"), CardType.Image];
+    activetab = [document.querySelector("#pills-images"), CardType.Image];
     arrangeCards();
 });
 
 filestab.addEventListener("click", () => {
-    activetab = [document.querySelector("#pills-group1-files"), CardType.File];
+    activetab = [document.querySelector("#pills-files"), CardType.File];
     arrangeCards();
 });
 
 urltab.addEventListener("click", () => {
-    activetab = [document.querySelector("#pills-group1-url"), CardType.URL];
+    activetab = [document.querySelector("#pills-url"), CardType.URL];
     arrangeCards();
 });
 /* FILE TYPE TABS */
@@ -261,9 +288,9 @@ urltab.addEventListener("click", () => {
 
 
 
-/* FILE ADD BUTTON */
-let addentrybutton = document.querySelector("#addentrybutton");
-addentrybutton.addEventListener("click", () => {
+/* ADD FILE BUTTON */
+let addfilebutton = document.querySelector("#addfilebutton");
+addfilebutton.addEventListener("click", () => {
     document.querySelector("#fileinput").click(); // TRIGGER FILE SELECT DIALOGUE
     document.querySelector("#pills-all-tab").click(); // FORCE VIEW ALL TAB
 });
@@ -279,9 +306,9 @@ fileinput.addEventListener("change", (event) => {
             filetype = FileType.File;
             break;
         case 'jpg':
+        case 'jpeg':
         case 'png':
         case 'gif':
-        case 'jpeg':
             filetype = FileType.Image;
             break;
         default:
@@ -300,45 +327,88 @@ fileinput.addEventListener("change", (event) => {
             file: filereader.result,
             filename: file.name,
             filetype: filetype,
+            filesize: file.size,
             date: '',
 
             // user information
-            user: '',
+            username: username,
             desc: '',
         }
         addTempEntry(entry);
         fileinput.value = '';
     }
 });
-/* FILE ADD BUTTON */
+/* ADD FILE BUTTON */
 
 
 
 
-/* ADD THIS PAGE BUTTON */
-let addthispagebutton = document.querySelector("#addthispagebutton");
-addthispagebutton.addEventListener("click", () => {
+/* ADD URL BUTTON */
+let addurlbutton = document.querySelector("#addurlbutton");
+addurlbutton.addEventListener("click", () => {
     document.querySelector("#pills-all-tab").click();
-    $('#addnotesmodal').modal('show'); //show modal
-    $('#btn-n-save').hide();
-    $('#btn-n-add').show();
+    $('#addurlmodal').modal('show');
 
-    let url = document.querySelector("#adressinput").value;
-/*
-    let url = window.location.href;
-    let entry = {
-        cardtype: CardType.Temp,
+    let addurlconfirmbutton = document.querySelector("#addurlconfirmbutton");
+    addurlconfirmbutton.addEventListener("click", () => {
+        let addurladdressinput = document.querySelector("#addurladdressinput");
+        let url = addurladdressinput.value;
+        if (url === "")
+            return;
+        addurladdressinput.value = "";
 
-        file: url,
-        filename: document.title,
-        filetype: FileType.URL,
-        date: '',
+        let addurltitleinput = document.querySelector("#addurltitleinput");
+        let title = addurltitleinput.value;
+        if (title == "") {
+            title = url;
+        }
+        addurltitleinput.value = "";
 
-        user: '',
-        desc: ''
-    }
+        let addurldescinput = document.querySelector("#addurldescinput");
+        let desc = addurldescinput.value;
+        addurldescinput.value = "";
 
-    addTempEntry(entry);
-*/
+        let entry = {
+            cardtype: CardType.URL,
+
+            file: url,
+            filename: title,
+            filetype: FileType.URL,
+            date: '',
+
+            username: username,
+            desc: desc
+        }
+
+        addEntry(entry);
+        $('#addurlmodal').modal('hide');
+    });
 });
-/* ADD THIS PAGE BUTTON */
+/* ADD URL BUTTON */
+
+
+
+
+/* RETURN BUTTON */
+let returnbutton = document.querySelector("#returnbutton");
+returnbutton.addEventListener("click", () => {
+    // TO DO: SET CURRENT PAGE TO NULL
+    document.location.href = 'view.html';
+})
+
+
+
+
+function trimString(str, num) {
+    if (str.length > num)
+        return str.substring(0, num) + "...";
+    else
+        return str;
+}
+
+function absoluteURL(url) {
+    console.log(url);
+    if (url.indexOf('https://') != 0 && url.indexOf("http://") != 0)
+        url = "https://" + url;
+    return url;
+}

@@ -36,7 +36,6 @@
     "url": "https://github.com/Taehyun-Koh/TeamKeep/issues"
   },
   "homepage": "https://github.com/Taehyun-Koh/TeamKeep#readme",
-  "description": "",
   "devDependencies": {
     "@electron-forge/cli": "^6.0.3",
     "@electron-forge/maker-deb": "^6.0.3",
@@ -44,5 +43,6 @@
     "@electron-forge/maker-squirrel": "^6.0.3",
     "@electron-forge/maker-zip": "^6.0.3",
     "electron": "21.3.0"
-  }
+  },
+  "description": ""
 }

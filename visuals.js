@@ -1,3 +1,8 @@
+import './comm.js';
+
+
+
+
 const CardType = {
     Temp: 0, // CARD BEFORE UPLOAD
     Image: 1,
@@ -347,6 +352,7 @@ fileinput.addEventListener("change", (event) => {
 let addurlbutton = document.querySelector("#addurlbutton");
 addurlbutton.addEventListener("click", () => {
     document.querySelector("#pills-all-tab").click();
+    document.querySelector("addurlmodal")
     $('#addurlmodal').modal('show');
 
     let addurlconfirmbutton = document.querySelector("#addurlconfirmbutton");
@@ -412,3 +418,6 @@ function absoluteURL(url) {
         url = "https://" + url;
     return url;
 }
+
+
+

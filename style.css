@@ -6,8 +6,8 @@ body {
 
 .cardcontainer {
     width: 480px;
-    max-height: 80vh;
-    min-height: 480px;
+    max-height: 626px;
+    min-height: 626px;
     overflow-y: scroll;
     overflow-x: hidden;
     

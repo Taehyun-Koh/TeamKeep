@@ -38,11 +38,11 @@
 						<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
 							<li class="nav-item" id="userinfo">
 								<div id="usernameinfo" style="display: flex; flex-direction: row; column-gap: 10px;">
-									<h6>사용자 이름</h6>
+									<h6>로그인됨</h6>
 								</div>
 							</li>
 							<li class="nav-item">
-								<h6 id="logout" type="button" style="color: red;">로그아웃</h6>
+								<h6 id="logoutbutton" type="button" style="color: red;">로그아웃</h6>
 							</li>
 						</ul>
 					</div>
@@ -69,13 +69,11 @@
 						<div class="notes-box">
 							<div class="notes-content">
 								<form action="javascript:void(0);" id="jointeammodaltitle">
-									<div class="row">
-										<div class="col-md-12 mb-3">
-											<div class="modal-url">
-												<label></label>
-												<input type="text" id="jointeamcodeinput" class="form-control"
-													minlength="25" placeholder="갖고 있는 팀 이름을 입력하세요" />
-											</div>
+									<div style="display: flex; flex-direction: column; row-gap: 10px;">
+										<div class="modal-url">
+											<label><i class="bi bi-people"></i>&nbsp;팀 이름</label>
+											<input type="text" id="jointeamcodeinput" class="form-control"
+												minlength="25" />
 										</div>
 									</div>
 								</form>
@@ -129,23 +127,22 @@
 
 		<div
 			style="width: inherit; display:flex; flex-direction: row-reverse; column-gap: 10px; padding-left: 10px; padding-right: 10px;">
-			<button type="button" class="btn btn-primary" id="jointeambutton"
-				style="box-shadow: 0px 0px 5px lightgrey;"><i class="bi bi-plus-square-fill"></i></button>
 			<button type="button" class="btn btn-primary" id="createteambutton"
-				style="box-shadow: 0px 0px 5px lightgrey;"><i class="bi bi-people-fill"></i></button>
+				style="box-shadow: 0px 0px 5px lightgrey;"><i class="bi bi-plus-square"></i></button>
+			<button type="button" class="btn btn-primary" id="jointeambutton"
+				style="box-shadow: 0px 0px 5px lightgrey;"><i class="bi bi-people"></i></button>
+			<button type="button" class="btn btn-secondary" id="refreshbutton"
+				style="box-shadow: 0px 0px 5px lightgrey;"><i class="bi bi-arrow-clockwise"></i></button>
 		</div>
 	</div>
 </body>
 
 <script type="text/javascript" src="view.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
 	integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
 	crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"
 	integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk"
 	crossorigin="anonymous"></script>
-
 <script src="https://unpkg.com/fast-average-color/dist/index.browser.min.js"></script>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>

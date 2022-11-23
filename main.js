@@ -2,8 +2,9 @@ const { app, BrowserWindow, ipc } = require('electron');
 const path = require('path');
 const createWindow = () => {
     const win = new BrowserWindow({
-        width: 800,
-        height: 1000,
+        width: 480,
+        height: 960,
+        resizable: false,
         webPreferences: { 
             preload: path.join(__dirname, 'preload.js'),
             nodeIntegration : true,

@@ -18,7 +18,8 @@
 </head>
 
 <body>
-	<div style="width: 480px; display: flex; flex-direction: column; row-gap: 10px; align-items: center;">
+	<div
+		style="width: 480px; display: flex; flex-direction: column; row-gap: 10px; justify-items: center; align-items: center;">
 		<!-- Modal Side Menu -->
 		<nav class="navbar navbar-dark bg-secondary" style="width: inherit;">
 			<div class="container" style="height: 42px;">
@@ -47,7 +48,7 @@
 								</div>
 							</li>
 							<li class="nav-item">
-								<h6 id="leaveteam" type="button" style="color: red;">팀 나가기</h6>
+								<h6 id="leaveteambutton" type="button" style="color: red;">팀 나가기</h6>
 							</li>
 						</ul>
 					</div>
@@ -113,15 +114,17 @@
 		<div
 			style="width: inherit; display:flex; flex-direction: row-reverse; column-gap: 10px; padding-left: 10px; padding-right: 10px;">
 			<button type="button" class="btn btn-primary" id="addfilebutton"
-				style="box-shadow: 0px 0px 5px lightgrey;"><i class="bi bi-file-plus-fill"></i></button>
+				style="box-shadow: 0px 0px 5px lightgrey;"><i class="bi bi-file-plus"></i></button>
 			<button type="button" class="btn btn-primary" id="addurlbutton"
 				style="box-shadow: 0px 0px 5px lightgrey;"><i class="bi bi-link"></i></button>
+			<button type="button" class="btn btn-secondary" id="refreshbutton"
+				style="box-shadow: 0px 0px 5px lightgrey;"><i class="bi bi-arrow-clockwise"></i></button>
 		</div>
 
 		<!-- Modal Add URL -->
-		<div class="modal fade" id="addurlmodal" tabindex="-1" role="dialog" aria-labelledby="addurlmodaltitle"
-			style="display: none;" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered" role="document" style="width: 400px;">
+		<div class="modal modal-center fade" id="addurlmodal" tabindex="-1" role="dialog" aria-labelledby="addurlmodal"
+			aria-hidden="true" style="width: inherit; padding: 20px;">
+			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content border-0">
 					<div class="modal-header">
 						웹페이지 추가
@@ -129,27 +132,18 @@
 							aria-label="close"></button>
 					</div>
 					<div class="modal-body">
-						<div class="notes-box">
-							<div class="notes-content">
-								<form action="javascript:void(0);" id="addurlmodaltitle">
-									<div style="display: flex; flex-direction: column; row-gap: 10px;">
-										<div class="modal-url">
-											<label><i class="bi bi-fonts"></i>&nbsp;제목</label>
-											<input type="text" id="addurltitleinput" class="form-control"
-												minlength="25" />
-										</div>
-										<div class="modal-url">
-											<label><i class="bi bi-link"></i>&nbsp;URL</label>
-											<input type="text" id="addurladdressinput" class="form-control"
-												minlength="25" />
-										</div>
-										<div class="modal-url">
-											<label><i class="bi bi-justify-left"></i>&nbsp;웹페이지 설명</label>
-											<input type="text" id="addurldescinput" class="form-control"
-												minlength="25" />
-										</div>
-									</div>
-								</form>
+						<div style="display: flex; flex-direction: column; row-gap: 10px;">
+							<div class="modal-url">
+								<label><i class="bi bi-fonts"></i>&nbsp;제목</label>
+								<input type="text" id="addurltitleinput" class="form-control" minlength="25" />
+							</div>
+							<div class="modal-url">
+								<label><i class="bi bi-link"></i>&nbsp;URL</label>
+								<input type="text" id="addurladdressinput" class="form-control" minlength="25" />
+							</div>
+							<div class="modal-url">
+								<label><i class="bi bi-justify-left"></i>&nbsp;웹페이지 설명</label>
+								<input type="text" id="addurldescinput" class="form-control" minlength="25" />
 							</div>
 						</div>
 					</div>
@@ -166,16 +160,16 @@
 	<input type="file" id="fileinput" style="display:none;">
 </body>
 
-<script type="text/javascript" src="visuals.js"></script>
+<script type="module" src="visuals.js"></script>
 <script type="text/javascript" src="comm.js"></script>
 
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"
+	onload="window.$ = window.jQuery = module.exports;"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
 	integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
 	crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"
 	integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk"
 	crossorigin="anonymous"></script>
-
 <script src="https://unpkg.com/fast-average-color/dist/index.browser.min.js"></script>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>

@@ -13,6 +13,8 @@ const createWindow = () => {
         }
     });
 
+    win.setMenuBarVisibility(false);
+    win.setFullScreenable(false);
     win.webContents.openDevTools();
     win.loadFile('login.html');
 };

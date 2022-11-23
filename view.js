@@ -1,47 +1,98 @@
-const login = require('login.js');
-const mysql = require("mysql");
-const dotenv = require("dotenv");
-dotenv.config();
-const connection = mysql.createConnection({
-    host     : process.env.DATABASE_HOST,
-    user     : process.env.DATABASE_USERNAME,
-    password : process.env.DATABASE_PASSWORD,
-    database : process.env.DATABASE_NAME_USER
+/* 세 html 파일의 스크립트, 모듈을 잘 점검해주세요. */ 
+import './comm.js';
+/* 세 html 파일의 스크립트, 모듈을 잘 점검해주세요. */ 
+
+
+
+
+/* -------------------------------------------------------------------------- */
+/*                                INITIALIZTION                               */
+/* -------------------------------------------------------------------------- */
+/* -------------------------------- USERNAME -------------------------------- */
+let username = localStorage.getItem('username');
+/* -------------------------------- USERNAME -------------------------------- */
+
+
+
+
+/* ---------------------------------- TEAMS --------------------------------- */
+let teams = [];
+
+
+window.addEventListener("", () => {
+    /*TO DO:
+        loadTeams();
+    */
 });
+/* ---------------------------------- TEAMS --------------------------------- */
+/* -------------------------------------------------------------------------- */
+/*                                INITIALIZTION                               */
+/* -------------------------------------------------------------------------- */
 
-let rooms = [];
 
-function saveRoomList() {
-    localStorage.setItem("roomList", JSON.stringify(rooms));
+
+
+/* ---------------------------------- TEAMS --------------------------------- */
+function addTeam(create, teamcode) {
+    /*TO DO:
+        if(create)
+            createTeam(teamcode, username);
+        else
+            joinTeam(teamcode, username);
+        loadTeams();
+    */
 }
 
-function loadRoomList() {
-    let roomList = localStorage.getItem("roomList");
-    if(!roomList) return;
+function loadTeams() {
+    let teamlist = localStorage.getItem("teamlist");
+    if(!teamlist)
+        return;
 
-    rooms = JSON.parse(roomList);
-    rooms.forEach(addRoom);
+    teams = fetchTeams(username);
+    arrangeTeams();
 }
 
-function addRoom(room) {
-    let list = document.querySelector("#roomlist");
-    let li = document.createElement("li");
-
-    li.value = room;
-    list.appendChild(li);
+function arrangeTeams() {
+    let teamlist = document.querySelector("#teamlist");
+    teams.forEach((team) => {
+        let li = document.createElement("li");
+        li.innerText = team;
+        /* TO DO:
+            ON li CLICK: 
+                UPDATE 'teamcode' LOCAL FILE
+                CHANGE CONTEXT TO index.html
+        */
+        teamlist.appendChild(li);
+    })
 }
+/* ---------------------------------- TEAMS --------------------------------- */
 
-window.addEventListener("load", loadRoomList);
 
 
-let joinRoom = document.querySelector("#joinroombutton");
 
-joinRoom.addEventListener("click", () => {
-    let input = document.querySelector("#teamcodeinput");
-    let text = input.value;
-
-    if(!text.length) return;
-    
-
+/* --------------------------- CREATE TEAM BUTTON --------------------------- */
+let createteamconfirmbutton = document.querySelector("#createteamconfirmbutton");
+createteamconfirmbutton.addEventListener("click", () => {
+    let jointeamcodeinput = document.querySelector("#createteamcodeinput");
+    let teamcode = jointeamcodeinput.value;
+    /* TO DO:
+       addTeam(1, teamcode);    
+    */
     input.value = "";
-})
+});
+/* --------------------------- CREATE TEAM BUTTON --------------------------- */
+
+
+
+
+/* --------------------------- JOIN TEAM BUTTON --------------------------- */
+let jointeamconfirmbutton = document.querySelector("#jointeamconfirmbutton");
+jointeamconfirmbutton.addEventListener("click", () => {
+    let jointeamcodeinput = document.querySelector("#jointeamcodeinput");
+    let teamcode = jointeamcodeinput.value;
+    /* TO DO:
+        addTeam(0, teamcode);
+    */
+    input.value = "";
+});
+/* --------------------------- JOIN TEAM BUTTON --------------------------- */

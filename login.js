@@ -88,7 +88,7 @@ function resetClass(element, classname){
                     if (results.length > 0) {       // db에서의 반환값이 있으면 로그인 성공
                         console.log("user information")
                         console.log(results)
-                        window.localStorage.setItem("user",id);
+                        localStorage.setItem("username",id);
                         connection.end();
                         document.location.href = 'index.html';
                     } else {              

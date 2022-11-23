@@ -3,6 +3,7 @@ import './comm.js';
 
 
 
+/* TYPES */
 const CardType = {
     Temp: 0, // CARD BEFORE UPLOAD
     Image: 1,
@@ -15,33 +16,49 @@ const FileType = {
     File: 2,
     URL: 3
 }
+/* TYPES */
 
 
 
 
-let username = 'admin'; // LOGINED USER
-let teamcode = 'teamtest'; // CURRENT TEAM
-// TO DO: GET TEAM INFO FROM SERVER AT COMM.JS THEN IMPORT TO THIS HTML
+/* -------------------------------------------------------------------------- */
+/*                                INITIALIZTION                               */
+/* -------------------------------------------------------------------------- */
+/* --------------------------- USERNAME & TEAMCODE -------------------------- */
+let username = localStorage.getItem("username"); // LOGINED USER
+let teamcode = localStorage.getItem("teamcode"); // CURRENT TEAM
 
 
-document.querySelector("#teamcodeheader").appendChild(document.createTextNode(teamcode));
+document.querySelector("#teamcodeheader").appendChild(document.createTextNode("#" + teamcode));
+
 
 let teamcodeinfo = document.createElement("h6");
 teamcodeinfo.style.opacity = "50%";
 teamcodeinfo.innerText = teamcode;
 document.querySelector("#teamcodeinfo").appendChild(teamcodeinfo);
+/* --------------------------- USERNAME & TEAMCODE -------------------------- */
 
 
 
 
+/* --------------------------------- ENTRIES -------------------------------- */
 let entries = []; // UPLOADED CARDS
 let tempentries = []; // CARDS BEFORE UPLOAD
 let activetab = [document.querySelector("#pills-all"), CardType.Temp];
 
+window.addEventListener("load", () => {
+    /* TO DO:
+        loadEntries();
+    */
+});
+/* --------------------------------- ENTRIES -------------------------------- */
+/* -------------------------------------------------------------------------- */
+/*                                INITIALIZTION                               */
+/* -------------------------------------------------------------------------- */
 
 
 
-/* ADD ENTRIES */
+/* --------------------------------- ENTRIES -------------------------------- */
 function addTempEntry(entry) {
     tempentries.push(entry);
     let card = createCard(entry);
@@ -49,19 +66,33 @@ function addTempEntry(entry) {
     arrangeCards();
 }
 
-
 function addEntry(entry) {
-    entries.push(entry);
     let card = createCard(entry);
     entry.card = card;
+
+    /* TO DO: 
+        uploadFile(teamcode, username, entry);
+        loadEntries();
+    */
+
+    // TO DO: REMOVE THESE
+    entries.push(entry);
     arrangeCards();
+    // TO DO: REMOVE THESE
 }
-/* ADD ENTRIES */
+
+function loadEntries() {
+    /* TO DO:
+        entries = fetchEntries(teamcode);
+        arrangeCards();
+    */
+}
+/* --------------------------------- ENTRIES -------------------------------- */
 
 
 
 
-/* GENERATE AND DISPLAY CARDS */
+/* ---------------------------------- CARDS --------------------------------- */
 function createCard(entry) {
     // CARD BASE
     let card = document.createElement("div");
@@ -135,10 +166,10 @@ function createCard(entry) {
         uploadbutton.addEventListener("click", () => {
             entry.desc = descinput.value; // ADD PROVIDED DESC
             entry.cardtype = entry.filetype; // CARD READY TO UPLOAD
-
+            
             tempentries = tempentries.filter(element => element !== entry); // REMOVE FROM TEMPENTIRES
             card.remove(); // REMOVE FROM THE PAGE
-            addEntry(entry); // UPLOAD CARD
+            addEntry(entry);
         });
 
         return card;
@@ -150,9 +181,6 @@ function createCard(entry) {
         desc.style = "font-size: smaller; opacity: 0.75";
         desc.innerText = entry.desc;
         cardbody.appendChild(desc);
-
-        //let divider = document.createElement("hr");
-        //cardbody.appendChild(divider);
     }
 
 
@@ -201,9 +229,16 @@ function createCard(entry) {
     optionsarea.appendChild(deletebutton);
 
     deletebutton.addEventListener("click", () => {
+        /* TO DO:
+            deleteFile(teamcode, entry);
+            loadEntries();
+        */
+
+        // TO DO: REMOVE THESE
         card.remove();
         entries = entries.filter(element => element !== entry);
         arrangeCards();
+        // TO DO: REMOVE THESE
     });
 
     deletebutton.addEventListener("mouseover", () => {
@@ -258,16 +293,17 @@ function arrangeCards() {
         }
     }
 }
-/* GENERATE AND DISPLAY CARDS */
+/* ---------------------------------- CARDS --------------------------------- */
 
 
 
 
-/* FILE TYPE TABS */
+/* ----------------------------- FILE TYPE TABS ----------------------------- */
 let alltab = document.querySelector("#pills-all-tab");
 let imagestab = document.querySelector("#pills-images-tab");
 let filestab = document.querySelector("#pills-files-tab");
 let urltab = document.querySelector("#pills-url-tab");
+
 
 alltab.addEventListener("click", () => {
     activetab = [document.querySelector("#pills-all"), CardType.Temp];
@@ -288,12 +324,12 @@ urltab.addEventListener("click", () => {
     activetab = [document.querySelector("#pills-url"), CardType.URL];
     arrangeCards();
 });
-/* FILE TYPE TABS */
+/* ----------------------------- FILE TYPE TABS ----------------------------- */
 
 
 
 
-/* ADD FILE BUTTON */
+/* ----------------------------- ADD FILE BUTTON ---------------------------- */
 let addfilebutton = document.querySelector("#addfilebutton");
 addfilebutton.addEventListener("click", () => {
     document.querySelector("#fileinput").click(); // TRIGGER FILE SELECT DIALOGUE
@@ -332,7 +368,6 @@ fileinput.addEventListener("change", (event) => {
             file: filereader.result,
             filename: file.name,
             filetype: filetype,
-            filesize: file.size,
             date: '',
 
             // user information
@@ -343,12 +378,12 @@ fileinput.addEventListener("change", (event) => {
         fileinput.value = '';
     }
 });
-/* ADD FILE BUTTON */
+/* ----------------------------- ADD FILE BUTTON ---------------------------- */
 
 
 
 
-/* ADD URL BUTTON */
+/* ----------------------------- ADD URL BUTTON ----------------------------- */
 let addurlbutton = document.querySelector("#addurlbutton");
 addurlbutton.addEventListener("click", () => {
     document.querySelector("#pills-all-tab").click();
@@ -390,21 +425,32 @@ addurlbutton.addEventListener("click", () => {
         $('#addurlmodal').modal('hide');
     });
 });
-/* ADD URL BUTTON */
+/* ----------------------------- ADD URL BUTTON ----------------------------- */
 
 
 
 
-/* RETURN BUTTON */
+/* ----------------------------- REFRESH BUTTON ----------------------------- */
+let refreshbutton = document.querySelector("#refreshbutton");
+refreshbutton.addEventListener("click", () => {
+    loadEntries();
+});
+/* ----------------------------- REFRESH BUTTON ----------------------------- */
+
+
+
+
+/* ------------------------------ RETURN BUTTON ----------------------------- */
 let returnbutton = document.querySelector("#returnbutton");
 returnbutton.addEventListener("click", () => {
-    // TO DO: SET CURRENT PAGE TO NULL
+    localStorage.setItem("teamcode", "");
     document.location.href = 'view.html';
 })
+/* ------------------------------ RETURN BUTTON ----------------------------- */
 
 
 
-
+/* ------------------------------ STRING MODIFY ----------------------------- */
 function trimString(str, num) {
     if (str.length > num)
         return str.substring(0, num) + "...";
@@ -418,6 +464,4 @@ function absoluteURL(url) {
         url = "https://" + url;
     return url;
 }
-
-
-
+/* ------------------------------ STRING MODIFY ----------------------------- */

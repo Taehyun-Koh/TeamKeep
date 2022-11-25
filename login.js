@@ -90,7 +90,7 @@ function resetClass(element, classname){
                         console.log(results)
                         localStorage.setItem("username",id);
                         connection.end();
-                        document.location.href = 'index.html';
+                        document.location.href = 'view.html';
                     } else {              
                         alert("로그인 정보가 일치하지 않습니다.")
                         // connection.end();
@@ -114,6 +114,7 @@ function resetClass(element, classname){
                     console.log("user information")
                     console.log(results)
                     document.location.href = 'index.html';
+                    connection.end();
                 } else {              
                     alert("로그인 정보가 일치하지 않습니다.")
                     // connection.end();

@@ -11,7 +11,11 @@
 
 /* ENTRIES */
 export function fetchEntries(teamcode) {
-
+    /*
+        (app).get('teams', (req, res) => {
+            res.send(JSON.stringify(teams));
+        })
+    */
 } // entry 리스트를 반환 (entry 구조는 visuals.js.336에서 찾을 수 있습니다.)
 
 export function uploadFile(teamcode, username, entry) {
@@ -28,7 +32,11 @@ export function deleteFile(teamcode, entry) {
 
 /* TEAMS */
 export function fetchTeams(username) {
-
+    /*
+        (app).get('teams', (req, res) => {
+            res.send(JSON.stringify(teams));
+        })
+    */
 } // 팀 멤버 리스트를 반환
 
 export function createTeam(teamcode, username) {

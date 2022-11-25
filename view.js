@@ -62,6 +62,11 @@ function arrangeTeams() {
                 UPDATE 'teamcode' LOCAL FILE
                 CHANGE CONTEXT TO index.html
         */
+       /*
+            li.addEventListener("click", () => {
+                
+            })
+       */
         teamlist.appendChild(li);
     })
 }

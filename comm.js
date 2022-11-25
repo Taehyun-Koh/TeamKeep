@@ -4,6 +4,17 @@
 
 
 /* ESTABLISH CONNECTION */
+/*
+const mysql = require("mysql")
+const dotenv = require('dotenv') //mysql pwd숨기기
+dotenv.config();
+const connection = mysql.createConnection({
+    host     : process.env.DATABASE_HOST,
+    user     : process.env.DATABASE_USERNAME,
+    password : process.env.DATABASE_PASSWORD,
+    database : process.env.DATABASE_NAME_ROOM
+});
+*/
 /* ESTABLISH CONNECTION */
 
 
@@ -16,6 +27,34 @@ export function fetchEntries(teamcode) {
             res.send(JSON.stringify(teams));
         })
     */
+
+    /*teamcode 찾기*/
+    //db 연결
+    connection.connect((err) => {
+        if(err) return;
+
+        //모든 방 이름을 불러온다
+        let q = 'SELECT * FROM room';
+        //모든 방 정보 저쟝
+        let entries = [];
+
+        connection.query(q, (err, rows) => {
+            if(err) throw err;
+
+            if(!rows.length) return;
+            
+            let tempentry = {};
+
+            tempentry['filename'] = rows.file_name; 
+            tempentry['filecontent'] = rows.file_content;
+            
+            console.log(tempentry);
+            entries.append(tempentry);
+        });
+    });
+
+    return entries;
+
 } // entry 리스트를 반환 (entry 구조는 visuals.js.336에서 찾을 수 있습니다.)
 
 export function uploadFile(teamcode, username, entry) {
@@ -37,6 +76,30 @@ export function fetchTeams(username) {
             res.send(JSON.stringify(teams));
         })
     */
+   
+    /*username connection */
+    //db 연결
+    connection.connect((err) => {
+        if(err) return;
+
+        //모든 방 이름을 불러온다
+        let q = 'SELECT room_name FROM room';
+        //모든 방 정보 저쟝
+        let rooms = [];
+
+        connection.query(q, (err, rows) => {
+            if(err) throw err;
+
+            if(!rows.length) return;
+            
+            console.log(rows);
+            rooms.append(rows);
+        });
+    });
+
+    return rooms;
+    
+
 } // 팀 멤버 리스트를 반환
 
 export function createTeam(teamcode, username) {

@@ -4,7 +4,30 @@ import './comm.js';
 
 
 
+const mysql = require("mysql")
+const dotenv = require('dotenv') //mysql pwd숨기기
+dotenv.config();
+const connection = mysql.createConnection({
+    host     : process.env.DATABASE_HOST,
+    user     : process.env.DATABASE_USERNAME,
+    password : process.env.DATABASE_PASSWORD,
+    database : process.env.DATABASE_NAME_ROOM
+});
 
+let teams = [];
+connection.query('show tables', function(error, results, fields) {
+    if (error) throw error;
+    if (results.length > 0) {       // db에서의 반환값이 있으면 로그인 성공
+        for (var data of results){
+            teams.push(data.Tables_in_room);
+        };
+        localStorage.setItem("teamlist",teams);
+        loadTeams();
+        
+    } else {              
+        alert("room 아직 없음");
+    }            
+});
 /* -------------------------------------------------------------------------- */
 /*                                INITIALIZTION                               */
 /* -------------------------------------------------------------------------- */
@@ -16,13 +39,14 @@ let username = localStorage.getItem('username');
 
 
 /* ---------------------------------- TEAMS --------------------------------- */
-let teams = [];
+
 
 
 window.addEventListener("", () => {
     /*TO DO:
         loadTeams();
     */
+
 });
 /* ---------------------------------- TEAMS --------------------------------- */
 /* -------------------------------------------------------------------------- */
@@ -45,11 +69,24 @@ function addTeam(create, teamcode) {
 
 function loadTeams() {
     let teamlist = localStorage.getItem("teamlist");
-    if(!teamlist)
-        return;
+    console.log(typeof(teamlist));
+    let teamlist_div = document.querySelector("#teamlist");
+    if(!teamlist){
+        alert("There is no team")
+    }
+    else{
+        for (var i = 0; i < teams.length; i++){
+            console.log(teams[i]);
+            var newDiv = document.createElement('div');
+            newDiv.innerHTML=teams[i];
+            newDiv.setAttribute("id",teams[i]);
+            teamlist_div.appendChild(newDiv);
 
-    teams = fetchTeams(username);
-    arrangeTeams();
+        }
+    }
+
+    // teams = fetchTeams(username);
+    // arrangeTeams();
 }
 
 function arrangeTeams() {

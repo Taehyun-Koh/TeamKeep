@@ -2,7 +2,7 @@ const { app, BrowserWindow, ipc } = require('electron');
 const path = require('path');
 const createWindow = () => {
     const win = new BrowserWindow({
-        width: 480,
+        width: 900, //480 -> 900 (디버깅용)
         height: 960,
         resizable: false,
         webPreferences: { 

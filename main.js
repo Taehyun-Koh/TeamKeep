@@ -3,7 +3,7 @@ const path = require('path');
 const createWindow = () => {
     const win = new BrowserWindow({
         width: 900, //480 -> 900 (디버깅용)
-        height: 960,
+        height: 770,
         resizable: false,
         webPreferences: { 
             preload: path.join(__dirname, 'preload.js'),

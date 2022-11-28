@@ -1,9 +1,25 @@
-import './comm.js';
+//import { fetchEntries } from "./comm.js";
+/* -------------------------- ESTABLISH CONNECTION -------------------------- */
+const mysql = require("mysql")
+const dotenv = require('dotenv') //mysql pwd숨기기
+dotenv.config();
+const connection = mysql.createConnection({
+    host: process.env.DATABASE_HOST,
+    user: process.env.DATABASE_USERNAME,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE_NAME_ROOM
+});
+connection.connect((err) => {
+    if (err) {
+        console.log(err);
+        return;
+    }
+});
+/* -------------------------- ESTABLISH CONNECTION -------------------------- */
 
 
 
-
-/* TYPES */
+/* ---------------------------------- TYPES --------------------------------- */
 const CardType = {
     Temp: 0, // CARD BEFORE UPLOAD
     Image: 1,
@@ -16,7 +32,7 @@ const FileType = {
     File: 2,
     URL: 3
 }
-/* TYPES */
+/* ---------------------------------- TYPES --------------------------------- */
 
 
 
@@ -24,19 +40,24 @@ const FileType = {
 /* -------------------------------------------------------------------------- */
 /*                                INITIALIZTION                               */
 /* -------------------------------------------------------------------------- */
-/* --------------------------- USERNAME & TEAMCODE -------------------------- */
+/* --------------------------- USERNAME & TEAMNAME -------------------------- */
 let username = localStorage.getItem("username"); // LOGINED USER
-let teamcode = localStorage.getItem("teamcode"); // CURRENT TEAM
+let teamname = localStorage.getItem("teamname"); // CURRENT TEAM
 
 
-document.querySelector("#teamcodeheader").appendChild(document.createTextNode("#" + teamcode));
+document.querySelector("#teamnameheader").appendChild(document.createTextNode("#" + teamname));
 
 
-let teamcodeinfo = document.createElement("h6");
-teamcodeinfo.style.opacity = "50%";
-teamcodeinfo.innerText = teamcode;
-document.querySelector("#teamcodeinfo").appendChild(teamcodeinfo);
-/* --------------------------- USERNAME & TEAMCODE -------------------------- */
+let teamnameinfo = document.createElement("h6");
+teamnameinfo.style.opacity = "50%";
+teamnameinfo.innerText = teamname;
+document.querySelector("#teamnameinfo").appendChild(teamnameinfo);
+
+
+window.addEventListener("load", () => {
+    loadEntries();
+})
+/* --------------------------- USERNAME & TEAMNAME -------------------------- */
 
 
 
@@ -45,12 +66,6 @@ document.querySelector("#teamcodeinfo").appendChild(teamcodeinfo);
 let entries = []; // UPLOADED CARDS
 let tempentries = []; // CARDS BEFORE UPLOAD
 let activetab = [document.querySelector("#pills-all"), CardType.Temp];
-
-window.addEventListener("load", () => {
-    /* TO DO:
-        loadEntries();
-    */
-});
 /* --------------------------------- ENTRIES -------------------------------- */
 /* -------------------------------------------------------------------------- */
 /*                                INITIALIZTION                               */
@@ -71,7 +86,7 @@ function addEntry(entry) {
     entry.card = card;
 
     /* TO DO: 
-        uploadFile(teamcode, username, entry);
+        uploadFile(teamname, username, entry);
         loadEntries();
     */
 
@@ -82,10 +97,38 @@ function addEntry(entry) {
 }
 
 function loadEntries() {
-    /* TO DO:
-        entries = fetchEntries(teamcode);
-        arrangeCards();
-    */
+    fetchEntries(teamname, arrangeCards);
+}
+
+function fetchEntries(teamname, callback) {
+    while(entries.length > 0)
+        entries.pop();
+    
+
+    let q = "SELECT * FROM " + teamname;
+    connection.query(q, (err, rows) => {
+        if (err) throw err;
+        if (!rows.length) return;
+
+        for (let row of rows) {
+            let entry = {
+                cardtype: row.file_type,
+
+                file: row.file_content,
+                filename: row.file_name,
+                filetype: row.file_type,
+                date: row.file_date,
+
+                username: row.user_name,
+                desc: row.file_desc,
+            }
+
+            entry.card = createCard(entry);
+            entries.push(entry);
+        }
+
+        callback();
+    });   
 }
 /* --------------------------------- ENTRIES -------------------------------- */
 
@@ -165,8 +208,10 @@ function createCard(entry) {
 
         uploadbutton.addEventListener("click", () => {
             entry.desc = descinput.value; // ADD PROVIDED DESC
+            let now = new Date();
+            entry.date = now.toLocaleString();
             entry.cardtype = entry.filetype; // CARD READY TO UPLOAD
-            
+
             tempentries = tempentries.filter(element => element !== entry); // REMOVE FROM TEMPENTIRES
             card.remove(); // REMOVE FROM THE PAGE
             addEntry(entry);
@@ -230,7 +275,7 @@ function createCard(entry) {
 
     deletebutton.addEventListener("click", () => {
         /* TO DO:
-            deleteFile(teamcode, entry);
+            deleteFile(teamname, entry);
             loadEntries();
         */
 
@@ -259,39 +304,41 @@ function arrangeCards() {
     let type = activetab[1];
     let cardlists = activetab[0].querySelectorAll("div.cardlist"); // CARDLISTS[0]: ~CARDS1, CARDLISTS[1]: ~CARDS2
 
+    cardlists[0].innerHTML = "";
+    cardlists[1].innerHTML = "";
     let sum1 = 0;
     let sum2 = 0;
 
     let filtered = entries;
 
     if (type == CardType.Temp) {
-        for (let i = tempentries.length - 1; i >= 0; i--) {
-            if (sum1 <= sum2) {
-                cardlists[0].appendChild(tempentries[i].card);
-                sum1 += tempentries[i].card.offsetHeight;
+        tempentries.forEach(entry => {
+            if(sum1 <= sum2) {
+                cardlists[0].appendChild(entry.card);
+                sum1 += entry.card.offsetHeight;
             }
 
             else {
-                cardlists[1].appendChild(tempentries[i].card);
-                sum2 += tempentries[i].card.offsetHeight;
+                cardlists[1].appendChild(entry.card);
+                sum2 += entry.card.offsetHeight;
             }
-        }
+        });
     }
 
     else
         filtered = entries.filter(entry => entry.cardtype == type);
-
-    for (let i = filtered.length - 1; i >= 0; i--) {
-        if (sum1 <= sum2) {
-            cardlists[0].appendChild(filtered[i].card);
-            sum1 += filtered[i].card.offsetHeight;
+   
+    filtered.forEach(entry => {
+        if(sum1 <= sum2) {
+            cardlists[0].appendChild(entry.card);
+            sum1 += entry.card.offsetHeight;
         }
 
         else {
-            cardlists[1].appendChild(filtered[i].card);
-            sum2 += filtered[i].card.offsetHeight;
+            cardlists[1].appendChild(entry.card);
+            sum2 += entry.card.offsetHeight;
         }
-    }
+    });
 }
 /* ---------------------------------- CARDS --------------------------------- */
 
@@ -307,17 +354,17 @@ let urltab = document.querySelector("#pills-url-tab");
 
 alltab.addEventListener("click", () => {
     activetab = [document.querySelector("#pills-all"), CardType.Temp];
-    arrangeCards();
+    loadEntries();
 });
 
 imagestab.addEventListener("click", () => {
     activetab = [document.querySelector("#pills-images"), CardType.Image];
-    arrangeCards();
+    loadEntries();
 });
 
 filestab.addEventListener("click", () => {
     activetab = [document.querySelector("#pills-files"), CardType.File];
-    arrangeCards();
+    loadEntries();
 });
 
 urltab.addEventListener("click", () => {
@@ -443,7 +490,7 @@ refreshbutton.addEventListener("click", () => {
 /* ------------------------------ RETURN BUTTON ----------------------------- */
 let returnbutton = document.querySelector("#returnbutton");
 returnbutton.addEventListener("click", () => {
-    localStorage.setItem("teamcode", "");
+    localStorage.setItem("teamname", "");
     document.location.href = 'view.html';
 })
 /* ------------------------------ RETURN BUTTON ----------------------------- */
@@ -459,7 +506,6 @@ function trimString(str, num) {
 }
 
 function absoluteURL(url) {
-    console.log(url);
     if (url.indexOf('https://') != 0 && url.indexOf("http://") != 0)
         url = "https://" + url;
     return url;

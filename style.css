@@ -1,25 +1,25 @@
-@font-face {
+/*@font-face {
     font-family: 'BMDOHYEON';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMDOHYEON.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-}
+}*/
 
 
-body {
+/*body {
     font-family: BMDOHYEON;
+    font-family: 'Noto Sans KR', sans-serif;
+}*/
 
-}
-
-h5{
+/*h5{
     font-family: BMDOHYEON;
     font-size: small;
-}
+}*/
 
 .cardcontainer {
     width: 480px;
-    max-height: 626px;
-    min-height: 626px;
+    max-height: 566px;
+    min-height: 566px;
     overflow-y: scroll;
     overflow-x: hidden;
     

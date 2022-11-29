@@ -63,7 +63,6 @@ function resetClass(element, classname){
                 } else if (password !== password2) {                     // 비밀번호가 올바르게 입력되지 않은 경우
                     alert("비밀번호가 일치하지 않음")
                     document.getElementsByClassName("show-signup")[0].click();
-
                 }
                 else {                                                  // DB에 같은 이름의 회원아이디가 있는 경우
                     alert("이미 존재하는 아이디")

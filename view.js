@@ -165,7 +165,7 @@ function arrangeTeams() {
     for (let i = 0; i < teams.length; i++) {
         var curr_team = teams[i]
         
-        connection.query("SELECT * FROM " + curr_team + " WHERE user_name = ?", [curr_user], function (error, results, fields) {
+        connection_info.query("SELECT * FROM " + curr_team + " WHERE users = ?", [curr_user], function (error, results, fields) {
             if (error) 
                 throw error;
             if (results.length > 0) { // 속한 팀이 있을경우

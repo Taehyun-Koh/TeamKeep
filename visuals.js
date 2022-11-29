@@ -113,9 +113,8 @@ function addTempEntry(entry) {
 }
 
 function addEntry(entry) {
-    let now = new Date();
-    entry.date = now.toLocaleString();
-    connection.query('INSERT INTO ' + teamname + '(room_name, user_name, file_type, file_name, file_content, file_desc, file_date) VALUES (?, ?, ?, ?, ?, ?, ?)', [teamname, username, entry.filetype, entry.filename, entry.file, entry.desc, entry.date], function(error, results) {
+    entry.date = new Date();
+    connection.query('INSERT INTO ' + teamname + '(room_name, user_name, file_type, file_name, file_content, file_desc, file_date) VALUES (?, ?, ?, ?, ?, ?, ?)', [teamname, username, entry.filetype, entry.filename, entry.file, entry.desc, JSON.stringify(entry.date)], function(error, results) {
         if(error) throw error;
     });
 
@@ -141,7 +140,7 @@ function fetchEntries(callback) {
                 file: row.file_content,
                 filename: row.file_name,
                 filetype: row.file_type,
-                date: row.file_date,
+                date: new Date(JSON.parse(row.file_date)),
 
                 username: row.user_name,
                 desc: row.file_desc,
@@ -258,7 +257,8 @@ function createCard(entry) {
     // USER NAME & DATE
     let namedate = document.createElement("h8");
     namedate.style = "padding-bottom: 10px; font-size: smaller; font-style: italic; opacity: 0.5;";
-    namedate.innerText = '@' + entry.username + ', ' + entry.date;
+    let now = new Date();
+    namedate.innerText = '@' + entry.username + ', ' + (now - entry.date).toLocaleString();
     cardbody.appendChild(namedate);
 
 
@@ -541,6 +541,9 @@ function absoluteURL(url) {
 /* ---------------------------- LEAVE TEAM BUTTON --------------------------- */
 let leaveteambutton = document.querySelector("#leaveteambutton");
 leaveteambutton.addEventListener("click", () => {
-    
+    connection_info.query('DELETE FROM ' + teamcode + ' WHERE users = ?', [username], function(error, results) {
+        if(error) throw error;
+    });
+    document.location.href = 'view.html';
 });
 /* ---------------------------- LEAVE TEAM BUTTON --------------------------- */

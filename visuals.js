@@ -369,7 +369,6 @@ urltab.addEventListener("click", () => {
 let addfilebutton = document.querySelector("#addfilebutton");
 addfilebutton.addEventListener("click", () => {
     document.querySelector("#fileinput").click(); // TRIGGER FILE SELECT DIALOGUE
-    document.querySelector("#pills-all-tab").click(); // FORCE VIEW ALL TAB
 });
 
 let fileinput = document.querySelector("#fileinput");
@@ -411,6 +410,7 @@ fileinput.addEventListener("change", (event) => {
             desc: '',
         }
         addTempEntry(entry);
+        document.querySelector("#pills-all-tab").click();
         fileinput.value = '';
     }
 });
@@ -422,7 +422,6 @@ fileinput.addEventListener("change", (event) => {
 /* ----------------------------- ADD URL BUTTON ----------------------------- */
 let addurlbutton = document.querySelector("#addurlbutton");
 addurlbutton.addEventListener("click", () => {
-    document.querySelector("#pills-all-tab").click();
     document.querySelector("addurlmodal")
     $('#addurlmodal').modal('show');
 
@@ -458,6 +457,7 @@ addurlbutton.addEventListener("click", () => {
         }
 
         addEntry(entry);
+        document.querySelector("#pills-url-tab").click();
         $('#addurlmodal').modal('hide');
     });
 });

@@ -74,14 +74,14 @@ window.addEventListener("load", () => {
 })
 
 connection_info.query("SELECT * FROM " + teamname, (err, rows) => {
-    if(err) throw err;
-    if(!rows.length) return;
+    if (err) throw err;
+    if (!rows.length) return;
 
-    for(let row of rows)
+    for (let row of rows)
         memberlist.push(row.users);
-    
+
     let teammemberinfo = document.querySelector("#teammemberinfo");
-     memberlist.forEach(user => {
+    memberlist.forEach(user => {
         let member = document.createElement("h7");
         member.innerText = user;
         member.style.opacity = "50%";
@@ -114,8 +114,8 @@ function addTempEntry(entry) {
 
 function addEntry(entry) {
     entry.date = new Date();
-    connection.query('INSERT INTO ' + teamname + '(room_name, user_name, file_type, file_name, file_content, file_desc, file_date) VALUES (?, ?, ?, ?, ?, ?, ?)', [teamname, username, entry.filetype, entry.filename, entry.file, entry.desc, JSON.stringify(entry.date)], function(error, results) {
-        if(error) throw error;
+    connection.query('INSERT INTO ' + teamname + '(room_name, user_name, file_type, file_name, file_content, file_desc, file_date) VALUES (?, ?, ?, ?, ?, ?, ?)', [teamname, username, entry.filetype, entry.filename, entry.file, entry.desc, JSON.stringify(entry.date)], function (error, results) {
+        if (error) throw error;
     });
 
     fetchEntries(arrangeCards);
@@ -126,9 +126,9 @@ function loadEntries() {
 }
 
 function fetchEntries(callback) {
-    while(entries.length > 0)
+    while (entries.length > 0)
         entries.pop();
-    
+
     connection.query("SELECT * FROM " + teamname, (err, rows) => {
         if (err) throw err;
         if (!rows.length) return;
@@ -137,7 +137,7 @@ function fetchEntries(callback) {
             let entry = {
                 cardtype: row.file_type,
 
-                file: row.file_content,
+                file: row.file_content.toString(),
                 filename: row.file_name,
                 filetype: row.file_type,
                 date: new Date(JSON.parse(row.file_date)),
@@ -145,13 +145,17 @@ function fetchEntries(callback) {
                 username: row.user_name,
                 desc: row.file_desc,
             }
-
-            entry.card = createCard(entry);
+           
             entries.unshift(entry);
+        }
+
+        for(let entry of entries) {
+            console.log(entry.file);
+            entry.card = createCard(entry);
         }
         
         callback();
-    });   
+    });
 }
 /* --------------------------------- ENTRIES -------------------------------- */
 
@@ -191,12 +195,12 @@ function createCard(entry) {
     let title = document.createElement("h6");
     title.className = "card-title";
 
-    if(entry.filetype == FileType.URL)
+    if (entry.filetype == FileType.URL)
         title.innerHTML = '<img src = https://s2.googleusercontent.com/s2/favicons?domain_url=' + entry.file + '>&nbsp;' + trimString(entry.filename, 40);
-    
+
     else
         title.innerHTML = trimString(entry.filename, 43);
-        
+
     cardbody.appendChild(title);
 
 
@@ -299,7 +303,7 @@ function createCard(entry) {
     deletebutton.innerHTML = '<i class = "bi bi-trash3-fill"></i>';
     optionsarea.appendChild(deletebutton);
 
-    deletebutton.addEventListener("click", () => {   
+    deletebutton.addEventListener("click", () => {
         // TO DO: REMOVE THESE
         card.remove();
         entries = entries.filter(element => element !== entry);
@@ -334,7 +338,7 @@ function arrangeCards() {
 
     if (type == CardType.Temp) {
         tempentries.forEach(entry => {
-            if(sum1 <= sum2) {
+            if (sum1 <= sum2) {
                 cardlists[0].appendChild(entry.card);
                 $(entry.card).hide().fadeIn(200);
                 sum1 += entry.card.offsetHeight;
@@ -350,9 +354,9 @@ function arrangeCards() {
 
     else
         filtered = entries.filter(entry => entry.cardtype == type);
-   
+
     filtered.forEach(entry => {
-        if(sum1 <= sum2) {
+        if (sum1 <= sum2) {
             cardlists[0].appendChild(entry.card);
             $(entry.card).hide().fadeIn(200);
             sum1 += entry.card.offsetHeight;
@@ -541,8 +545,8 @@ function absoluteURL(url) {
 /* ---------------------------- LEAVE TEAM BUTTON --------------------------- */
 let leaveteambutton = document.querySelector("#leaveteambutton");
 leaveteambutton.addEventListener("click", () => {
-    connection_info.query('DELETE FROM ' + teamname + ' WHERE users = ?', [username], function(error, results) {
-        if(error) throw error;
+    connection_info.query('DELETE FROM ' + teamname + ' WHERE users = ?', [username], function (error, results) {
+        if (error) throw error;
     });
     document.location.href = 'view.html';
 });

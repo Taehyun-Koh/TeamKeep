@@ -20,18 +20,12 @@ const connection = mysql.createConnection({
 
 /* ENTRIES */
 export function fetchEntries(teamcode) {
-    /*
-        (app).get('teams', (req, res) => {
-            res.send(JSON.stringify(teams));
-        })
-    */
-
     /*teamcode 찾기*/
     //db 연결
     connection.connect((err) => {
         if(err) return;
 
-        //모든 방 정보 저쟝
+        //모든 방 정보 저장
         let entries = [];
 
         //모든 방 이름을 불러온다
@@ -55,15 +49,18 @@ export function fetchEntries(teamcode) {
 } // entry 리스트를 반환 (entry 구조는 visuals.js.336에서 찾을 수 있습니다.)
 
 export function uploadFile(teamcode, username, entry) {
+    //db 연결
     connection.connect((err) => {
         if(err) return;
 
-        connection.query('SELECT * FROM ' + teamcode + ' WHERE user_name = ?', [username], function(error, results) {
-            if(error) throw error;
-            if(results.length > 0){
-                results['filename'].append(entry.file_name);
-                results['filecontent'].append(entry.file_content);
-            }
+        //user_name 있는지 확인한다
+        connection.query('SELECT * FROM ' + teamcode + ' WHERE user_name = ?', [username], function(err, results) {
+            if(err) throw err;
+
+            //file 추가한다
+            connection.query('INSERT INTO ' + teamcode + ' (filename, filecontent) VALUES (?, ?)', [entry.file_name, entry.file_content], function(error, results) {
+                if(error) throw error;
+            });
         });
     });
 } // entry에 해당하는 파일을 업로드
@@ -73,13 +70,9 @@ export function deleteFile(teamcode, entry) {
     connection.connect((err) => {
         if(err) return;
 
-        //teamcode에 
-        connection.query('SELECT * FROM ' + teamcode, function(error, results) {
+        //team을 찾아서 file 있는 행을 삭제한다
+        connection.query('DELETE FROM ' + teamcode + ' WHERE filename = ?', [entry.file_name], function(error, results) {
             if(error) throw error;
-            if(results.length > 0) {
-                results['filename'].remove(entry.file_name);
-                results['filecontent'].remove(entry.file_content);
-            }
         });
     });
 } // entry에 해당하는 파일을 삭제
@@ -90,18 +83,13 @@ export function deleteFile(teamcode, entry) {
 
 /* TEAMS */
 export function fetchTeams(username) {
-    /*
-        (app).get('teams', (req, res) => {
-            res.send(JSON.stringify(teams));
-        })
-    */
    
     /*username connection */
     //db 연결
     connection.connect((err) => {
         if(err) return;
 
-        //모든 방 정보 저쟝
+        //모든 방 정보 저장
         let rooms = [];
 
         //모든 방 이름을 불러온다
@@ -110,7 +98,6 @@ export function fetchTeams(username) {
 
             if(!rows.length) return;
             
-            console.log(rows);
             rooms.append(rows);
         });
     });
@@ -125,21 +112,14 @@ export function createTeam(teamcode, username) {
     connection.connect((err) => {
         if(err) return;
 
-        //모든 룸 정보를 불러온다
-        connection.query('SELECT * FROM room', function(error, results) {
+        //새로운 테이블 만든다
+        connection.query('CREATE TABLE IF NOT EXISTS ' + teamcode + '(room_name VARCHAR(45) NOT NULL, user_name VARCHAR(45) NOT NULL, file_name VARCHAR(45) NOT NULL, file_content VARCHAR(45) NOT NULL)', function(error, results) {
             if(error) throw error;
-            //room 정보 추가
-            if(results.length > 0) {
-                results.append(teamcode);
-            }
         });
 
-        connection.query('SELECT * FROM ' + teamcode, function(error, results) {
+        //새로운 테이블에 유저 정보 추가
+        connection.query('INSERT INTO ' + teamcode + '(user_name) VALUES (?)', [username], function(error, results) {
             if(error) throw error;
-            //user 정보 추가
-            if(results.length > 0) {
-                results[user_name].append(username);
-            }
         });
     });
 } // 새로운 팀을 생성
@@ -150,13 +130,9 @@ export function joinTeam(teamcode, username) {
     connection.connect((err) => {
         if(err) return;
 
-        //팀의 유저 정보 불러온다
-        connection.query('SELECT user_name FROM ' + teamcode, function(error, results) {
+        //유저 정보 추가
+        connection.query('INSERT INTO ' + teamcode + ' (user_name) VALUES (?)', [username], function(error, results) {
             if(error) throw error;
-            if(results.length > 0) {
-                //유저 정보에 username 추가
-                results.append(username);
-            }
         });
     });
 } // 이미 있는 팀의 멤버 목록에 자신을 추가
@@ -166,14 +142,9 @@ export function leaveTeam(teamcode, username) {
     connection.connect((err) => {
         if(err) return;
 
-        //팀의 유저 정보  불러온다
-        connection.query('SELECT user_name FROM ' + teamcode, function(error, results) {
+        //팀의 유저 정보 삭제한다
+        connection.query('DELETE FROM ' + teamcode + ' WHERE user_name = ?', [username], function(error, results) {
             if(error) throw error;
-            
-            if(results.length > 0 && results.includes(username)) {
-                //username을 지운다
-                results.remove(username);
-            }
         });
     });
 } // 팀의 멤버 목록에서 자신을 제외

@@ -69,82 +69,40 @@
 				</div>
 			</div>
 		</div>
-		<!-- Modal Join Team -->
-		<div class="modal fade" id="jointeammodal" tabindex="-1" role="dialog" aria-labelledby="jointeammodaltitle"
-			style="display: none;" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered" role="document" style="width: 400px;">
-				<div class="modal-content border-0">
-					<div class="modal-header">
-						팀 참여하기
-						<button type="button" id="jointeammodalclose" class="btn-close" data-dismiss="modal"
-							aria-label="close"></button>
-					</div>
-					<div class="modal-body">
-						<div class="notes-box">
-							<div class="notes-content">
-								<form action="javascript:void(0);" id="jointeammodaltitle">
-									<div style="display: flex; flex-direction: column; row-gap: 10px;">
-										<div class="modal-url">
-											<label><i class="bi bi-people"></i>&nbsp;팀 이름</label>
-											<input type="text" id="jointeamnameinput" class="form-control"
-												minlength="25" />
-										</div>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button class="btn btn-secondary" id="jointeamcancelbutton" data-dismiss="modal">취소</button>
-						<button class="btn btn-primary" id="jointeamconfirmbutton" disabled="disabled">참가</button>
-					</div>
-				</div>
-			</div>
+		<div style="width: inherit; display:flex; flex-direction: row-reverse; column-gap: 10px; padding-left: 10px; padding-right: 10px;">
+			<button type="button" class="btn btn-primary" id="createteambutton"
+				style="box-shadow: 0px 0px 5px lightgrey;"><i class="bi bi-plus-square"></i></button>
 		</div>
-		<!-- Modal Join Team -->
-
 		<!-- Modal Create Team -->
-		<div class="modal fade" id="createteammodal" tabindex="-1" role="dialog" aria-labelledby="createteammodaltitle"
-			style="display: none;" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered" role="document" style="width: 400px;">
+		<div class="modal modal-center fade" id="createteammodal" tabindex="-1" role="dialog" aria-labelledby="createteammodal"
+			aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content border-0">
 					<div class="modal-header">
 						새로운 팀 만들기
-						<button type="button" id="createammodalclose" class="btn-close" data-dismiss="modal"
+						<button type="button" id="createteammodalclosebutton" class="btn-close" data-bs-dismiss="modal"
 							aria-label="close"></button>
 					</div>
 					<div class="modal-body">
-						<div class="notes-box">
-							<div class="notes-content">
-								<form action="javascript:void(0);" id="createteammodaltitle">
-									<div class="row">
-										<div class="col-md-12 mb-3">
-											<div class="modal-url">
-												<label></label>
-												<input type="text" id="createteamnameinput" class="form-control"
-													minlength="25" placeholder="새로운 팀 이름을 입력하세요" />
-											</div>
-										</div>
-									</div>
-								</form>
+						<div style="display: flex; flex-direction: column; row-gap: 10px;">
+							<div class="modal-url">
+								<label><i class="bi bi-fonts"></i>&nbsp;팀 이름</label>
+								<input type="text" id="createteamnameinput" class="form-control" minlength="25" />
 							</div>
+							<div class="modal-url">
+								<label><i class="bi bi-key"></i>&nbsp;팀 암호</label>
+								<input type="text" id="createteampwinput" class="form-control" minlength="25" />
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button class="btn btn-secondary" id="createteamcancelbutton" data-dismiss="modal">취소</button>
-						<button class="btn btn-primary" id="createteamconfirmbutton" disabled="disabled">참가</button>
+						<button type="button" class="btn btn-secondary" id="createteamcancelbutton"
+							data-bs-dismiss="modal">취소</button>
+						<button type="button" class="btn btn-primary" id="createteamconfirmbutton">확인</button>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!-- Modal Create Team -->
-		<div
-			style="width: inherit; display:flex; flex-direction: row-reverse; column-gap: 10px; padding-left: 10px; padding-right: 10px;">
-			<button type="button" class="btn btn-primary" id="createteambutton"
-				style="box-shadow: 0px 0px 5px lightgrey;"><i class="bi bi-plus-square"></i></button>
-			<button type="button" class="btn btn-primary" id="jointeambutton"
-				style="box-shadow: 0px 0px 5px lightgrey;"><i class="bi bi-people"></i></button>
-		</div>
 	</div>
 </body>
 

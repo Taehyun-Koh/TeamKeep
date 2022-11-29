@@ -1,3 +1,4 @@
+const open = require("open")
 /* -------------------------- ESTABLISH CONNECTION -------------------------- */
 const mysql = require("mysql")
 const dotenv = require('dotenv') //mysql pwd숨기기
@@ -69,6 +70,7 @@ teamnameinfo.innerText = teamname;
 document.querySelector("#teamnameinfo").appendChild(teamnameinfo);
 
 
+let loading = false;
 window.addEventListener("load", () => {
     loadEntries();
 })
@@ -122,12 +124,15 @@ function addEntry(entry) {
 }
 
 function loadEntries() {
+    if(loading)
+        return;
+    loading = true;
+    cleanCardContainer();
     fetchEntries(arrangeCards);
 }
 
 function fetchEntries(callback) {
-    while (entries.length > 0)
-        entries.pop();
+    entries = [];
 
     connection.query("SELECT * FROM " + teamname, (err, rows) => {
         if (err) throw err;
@@ -139,7 +144,7 @@ function fetchEntries(callback) {
 
                 file: row.file_content.toString(),
                 filename: row.file_name,
-                filetype: row.file_type,
+                filetype: parseInt(row.file_type),
                 date: new Date(JSON.parse(row.file_date)),
 
                 username: row.user_name,
@@ -150,10 +155,12 @@ function fetchEntries(callback) {
         }
 
         for(let entry of entries) {
-            console.log(entry.file);
+            console.log(entry);
             entry.card = createCard(entry);
         }
         
+        loading = false;
+
         callback();
     });
 }
@@ -208,7 +215,10 @@ function createCard(entry) {
     if (entry.filetype == FileType.URL) {
         let url = document.createElement("a");
         url.className = "link-primary";
-        url.href = absoluteURL(entry.file);
+        url.type = "button";
+        url.addEventListener("click", () => {
+            open(absoluteURL(entry.file));
+        });
         url.innerText = trimString(entry.file, 25);
         url.style = "font-size: smaller;";
         cardbody.appendChild(url);
@@ -262,7 +272,7 @@ function createCard(entry) {
     let namedate = document.createElement("h8");
     namedate.style = "padding-bottom: 10px; font-size: smaller; font-style: italic; opacity: 0.5;";
     let now = new Date();
-    namedate.innerText = '@' + entry.username + ', ' + (now - entry.date).toLocaleString();
+    namedate.innerText = '@' + entry.username + '\n' + entry.date.toLocaleString();
     cardbody.appendChild(namedate);
 
 
@@ -329,8 +339,6 @@ function arrangeCards() {
     let type = activetab[1];
     let cardlists = activetab[0].querySelectorAll("div.cardlist"); // CARDLISTS[0]: ~CARDS1, CARDLISTS[1]: ~CARDS2
 
-    cardlists[0].innerHTML = "";
-    cardlists[1].innerHTML = "";
     let sum1 = 0;
     let sum2 = 0;
 
@@ -340,13 +348,13 @@ function arrangeCards() {
         tempentries.forEach(entry => {
             if (sum1 <= sum2) {
                 cardlists[0].appendChild(entry.card);
-                $(entry.card).hide().fadeIn(200);
+                $(entry.card).hide().fadeIn(400);
                 sum1 += entry.card.offsetHeight;
             }
 
             else {
                 cardlists[1].appendChild(entry.card);
-                $(entry.card).hide().fadeIn(200);
+                $(entry.card).hide().fadeIn(400);
                 sum2 += entry.card.offsetHeight;
             }
         });
@@ -368,6 +376,13 @@ function arrangeCards() {
             sum2 += entry.card.offsetHeight;
         }
     });
+}
+
+function cleanCardContainer() {
+    let cardlists = activetab[0].querySelectorAll("div.cardlist"); // CARDLISTS[0]: ~CARDS1, CARDLISTS[1]: ~CARDS2
+
+    cardlists[0].innerHTML = "";
+    cardlists[1].innerHTML = "";
 }
 /* ---------------------------------- CARDS --------------------------------- */
 
@@ -398,7 +413,7 @@ filestab.addEventListener("click", () => {
 
 urltab.addEventListener("click", () => {
     activetab = [document.querySelector("#pills-url"), CardType.URL];
-    arrangeCards();
+    loadEntries();
 });
 /* ----------------------------- FILE TYPE TABS ----------------------------- */
 
@@ -414,6 +429,11 @@ addfilebutton.addEventListener("click", () => {
 let fileinput = document.querySelector("#fileinput");
 fileinput.addEventListener("change", (event) => {
     let file = event.target.files[0];
+    if(file.size > 1000000){
+        alert("파일이 용량을 초과합니다.")
+        return;
+    }
+    
     let tok = file.name.lastIndexOf(".");
     let filetype = file.name.substring(tok + 1, file.length).toLowerCase();
 
@@ -462,7 +482,6 @@ fileinput.addEventListener("change", (event) => {
 /* ----------------------------- ADD URL BUTTON ----------------------------- */
 let addurlbutton = document.querySelector("#addurlbutton");
 addurlbutton.addEventListener("click", () => {
-    document.querySelector("addurlmodal")
     $('#addurlmodal').modal('show');
 
     let addurlconfirmbutton = document.querySelector("#addurlconfirmbutton");

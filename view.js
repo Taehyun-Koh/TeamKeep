@@ -34,8 +34,6 @@ document.querySelector("#usernameinfo").appendChild(usernameinfo);
 /* -------------------------------- USERNAME -------------------------------- */
 /* ---------------------------------- TEAMS --------------------------------- */
 let teams = []; //team list
-let file_num = []; //team별 파일개수
-let team_update = []; //team별 last update시간
 connection.query('show tables', function (error, results, fields) { //team 이름 가져오기
     if (error) throw error;
 
@@ -47,13 +45,16 @@ connection.query('show tables', function (error, results, fields) { //team 이�
         localStorage.setItem("teamlist", teams);
 
     } else {
-        alert("첫번쨰 team을 생성해보세요");
+        alert("첫번째 팀을 만들어보세요");
     }
 });
 /* ---------------------------------- TEAMS --------------------------------- */
 /* -------------------------------------------------------------------------- */
 /*                                INITIALIZTION                               */
 /* -------------------------------------------------------------------------- */
+
+
+
 
 /* ------------------------------ TEAM 카드 생성 ------------------------------ */
 function createTeamCard(teamname, i, belong) {
@@ -77,57 +78,61 @@ function createTeamCard(teamname, i, belong) {
     card_body.setAttribute("id", teamname);
     card.appendChild(card_body);
 
-    var card_title = document.createElement("h8");
-    card_title.className = "card-title";
-
     var curr_team = teams[i];
+
+    var updatetime = document.createElement("h8");
+    updatetime.className = "card-text";
+    updatetime.style.fontSize = "smaller";
+    updatetime.style.opacity = "0.5";
+    updatetime.innerHTML = '&nbsp';
+
+    var filecount = document.createElement("p");
+    filecount.className = "card-text";
+    filecount.style.fontSize = "smaller";
+    filecount.style.opacity = "0.5";
+    filecount.innerHTML = '&nbsp';
+
+    if(belong == true){
+        card_body.appendChild(updatetime);
+        card_body.appendChild(filecount);
+    }
+    
     connection.query("SELECT file_date FROM " + curr_team, function (error, results, fields) {
         if (error) throw error;
         var leng = results.length;
         var last_update = new Date(JSON.parse(results[leng-1].file_date));
         var now = new Date();
         let gap = String(timeConversion(parseInt(now-last_update)));
-        card_title.innerHTML = gap;
+        updatetime.innerHTML = gap;
     });
-    
-    var card_text = document.createElement("p");
-    card_text.className = "card-text";
-    card_text.style.fontSize = "smaller";
-    card_text.style.opacity = "0.5";
 
     connection.query("SELECT COUNT(*) FROM " + curr_team, function (error, results, fields) {
         if (error) throw error;
-        card_text.innerHTML = results[0]['COUNT(*)'] + " items";
+        filecount.innerHTML = results[0]['COUNT(*)'] + " items";
     });
 
     
-    var pw_bt = document.createElement("div");
-    pw_bt.className = "input-group mb-3";
+    var pw_input_area = document.createElement("div");
+    pw_input_area.className = "input-group mb-1";
 
     var pw_input = document.createElement("input");
-    pw_input.type = "password";
-    pw_input.placeholder = "Password";
     pw_input.className = "form-control";
-    pw_input.style.paddingBottom = "5px";
+    pw_input.type = "password";
+    pw_input.style = "font-size: smaller";
+    pw_input.placeholder = "암호";
     pw_input.setAttribute("id", teamname+'pw');
-
-    var inputgroupappend = document.createElement("div");
-    inputgroupappend.className = "input-group-append";
+    pw_input_area.appendChild(pw_input);
 
     var joinBtn = document.createElement("button");
     joinBtn.className = "btn btn-dark";
     joinBtn.innerHTML = "Join";
-    inputgroupappend.appendChild(joinBtn);
-
-    pw_bt.appendChild(pw_input);
-    pw_bt.appendChild(inputgroupappend);
+    pw_input_area.appendChild(joinBtn);
 
     var btn = document.createElement("button");
     if (belong === true) {
-        btn.className = "btn btn-primary";
-        btn.innerHTML = "Enter";
-        card_body.appendChild(card_title);
-        card_body.appendChild(card_text);
+        card.style.backgroundColor = "lightcyan";
+        btn.className = "btn btn-secondary";
+        btn.innerHTML = '<i class="bi bi-box-arrow-in-right"></i>';
         card_body.appendChild(btn);
 
         btn.onclick = function (e) {
@@ -136,10 +141,8 @@ function createTeamCard(teamname, i, belong) {
         }
     }
     else if (belong === false) {
-        card_body.appendChild(card_title);
-        card_body.appendChild(card_text);
-        card_body.appendChild(pw_bt);
-        // card_body.appendChild(btn);
+        card_body.appendChild(pw_input_area);
+
         joinBtn.onclick = function (e) {
             localStorage.setItem("teamname", teamname);
             var tn = localStorage.getItem("teamname");
@@ -173,16 +176,12 @@ function createTeamCard(teamname, i, belong) {
 
 
 
-/* ---------------------------- 밀리초ㅗ 변환 --------------------- */
-
+/* --------------------------------- 밀리초 변환 --------------------------------- */
 function timeConversion(millisec) {
 
     var seconds = Math.floor((millisec / 1000).toFixed(1));
-
     var minutes = Math.floor((millisec / (1000 * 60)).toFixed(1));
-
     var hours = Math.floor((millisec / (1000 * 60 * 60)).toFixed(1));
-
     var days = Math.floor((millisec / (1000 * 60 * 60 * 24)).toFixed(1));
 
     if (seconds < 60) {
@@ -195,6 +194,10 @@ function timeConversion(millisec) {
         return days + "일 전"
     }
 }
+/* --------------------------------- 밀리초 변환 --------------------------------- */
+
+
+
 
 /* ---------------- 로그인한 사용자가 속해있는 그룹과 아닌 그룹 나눠서 TEAM 카드 생성 --------------- */
 function arrangeTeams() {
@@ -244,31 +247,27 @@ function arrangeTeams() {
 
 
 /* --------------------------- CREATE TEAM BUTTON --------------------------- */
-let createteamconfirmbutton = document.querySelector("#createteamconfirmbutton");
-createteamconfirmbutton.addEventListener("click", () => {
-    let jointeamnameinput = document.querySelector("#createteamnameinput");
-    let teamname = jointeamnameinput.value;
-    /* TO DO:
-       addTeam(1, teamname);    
-    */
-    input.value = "";
+let createteambutton = document.querySelector("#createteambutton");
+createteambutton.addEventListener("click", () => {
+    $('#createteammodal').modal('show');
+    let createteamconfirmbutton = document.querySelector("#createteamconfirmbutton");
+    createteamconfirmbutton.addEventListener("click", () => {
+        let createteamnameinput = document.querySelector("#createteamnameinput");
+        let createteampwinput = document.querySelector("#createteamnameinput");
+        let teamname = createteamnameinput.value;
+        let teampw = createteampwinput.value;
+
+        // 팀 만들기 구현
+        // 성공 시 localStorage의 teamname을 업데이트
+        // modal 닫기
+        // index.html로 진입 
+
+        createteamnameinput.value = "";
+        createteampwinput.value = "";
+    });
 });
 /* --------------------------- CREATE TEAM BUTTON --------------------------- */
 
-
-
-
-/* --------------------------- JOIN TEAM BUTTON --------------------------- */
-let jointeamconfirmbutton = document.querySelector("#jointeamconfirmbutton");
-jointeamconfirmbutton.addEventListener("click", () => {
-    let jointeamnameinput = document.querySelector("#jointeamnameinput");
-    let teamname = jointeamnameinput.value;
-    /* TO DO:
-        addTeam(0, teamname);
-    */
-    input.value = "";
-});
-/* --------------------------- JOIN TEAM BUTTON --------------------------- */
 
 
 

@@ -1,11 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Arvo:wght@700&family=Gowun+Dodum&display=swap');
 
 body {
-    background:#2c2c2c;
+    background: darkslategrey;
     font-family:"Raleway";
 }
 #logo{
   display: flex;
   margin-top: 150px;
+  font-family: 'Arvo', serif;
   font-size: x-large;
   align-items: center;
   justify-content: center;
@@ -35,13 +37,13 @@ body {
   cursor:pointer;
 }
 .form.signup .form-header div.show-signup {
-  color:#0D6EFD;
+  color:lightgreen;
 }
 .form.signin .form-header div.show-signin {
-  color:#0D6EFD;
+  color:lightgreen;
 }
 .form.reset .form-header div.show-reset {
-  color:#0D6EFD;
+  color:lightgreen;
 }
 .form .form-elements {
   margin-top:15px;

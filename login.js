@@ -20,7 +20,7 @@ function resetClass(element, classname){
     resetClass(form, "reset");
     form.classList.add("signup");
     document.querySelector(".submitBtn").setAttribute("id","signup-btn")
-    document.getElementById("signup-btn").innerText = "Sign Up";
+    document.getElementById("signup-btn").innerText = "회원가입";
   });
   document.getElementsByClassName("show-signin")[0].addEventListener("click",function(){
     let form = document.getElementsByClassName("form")[0];
@@ -30,8 +30,7 @@ function resetClass(element, classname){
     resetClass(form, "reset");
     form.classList.add("signin");
     document.querySelector(".submitBtn").setAttribute("id","signin-btn")
-    document.getElementById("signin-btn").innerText = "Sign In";
-
+    document.getElementById("signin-btn").innerText = "로그인";
   });
   document.getElementsByClassName("show-reset")[0].addEventListener("click",function(){
     let form = document.getElementsByClassName("form")[0];
@@ -39,7 +38,7 @@ function resetClass(element, classname){
     resetClass(form, "signin");
     form.classList.add("reset");
     document.querySelector(".submitBtn").setAttribute("id","reset-btn")
-    document.getElementById("reset-btn").innerText = "Reset password";
+    document.getElementById("reset-btn").innerText = "비밀번호 재설정";
 
   });
 

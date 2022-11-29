@@ -70,11 +70,6 @@ teamnameinfo.innerText = teamname;
 document.querySelector("#teamnameinfo").appendChild(teamnameinfo);
 
 
-let loading = false;
-window.addEventListener("load", () => {
-    loadEntries();
-})
-
 connection_info.query("SELECT * FROM " + teamname, (err, rows) => {
     if (err) throw err;
     if (!rows.length) return;
@@ -99,6 +94,16 @@ connection_info.query("SELECT * FROM " + teamname, (err, rows) => {
 let entries = []; // UPLOADED CARDS
 let tempentries = []; // CARDS BEFORE UPLOAD
 let activetab = [document.querySelector("#pills-all"), CardType.Temp];
+let lastupdate = document.createElement("h8");
+lastupdate.style.alignSelf = "center";
+lastupdate.style.fontSize = "smaller";
+lastupdate.style.fontStyle = "italic";
+lastupdate.style.opacity = "50%";
+document.querySelector("#bottomdiv").appendChild(lastupdate);
+let loading = false;
+window.addEventListener("load", () => {
+    loadEntries();
+})
 /* --------------------------------- ENTRIES -------------------------------- */
 /* -------------------------------------------------------------------------- */
 /*                                INITIALIZTION                               */
@@ -120,15 +125,17 @@ function addEntry(entry) {
         if (error) throw error;
     });
 
-    fetchEntries(arrangeCards);
+    loadEntries();
 }
 
 function loadEntries() {
+    lastupdate.innerText = "마지막 동기화 " + (new Date()).toLocaleString();
     if(loading)
         return;
-    loading = true;
-    cleanCardContainer();
-    fetchEntries(arrangeCards);
+    else {
+        loading = true;
+        fetchEntries(arrangeCards);
+    }
 }
 
 function fetchEntries(callback) {
@@ -335,9 +342,12 @@ function createCard(entry) {
     return card;
 }
 
-function arrangeCards() {
+function arrangeCards() {  
     let type = activetab[1];
     let cardlists = activetab[0].querySelectorAll("div.cardlist"); // CARDLISTS[0]: ~CARDS1, CARDLISTS[1]: ~CARDS2
+
+    cardlists[0].innerHTML = '';
+    cardlists[1].innerHTML = '';
 
     let sum1 = 0;
     let sum2 = 0;
@@ -377,13 +387,6 @@ function arrangeCards() {
         }
     });
 }
-
-function cleanCardContainer() {
-    let cardlists = activetab[0].querySelectorAll("div.cardlist"); // CARDLISTS[0]: ~CARDS1, CARDLISTS[1]: ~CARDS2
-
-    cardlists[0].innerHTML = "";
-    cardlists[1].innerHTML = "";
-}
 /* ---------------------------------- CARDS --------------------------------- */
 
 
@@ -398,22 +401,22 @@ let urltab = document.querySelector("#pills-url-tab");
 
 alltab.addEventListener("click", () => {
     activetab = [document.querySelector("#pills-all"), CardType.Temp];
-    loadEntries();
+    arrangeCards();
 });
 
 imagestab.addEventListener("click", () => {
     activetab = [document.querySelector("#pills-images"), CardType.Image];
-    loadEntries();
+    arrangeCards();
 });
 
 filestab.addEventListener("click", () => {
     activetab = [document.querySelector("#pills-files"), CardType.File];
-    loadEntries();
+    arrangeCards();
 });
 
 urltab.addEventListener("click", () => {
     activetab = [document.querySelector("#pills-url"), CardType.URL];
-    loadEntries();
+    arrangeCards();
 });
 /* ----------------------------- FILE TYPE TABS ----------------------------- */
 
@@ -424,6 +427,8 @@ urltab.addEventListener("click", () => {
 let addfilebutton = document.querySelector("#addfilebutton");
 addfilebutton.addEventListener("click", () => {
     document.querySelector("#fileinput").click(); // TRIGGER FILE SELECT DIALOGUE
+    if(activetab[1] != CardType.Temp)
+        document.querySelector("#pills-all-tab").click();
 });
 
 let fileinput = document.querySelector("#fileinput");
@@ -470,7 +475,6 @@ fileinput.addEventListener("change", (event) => {
             desc: '',
         }
         addTempEntry(entry);
-        document.querySelector("#pills-all-tab").click();
         fileinput.value = '';
     }
 });

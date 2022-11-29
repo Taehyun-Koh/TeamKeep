@@ -108,7 +108,7 @@ function createTeamCard(teamname, i, belong) {
 
     connection.query("SELECT COUNT(*) FROM " + curr_team, function (error, results, fields) {
         if (error) throw error;
-        filecount.innerHTML = results[0]['COUNT(*)'] + " items";
+        filecount.innerHTML = results[0]['COUNT(*)'] + " 업로드 " + '<i class="bi bi-cloud"></i>';
     });
 
     
@@ -125,7 +125,7 @@ function createTeamCard(teamname, i, belong) {
 
     var joinBtn = document.createElement("button");
     joinBtn.className = "btn btn-dark";
-    joinBtn.innerHTML = "Join";
+    joinBtn.innerHTML = '<i class="bi bi-key"></i>'
     pw_input_area.appendChild(joinBtn);
 
     var btn = document.createElement("button");

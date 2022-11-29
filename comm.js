@@ -4,7 +4,6 @@
 
 
 /* ESTABLISH CONNECTION */
-/*
 const mysql = require("mysql")
 const dotenv = require('dotenv') //mysql pwd숨기기
 dotenv.config();
@@ -14,7 +13,6 @@ const connection = mysql.createConnection({
     password : process.env.DATABASE_PASSWORD,
     database : process.env.DATABASE_NAME_ROOM
 });
-*/
 /* ESTABLISH CONNECTION */
 
 
@@ -33,12 +31,11 @@ export function fetchEntries(teamcode) {
     connection.connect((err) => {
         if(err) return;
 
-        //모든 방 이름을 불러온다
-        let q = 'SELECT * FROM room';
         //모든 방 정보 저쟝
         let entries = [];
 
-        connection.query(q, (err, rows) => {
+        //모든 방 이름을 불러온다
+        connection.query('SELECT * FROM ' + teamcode, (err, rows) => {
             if(err) throw err;
 
             if(!rows.length) return;
@@ -58,11 +55,29 @@ export function fetchEntries(teamcode) {
 } // entry 리스트를 반환 (entry 구조는 visuals.js.336에서 찾을 수 있습니다.)
 
 export function uploadFile(teamcode, username, entry) {
+    connection.connect((err) => {
+        if(err) return;
 
+        connection.query('SELECT * FROM ' + teamcode + ' WHERE user_name = ?', [username], function(error, results) {
+            if(error) throw error;
+            if(results.length > 0){
+                results.push(entry);
+            }
+        })
+    })
 } // entry에 해당하는 파일을 업로드
 
 export function deleteFile(teamcode, entry) {
+    connection.connect((err) => {
+        if(err) return;
 
+        connection.query('SELECT * FROM ' + teamcode + ' WHERE user_name = ?', [username], function(error, results) {
+            if(error) throw error;
+            if(results.length > 0 && results.includes(entry)) {
+                results.remove(entry);
+            }
+        })
+    })
 } // entry에 해당하는 파일을 삭제
 /* ENTRIES */
 
@@ -82,12 +97,11 @@ export function fetchTeams(username) {
     connection.connect((err) => {
         if(err) return;
 
-        //모든 방 이름을 불러온다
-        let q = 'SELECT room_name FROM room';
         //모든 방 정보 저쟝
         let rooms = [];
 
-        connection.query(q, (err, rows) => {
+        //모든 방 이름을 불러온다
+        connection.query('SELECT room_name FROM room WHERE user_name = ?', [username], (err, rows) => {
             if(err) throw err;
 
             if(!rows.length) return;

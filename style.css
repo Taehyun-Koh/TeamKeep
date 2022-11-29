@@ -49,3 +49,8 @@
 
     object-fit: cover;
 }	
+
+.modal {
+    width: 480px; 
+    padding: 20px;
+}

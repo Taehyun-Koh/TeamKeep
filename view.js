@@ -43,23 +43,8 @@ connection.query('show tables', function (error, results, fields) { //team 이�
         for (var data of results) {
             teams.push(data.Tables_in_room);
         };
-        localStorage.setItem("teamlist", teams);
-        // console.log(teams);
-        // console.log(teams[0]);
-        // console.log(teams[1]);
-        // console.log(teams[2]);
-
-        getFileNum(teams);
-        getLastUpdate(teams);
-        console.log(file_num);
-        console.log(file_num[0]);
-        console.log(file_num[1]);
-        console.log(file_num[2]);
-        console.log(team_update);
-        console.log(team_update[0]);
-        console.log(team_update[1]);
-        console.log(team_update[2]);
         arrangeTeams();
+        localStorage.setItem("teamlist", teams);
 
     } else {
         alert("첫번쨰 team을 생성해보세요");
@@ -69,9 +54,6 @@ connection.query('show tables', function (error, results, fields) { //team 이�
 /* -------------------------------------------------------------------------- */
 /*                                INITIALIZTION                               */
 /* -------------------------------------------------------------------------- */
-
-
-
 
 /* ------------------------------ TEAM 카드 생성 ------------------------------ */
 function createTeamCard(teamname, i, belong) {
@@ -97,15 +79,48 @@ function createTeamCard(teamname, i, belong) {
 
     var card_title = document.createElement("h8");
     card_title.className = "card-title";
-    card_title.innerHTML = team_update[i];
+
+    var curr_team = teams[i];
+    connection.query("SELECT file_date FROM " + curr_team, function (error, results, fields) {
+        if (error) throw error;
+        var leng = results.length;
+        var last_update = new Date(JSON.parse(results[leng-1].file_date));
+        var now = new Date();
+        let gap = String(timeConversion(parseInt(now-last_update)));
+        card_title.innerHTML = gap;
+    });
+    
     var card_text = document.createElement("p");
     card_text.className = "card-text";
     card_text.style.fontSize = "smaller";
     card_text.style.opacity = "0.5";
-    card_text.innerHTML = file_num[i] + " items";
+
+    connection.query("SELECT COUNT(*) FROM " + curr_team, function (error, results, fields) {
+        if (error) throw error;
+        card_text.innerHTML = results[0]['COUNT(*)'] + " items";
+    });
+
+    
+    var pw_bt = document.createElement("div");
+    pw_bt.className = "input-group mb-3";
 
     var pw_input = document.createElement("input");
+    pw_input.type = "password";
+    pw_input.placeholder = "Password";
+    pw_input.className = "form-control";
+    pw_input.style.paddingBottom = "5px";
     pw_input.setAttribute("id", teamname+'pw');
+
+    var inputgroupappend = document.createElement("div");
+    inputgroupappend.className = "input-group-append";
+
+    var joinBtn = document.createElement("button");
+    joinBtn.className = "btn btn-dark";
+    joinBtn.innerHTML = "Join";
+    inputgroupappend.appendChild(joinBtn);
+
+    pw_bt.appendChild(pw_input);
+    pw_bt.appendChild(inputgroupappend);
 
     var btn = document.createElement("button");
     if (belong === true) {
@@ -121,13 +136,11 @@ function createTeamCard(teamname, i, belong) {
         }
     }
     else if (belong === false) {
-        btn.className = "btn btn-dark";
-        btn.innerHTML = "Join";
         card_body.appendChild(card_title);
         card_body.appendChild(card_text);
-        card_body.appendChild(pw_input);
-        card_body.appendChild(btn);
-        btn.onclick = function (e) {
+        card_body.appendChild(pw_bt);
+        // card_body.appendChild(btn);
+        joinBtn.onclick = function (e) {
             localStorage.setItem("teamname", teamname);
             var tn = localStorage.getItem("teamname");
             let team_pw;
@@ -159,33 +172,6 @@ function createTeamCard(teamname, i, belong) {
 
 
 
-
-/* ---------------------------- 팀별 파일 개수를 가져오는 함수 --------------------------- */
-function getFileNum(teams) {
-    for (let i = 0; i < teams.length; i++) {
-        var curr_team = teams[i];
-        connection.query("SELECT COUNT(*) FROM " + curr_team, function (error, results, fields) {
-            if (error) throw error;
-            file_num.push(results[0]['COUNT(*)']);
-        });
-    }
-}
-/* ---------------------------- 마지막 update된 파일의 시간을 가져오는 함수 --------------------- */
-function getLastUpdate(teams) {
-
-    for (let i = 0; i < teams.length; i++) {
-        var curr_team = teams[i];
-
-        connection.query("SELECT file_date FROM " + curr_team, function (error, results, fields) {
-            if (error) throw error;
-            var leng = results.length;
-            var last_update = new Date(JSON.parse(results[leng-1].file_date));
-            var now = new Date();
-            let gap = String(timeConversion(parseInt(now-last_update)));
-            team_update.push(gap);
-        });
-    }
-}
 
 /* ---------------------------- 밀리초ㅗ 변환 --------------------- */
 

@@ -8,7 +8,22 @@ const connection = mysql.createConnection({
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_NAME_ROOM
 });
+
+const connection_info = mysql.createConnection({
+    host: process.env.DATABASE_HOST,
+    user: process.env.DATABASE_USERNAME,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE_NAME_ROOMINFO
+});
+
 connection.connect((err) => {
+    if (err) {
+        console.log(err);
+        return;
+    }
+});
+
+connection_info.connect((err) => {
     if (err) {
         console.log(err);
         return;
@@ -42,6 +57,7 @@ const FileType = {
 /* --------------------------- USERNAME & TEAMNAME -------------------------- */
 let username = localStorage.getItem("username"); // LOGINED USER
 let teamname = localStorage.getItem("teamname"); // CURRENT TEAM
+let memberlist = [];
 
 
 document.querySelector("#teamnameheader").appendChild(document.createTextNode("#" + teamname));
@@ -56,6 +72,22 @@ document.querySelector("#teamnameinfo").appendChild(teamnameinfo);
 window.addEventListener("load", () => {
     loadEntries();
 })
+
+connection_info.query("SELECT * FROM " + teamname, (err, rows) => {
+    if(err) throw err;
+    if(!rows.length) return;
+
+    for(let row of rows)
+        memberlist.push(row.users);
+    
+    let teammemberinfo = document.querySelector("#teammemberinfo");
+     memberlist.forEach(user => {
+        let member = document.createElement("h7");
+        member.innerText = user;
+        member.style.opacity = "50%";
+        teammemberinfo.appendChild(member);
+    });
+});
 /* --------------------------- USERNAME & TEAMNAME -------------------------- */
 
 
@@ -98,9 +130,7 @@ function fetchEntries(callback) {
     while(entries.length > 0)
         entries.pop();
     
-
-    let q = "SELECT * FROM " + teamname;
-    connection.query(q, (err, rows) => {
+    connection.query("SELECT * FROM " + teamname, (err, rows) => {
         if (err) throw err;
         if (!rows.length) return;
 
@@ -118,7 +148,7 @@ function fetchEntries(callback) {
             }
 
             entry.card = createCard(entry);
-            entries.push(entry);
+            entries.unshift(entry);
         }
 
         callback();
@@ -487,7 +517,7 @@ let returnbutton = document.querySelector("#returnbutton");
 returnbutton.addEventListener("click", () => {
     localStorage.setItem("teamname", "");
     document.location.href = 'view.html';
-})
+});
 /* ------------------------------ RETURN BUTTON ----------------------------- */
 
 
@@ -506,3 +536,11 @@ function absoluteURL(url) {
     return url;
 }
 /* ------------------------------ STRING MODIFY ----------------------------- */
+
+
+/* ---------------------------- LEAVE TEAM BUTTON --------------------------- */
+let leaveteambutton = document.querySelector("#leaveteambutton");
+leaveteambutton.addEventListener("click", () => {
+    
+});
+/* ---------------------------- LEAVE TEAM BUTTON --------------------------- */

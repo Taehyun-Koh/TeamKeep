@@ -1,20 +1,4 @@
-/*@font-face {
-    font-family: 'BMDOHYEON';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMDOHYEON.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}*/
-
-
-/*body {
-    font-family: BMDOHYEON;
-    font-family: 'Noto Sans KR', sans-serif;
-}*/
-
-/*h5{
-    font-family: BMDOHYEON;
-    font-size: small;
-}*/
+@import url('https://fonts.googleapis.com/css2?family=Arvo:wght@700&family=Gowun+Dodum&display=swap');
 
 .cardcontainer {
     width: 480px;
@@ -49,14 +33,13 @@
 }
 
 .card-body {
+    font-family: 'Gowun Dodum', sans-serif;
     width: 220px; 
     display: flex;
     flex-direction: column;
 }
 
 .card-title {
-    /* font-family: 'Nanum Gothic Coding', monospace; */
-    font-family: BMDOHYEON;
     font-weight: 700;
 }
 

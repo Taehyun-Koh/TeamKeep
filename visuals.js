@@ -161,7 +161,13 @@ function createCard(entry) {
     // CARD TITLE
     let title = document.createElement("h6");
     title.className = "card-title";
-    title.innerText = trimString(entry.filename, 43);
+
+    if(entry.filetype == FileType.URL)
+        title.innerHTML = '<img src = https://s2.googleusercontent.com/s2/favicons?domain_url=' + entry.file + '>&nbsp;' + trimString(entry.filename, 40);
+    
+    else
+        title.innerHTML = trimString(entry.filename, 43);
+        
     cardbody.appendChild(title);
 
 

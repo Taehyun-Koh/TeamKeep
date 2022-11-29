@@ -19,7 +19,7 @@ const connection = mysql.createConnection({
 /* -------------------------------- USERNAME -------------------------------- */
 var curr_user = localStorage.getItem("username");
 var head = document.querySelector("#teamnameheader");
-head.innerHTML = "TeamKeep" + "\n" + " hi " + curr_user + "!";
+head.innerHTML = 'TeamKeep  ' + '<i class="bi bi-dot"></i>' + '  hi ' + curr_user + '!';
 let usernameinfo = document.createElement("h6");
 usernameinfo.style.opacity = "50%";
 usernameinfo.innerText = curr_user;

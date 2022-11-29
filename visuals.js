@@ -541,7 +541,7 @@ function absoluteURL(url) {
 /* ---------------------------- LEAVE TEAM BUTTON --------------------------- */
 let leaveteambutton = document.querySelector("#leaveteambutton");
 leaveteambutton.addEventListener("click", () => {
-    connection_info.query('DELETE FROM ' + teamcode + ' WHERE users = ?', [username], function(error, results) {
+    connection_info.query('DELETE FROM ' + teamname + ' WHERE users = ?', [username], function(error, results) {
         if(error) throw error;
     });
     document.location.href = 'view.html';

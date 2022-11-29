@@ -24,12 +24,12 @@ const connection_info = mysql.createConnection({
 /*                                INITIALIZTION                               */
 /* -------------------------------------------------------------------------- */
 /* -------------------------------- USERNAME -------------------------------- */
-var curr_user = localStorage.getItem("username");
+var username = localStorage.getItem("username");
 var head = document.querySelector("#teamnameheader");
-head.innerHTML = 'TeamKeep  ' + '<i class="bi bi-dot"></i>' + '  hi ' + curr_user + '!';
+head.innerHTML = 'TeamKeep  ' + '<i class="bi bi-dot"></i>' + '  hi ' + username + '!';
 let usernameinfo = document.createElement("h6");
 usernameinfo.style.opacity = "50%";
-usernameinfo.innerText = curr_user;
+usernameinfo.innerText = username;
 document.querySelector("#usernameinfo").appendChild(usernameinfo);
 /* -------------------------------- USERNAME -------------------------------- */
 /* ---------------------------------- TEAMS --------------------------------- */
@@ -124,7 +124,12 @@ function createTeamCard(teamname, i, belong) {
                 console.log(password);
                 console.log(team_pw);
                 if (password){
-                    if (password === team_pw) document.location.href = 'index.html';
+                    if (password === team_pw){
+                        connection_info.query('INSERT INTO ' + teamname + '(users, pw) VALUE (?, ?)', [username, password], function(error, results) {
+                            if(error) throw error;
+                        });
+                        document.location.href = 'index.html';
+                    }
                     else alert("비밀번호가 틀렸습니다.");
                 }
                 else{
@@ -201,7 +206,7 @@ function arrangeTeams() {
     for (let i = 0; i < teams.length; i++) {
         var curr_team = teams[i]
         
-        connection_info.query("SELECT * FROM " + curr_team + " WHERE users = ?", [curr_user], function (error, results, fields) {
+        connection_info.query("SELECT * FROM " + curr_team + " WHERE users = ?", [username], function (error, results, fields) {
             if (error) 
                 throw error;
             if (results.length > 0) { // 속한 팀이 있을경우

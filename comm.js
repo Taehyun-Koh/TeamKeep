@@ -113,7 +113,7 @@ export function createTeam(teamcode, username) {
         if(err) return;
 
         //새로운 테이블 만든다
-        connection.query('CREATE TABLE IF NOT EXISTS ' + teamcode + '(room_name VARCHAR(45) NOT NULL, user_name VARCHAR(45) NOT NULL, file_name VARCHAR(45) NOT NULL, file_content VARCHAR(45) NOT NULL)', function(error, results) {
+        connection.query('CREATE TABLE IF NOT EXISTS ' + teamcode + '(id INT AUTO_INCREMENT PRIMARY KEY, room_name VARCHAR(45) NOT NULL, user_name VARCHAR(45) NOT NULL, file_name VARCHAR(45) NOT NULL, file_content VARCHAR(45) NOT NULL)', function(error, results) {
             if(error) throw error;
         });
 

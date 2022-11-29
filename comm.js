@@ -13,6 +13,13 @@ const connection = mysql.createConnection({
     password : process.env.DATABASE_PASSWORD,
     database : process.env.DATABASE_NAME_ROOM
 });
+
+const connection_info = mysql.createConnection({
+    host: process.env.DATABASE_HOST,
+    user: process.env.DATABASE_USERNAME,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE_NAME_ROOMINFO
+});
 /* ESTABLISH CONNECTION */
 
 
@@ -36,10 +43,11 @@ export function fetchEntries(teamcode) {
 
             //정보 하나씩 다 entries에 저장
             for(let i = 0; i < rows.length; i++) {
-                let tempentry = {};
-                tempentry['filename'] = rows[i].file_name; 
-                tempentry['filecontent'] = rows[i].file_content;
-                entries.append(tempentry);
+                let tempentry = {
+                    filename: rows[i].file_name,
+                    filecontent: rows[i].file_content,
+                }
+                entries.push(tempentry);
             }
         });
     });
@@ -102,6 +110,22 @@ export function fetchTeams(username) {
         });
     });
 
+    /*
+    connection.query('show tables', function (error, results, fields) { //team 이름 가져오기
+        if (error) throw error;
+        if (results.length > 0) {
+            for (var data of results) {
+                teams.push(data.Tables_in_room);
+            };
+            localStorage.setItem("teamlist", teams);
+            getFileNum(teams);
+            arrangeTeams();
+        } else {
+            alert("room 아직 없음");
+        }
+    });
+    */
+
     return rooms;
     
 
@@ -122,16 +146,24 @@ export function createTeam(teamcode, username) {
             if(error) throw error;
         });
     });
+
+    connection_info.connect((err) => {
+        if(err) return;
+
+        connection_info.query('CREATE TABLE IF NOT EXISTS ' + teamcode + '(users VARCHAR(45) NOT NULL, pw VARCHAR(45) NOT NULL)', function(error, results) {
+            if(error) throw error;
+        });
+    });
 } // 새로운 팀을 생성
 
 
-export function joinTeam(teamcode, username) {
+export function joinTeam(teamname, username) {
     //db 연결
-    connection.connect((err) => {
+    connection_info.connect((err) => {
         if(err) return;
 
-        //유저 정보 추가
-        connection.query('INSERT INTO ' + teamcode + ' (user_name) VALUES (?)', [username], function(error, results) {
+        //팀의 유저 정보 삭제한다
+        connection_info.query('INSERT INTO ' + teamname + '(users, pw) VALUE (?, ?)', [username, password], function(error, results) {
             if(error) throw error;
         });
     });
@@ -139,11 +171,11 @@ export function joinTeam(teamcode, username) {
 
 export function leaveTeam(teamcode, username) {
     //db 연결
-    connection.connect((err) => {
+    connection_info.connect((err) => {
         if(err) return;
 
         //팀의 유저 정보 삭제한다
-        connection.query('DELETE FROM ' + teamcode + ' WHERE user_name = ?', [username], function(error, results) {
+        connection_info.query('DELETE FROM ' + teamcode + ' WHERE users = ?', [username], function(error, results) {
             if(error) throw error;
         });
     });

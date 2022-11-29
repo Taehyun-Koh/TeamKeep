@@ -35,14 +35,17 @@ document.querySelector("#usernameinfo").appendChild(usernameinfo);
 /* ---------------------------------- TEAMS --------------------------------- */
 let teams = []; //team list
 let file_num = []; //team별 파일개수
+let team_update = []; //team별 last update시간
 connection.query('show tables', function (error, results, fields) { //team 이름 가져오기
     if (error) throw error;
+
     if (results.length > 0) {
         for (var data of results) {
             teams.push(data.Tables_in_room);
         };
         localStorage.setItem("teamlist", teams);
         getFileNum(teams);
+        getLastUpdate(teams);
         arrangeTeams();
     } else {
         alert("room 아직 없음");
@@ -80,7 +83,7 @@ function createTeamCard(teamname, i, belong) {
 
     var card_title = document.createElement("h8");
     card_title.className = "card-title";
-    card_title.innerHTML = "(add something)";
+    card_title.innerHTML = team_update[i];
     var card_text = document.createElement("p");
     card_text.className = "card-text";
     card_text.style.fontSize = "smaller";
@@ -131,8 +134,6 @@ function createTeamCard(teamname, i, belong) {
         }
     }
 
-
-
     return card;
 }
 /* ------------------------------ TEAM 카드 생성 ------------------------------ */
@@ -150,10 +151,45 @@ function getFileNum(teams) {
         });
     }
 }
-/* ---------------------------- 팀별 파일 개수를 가져오는 함수 --------------------------- */
+/* ---------------------------- 마지막 update된 파일의 시간을 가져오는 함수 --------------------- */
+function getLastUpdate(teams) {
+    for (let i = 0; i < teams.length; i++) {
+        var curr_team = teams[i];
+        connection.query("SELECT file_date FROM " + curr_team, function (error, results, fields) {
+            if (error) throw error;
+            var leng = results.length;
+            console.log(leng);
+            var last_update = new Date(JSON.parse(results[leng-1].file_date));
+            var now = new Date();
+            var gap = now-last_update;
+            console.log(gap);
+            team_update.push(gap);
+        });
+    }
+}
 
+/* ---------------------------- 밀리초ㅗ 변환 --------------------- */
 
+function timeConversion(millisec) {
 
+    var seconds = (millisec / 1000).toFixed(1);
+
+    var minutes = (millisec / (1000 * 60)).toFixed(1);
+
+    var hours = (millisec / (1000 * 60 * 60)).toFixed(1);
+
+    var days = (millisec / (1000 * 60 * 60 * 24)).toFixed(1);
+
+    if (seconds < 60) {
+        return seconds + " Sec";
+    } else if (minutes < 60) {
+        return minutes + " Min";
+    } else if (hours < 24) {
+        return hours + " Hrs";
+    } else {
+        return days + " Days"
+    }
+}
 
 /* ---------------- 로그인한 사용자가 속해있는 그룹과 아닌 그룹 나눠서 TEAM 카드 생성 --------------- */
 function arrangeTeams() {
@@ -240,53 +276,3 @@ logoutbutton.addEventListener("click", () => {
     document.location.href="login.html";
 })
 /* ------------------------------ LOGOUT BUTTON ----------------------------- */
-
-
-
-function modal(id) {
-    var zIndex = 9999;
-    var modal = document.getElementById(id);
-
-    // 모달 div 뒤에 희끄무레한 레이어
-    var bg = document.createElement('div');
-    bg.setStyle({
-        position: 'fixed',
-        zIndex: zIndex,
-        left: '0px',
-        top: '0px',
-        width: '100%',
-        height: '100%',
-        overflow: 'auto',
-        // 레이어 색갈은 여기서 바꾸면 됨
-        backgroundColor: 'rgba(0,0,0,0.4)'
-    });
-    document.body.append(bg);
-
-    // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
-    modal.querySelector('.modal_close_btn').addEventListener('click', function() {
-        bg.remove();
-        modal.style.display = 'none';
-    });
-
-    modal.setStyle({
-        position: 'fixed',
-        display: 'block',
-        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-
-        // 시꺼먼 레이어 보다 한칸 위에 보이기
-        zIndex: zIndex + 1,
-
-        // div center 정렬
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        msTransform: 'translate(-50%, -50%)',
-        webkitTransform: 'translate(-50%, -50%)'
-    });
-}
-
-// Element 에 style 한번에 오브젝트로 설정하는 함수 추가
-Element.prototype.setStyle = function(styles) {
-    for (var k in styles) this.style[k] = styles[k];
-    return this;
-};

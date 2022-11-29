@@ -83,7 +83,6 @@ function addTempEntry(entry) {
 function addEntry(entry) {
     let now = new Date();
     entry.date = now.toLocaleString();
-
     connection.query('INSERT INTO ' + teamname + '(room_name, user_name, file_type, file_name, file_content, file_desc, file_date) VALUES (?, ?, ?, ?, ?, ?, ?)', [teamname, username, entry.filetype, entry.filename, entry.file, entry.desc, entry.date], function(error, results) {
         if(error) throw error;
     });
@@ -264,7 +263,7 @@ function createCard(entry) {
     deletebutton.innerHTML = '<i class = "bi bi-trash3-fill"></i>';
     optionsarea.appendChild(deletebutton);
 
-    deletebutton.addEventListener("click", () => {
+    deletebutton.addEventListener("click", () => {   
         // TO DO: REMOVE THESE
         card.remove();
         entries = entries.filter(element => element !== entry);
@@ -301,11 +300,13 @@ function arrangeCards() {
         tempentries.forEach(entry => {
             if(sum1 <= sum2) {
                 cardlists[0].appendChild(entry.card);
+                $(entry.card).hide().fadeIn(200);
                 sum1 += entry.card.offsetHeight;
             }
 
             else {
                 cardlists[1].appendChild(entry.card);
+                $(entry.card).hide().fadeIn(200);
                 sum2 += entry.card.offsetHeight;
             }
         });
@@ -317,11 +318,13 @@ function arrangeCards() {
     filtered.forEach(entry => {
         if(sum1 <= sum2) {
             cardlists[0].appendChild(entry.card);
+            $(entry.card).hide().fadeIn(200);
             sum1 += entry.card.offsetHeight;
         }
 
         else {
             cardlists[1].appendChild(entry.card);
+            $(entry.card).hide().fadeIn(200);
             sum2 += entry.card.offsetHeight;
         }
     });

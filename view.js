@@ -135,10 +135,12 @@ function arrangeTeams() {
                 let team_card = createTeamCard(teams[i], i, true)
                 if(l1 <= l2) {
                     my_team1.appendChild(team_card);
+                    $(team_card).hide().fadeIn(200);
                     l1 += 1;
                 }
                 else {
                     my_team2.appendChild(team_card);
+                    $(team_card).hide().fadeIn(200);
                     l2 += 1;
                 }
             } 
@@ -146,10 +148,12 @@ function arrangeTeams() {
                 let all_card = createTeamCard(teams[i], i, false)
                 if(l3 <= l4) {
                     notmy_team1.appendChild(all_card);
+                    $(all_card).hide().fadeIn(200);
                     l3 += 1;
                 }
                 else {
                     notmy_team2.appendChild(all_card);
+                    $(all_card).hide().fadeIn(200);
                     l4 += 1;
                 }
             }

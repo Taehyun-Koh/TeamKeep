@@ -54,13 +54,13 @@ function resetClass(element, classname){
         if (username && password && password2) {
             connection.query('SELECT * FROM Users WHERE id = ?', [username], function(error, results, fields) { // DB에 같은 이름의 회원아이디가 있는지 확인
                 if (error) throw error;
-                if (results.length <= 0 && password == password2) {     // DB에 같은 이름의 회원아이디가 없고, 비밀번호가 올바르게 입력된 경우 
+                if (results.length <= 0 && password === password2) {     // DB에 같은 이름의 회원아이디가 없고, 비밀번호가 올바르게 입력된 경우 
                     connection.query('INSERT INTO Users (id, password) VALUES(?,?)', [username, password], function (error, data) {
                         if (error) throw error2;
                         alert("회원가입 성공")
                         document.getElementsByClassName("show-signin")[0].click();
                     });
-                } else if (password != password2) {                     // 비밀번호가 올바르게 입력되지 않은 경우
+                } else if (password !== password2) {                     // 비밀번호가 올바르게 입력되지 않은 경우
                     alert("비밀번호가 일치하지 않음")
                     document.getElementsByClassName("show-signup")[0].click();
 

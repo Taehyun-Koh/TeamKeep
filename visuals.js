@@ -149,7 +149,7 @@ function fetchEntries(callback) {
             entry.card = createCard(entry);
             entries.unshift(entry);
         }
-
+        
         callback();
     });   
 }

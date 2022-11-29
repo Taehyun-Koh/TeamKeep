@@ -44,11 +44,25 @@ connection.query('show tables', function (error, results, fields) { //team 이�
             teams.push(data.Tables_in_room);
         };
         localStorage.setItem("teamlist", teams);
+        // console.log(teams);
+        // console.log(teams[0]);
+        // console.log(teams[1]);
+        // console.log(teams[2]);
+
         getFileNum(teams);
         getLastUpdate(teams);
+        console.log(file_num);
+        console.log(file_num[0]);
+        console.log(file_num[1]);
+        console.log(file_num[2]);
+        console.log(team_update);
+        console.log(team_update[0]);
+        console.log(team_update[1]);
+        console.log(team_update[2]);
         arrangeTeams();
+
     } else {
-        alert("room 아직 없음");
+        alert("첫번쨰 team을 생성해보세요");
     }
 });
 /* ---------------------------------- TEAMS --------------------------------- */
@@ -158,16 +172,16 @@ function getFileNum(teams) {
 }
 /* ---------------------------- 마지막 update된 파일의 시간을 가져오는 함수 --------------------- */
 function getLastUpdate(teams) {
+
     for (let i = 0; i < teams.length; i++) {
         var curr_team = teams[i];
+
         connection.query("SELECT file_date FROM " + curr_team, function (error, results, fields) {
             if (error) throw error;
             var leng = results.length;
-            console.log(leng);
             var last_update = new Date(JSON.parse(results[leng-1].file_date));
             var now = new Date();
-            var gap = now-last_update;
-            console.log(gap);
+            let gap = String(timeConversion(parseInt(now-last_update)));
             team_update.push(gap);
         });
     }
@@ -177,22 +191,22 @@ function getLastUpdate(teams) {
 
 function timeConversion(millisec) {
 
-    var seconds = (millisec / 1000).toFixed(1);
+    var seconds = Math.floor((millisec / 1000).toFixed(1));
 
-    var minutes = (millisec / (1000 * 60)).toFixed(1);
+    var minutes = Math.floor((millisec / (1000 * 60)).toFixed(1));
 
-    var hours = (millisec / (1000 * 60 * 60)).toFixed(1);
+    var hours = Math.floor((millisec / (1000 * 60 * 60)).toFixed(1));
 
-    var days = (millisec / (1000 * 60 * 60 * 24)).toFixed(1);
+    var days = Math.floor((millisec / (1000 * 60 * 60 * 24)).toFixed(1));
 
     if (seconds < 60) {
-        return seconds + " Sec";
+        return seconds + "초 전";
     } else if (minutes < 60) {
-        return minutes + " Min";
+        return minutes + "분 전";
     } else if (hours < 24) {
-        return hours + " Hrs";
+        return hours + "시간 전";
     } else {
-        return days + " Days"
+        return days + "일 전"
     }
 }
 

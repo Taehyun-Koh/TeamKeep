@@ -1,4 +1,3 @@
-//import { fetchEntries } from "./comm.js";
 /* -------------------------- ESTABLISH CONNECTION -------------------------- */
 const mysql = require("mysql")
 const dotenv = require('dotenv') //mysql pwd숨기기
@@ -82,25 +81,21 @@ function addTempEntry(entry) {
 }
 
 function addEntry(entry) {
-    let card = createCard(entry);
-    entry.card = card;
+    let now = new Date();
+    entry.date = now.toLocaleString();
 
-    /* TO DO: 
-        uploadFile(teamname, username, entry);
-        loadEntries();
-    */
+    connection.query('INSERT INTO ' + teamname + '(room_name, user_name, file_type, file_name, file_content, file_desc, file_date) VALUES (?, ?, ?, ?, ?, ?, ?)', [teamname, username, entry.filetype, entry.filename, entry.file, entry.desc, entry.date], function(error, results) {
+        if(error) throw error;
+    });
 
-    // TO DO: REMOVE THESE
-    entries.push(entry);
-    arrangeCards();
-    // TO DO: REMOVE THESE
+    fetchEntries(arrangeCards);
 }
 
 function loadEntries() {
-    fetchEntries(teamname, arrangeCards);
+    fetchEntries(arrangeCards);
 }
 
-function fetchEntries(teamname, callback) {
+function fetchEntries(callback) {
     while(entries.length > 0)
         entries.pop();
     
@@ -208,10 +203,6 @@ function createCard(entry) {
 
         uploadbutton.addEventListener("click", () => {
             entry.desc = descinput.value; // ADD PROVIDED DESC
-            let now = new Date();
-            entry.date = now.toLocaleString();
-            entry.cardtype = entry.filetype; // CARD READY TO UPLOAD
-
             tempentries = tempentries.filter(element => element !== entry); // REMOVE FROM TEMPENTIRES
             card.remove(); // REMOVE FROM THE PAGE
             addEntry(entry);
@@ -274,11 +265,6 @@ function createCard(entry) {
     optionsarea.appendChild(deletebutton);
 
     deletebutton.addEventListener("click", () => {
-        /* TO DO:
-            deleteFile(teamname, entry);
-            loadEntries();
-        */
-
         // TO DO: REMOVE THESE
         card.remove();
         entries = entries.filter(element => element !== entry);

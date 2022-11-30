@@ -8,6 +8,27 @@ const connection = mysql.createConnection({
     database : process.env.DATABASE_NAME_USER
 });
 
+window.addEventListener("load", () => {
+    document.getElementsByClassName("show-signin")[0].click();
+})
+
+// 비밀번호 찾기 함수에 사용
+// 문자열 검색해서 중간 글자 *로 만들기
+// 2글자면 마지막 글자만
+var maskingName = function(strName) {
+    if (strName.length > 2) {
+      var originName = strName.split('');
+      originName.forEach(function(name, i) {
+        if (i === 0 || i === originName.length - 1) return;
+        originName[i] = '*';
+      });
+      var joinName = originName.join();
+      return joinName.replace(/,/g, '');
+    } else {
+      var pattern = /.$/; // 정규식
+      return strName.replace(pattern, '*');
+    }
+  };
 function resetClass(element, classname){
     element.classList.remove(classname);
   }
@@ -21,6 +42,15 @@ function resetClass(element, classname){
     form.classList.add("signup");
     document.querySelector(".submitBtn").setAttribute("id","signup-btn")
     document.getElementById("signup-btn").innerText = "회원가입";
+
+    //enter키로 버튼 클릭
+    var input = document.getElementById("confirm_pwd");
+    input.onkeypress=function(e){
+        if(e.keyCode == 13){
+            document.getElementsByClassName("submitBtn")[0].click();
+        }
+    }
+
   });
   document.getElementsByClassName("show-signin")[0].addEventListener("click",function(){
     let form = document.getElementsByClassName("form")[0];
@@ -31,14 +61,29 @@ function resetClass(element, classname){
     form.classList.add("signin");
     document.querySelector(".submitBtn").setAttribute("id","signin-btn")
     document.getElementById("signin-btn").innerText = "로그인";
+    //enter키로 버튼 클릭
+    var input = document.getElementById("pwd");
+    input.onkeypress=function(e){
+        if(e.keyCode == 13){
+            document.getElementsByClassName("submitBtn")[0].click();
+        }
+    }
   });
   document.getElementsByClassName("show-reset")[0].addEventListener("click",function(){
     let form = document.getElementsByClassName("form")[0];
+    document.getElementById("confirm_pwd").value=""
     resetClass(form, "signup");
     resetClass(form, "signin");
     form.classList.add("reset");
     document.querySelector(".submitBtn").setAttribute("id","reset-btn")
-    document.getElementById("reset-btn").innerText = "비밀번호 재설정";
+    document.getElementById("reset-btn").innerText = "찾기";
+    //enter키로 버튼 클릭
+    var input = document.getElementById("username");
+    input.onkeypress=function(e){
+        if(e.keyCode == 13){
+            document.getElementsByClassName("submitBtn")[0].click();
+        }
+    }
 
   });
 
@@ -87,7 +132,7 @@ function resetClass(element, classname){
                         console.log("user information")
                         console.log(results)
                         localStorage.setItem("username",id);
-                        connection.end();
+                        // connection.end();
                         document.location.href = 'view.html';
                     } else {              
                         alert("로그인 정보가 일치하지 않습니다.")
@@ -104,23 +149,24 @@ function resetClass(element, classname){
     }
     else if (class_id === "reset-btn"){
         var id = document.getElementById("username").value;
+
         if (id) {             // id가
             // if (err) throw err;
-            connection.query('SELECT * FROM Users WHERE id = ? AND password = ?', [id, pwd], function(error, results, fields) {
+            connection.query('SELECT password FROM Users WHERE id = ?', [id], function(error, results, fields) {
                 if (error) throw error;
                 if (results.length > 0) {       // db에서의 반환값이 있으면 로그인 성공
-                    console.log("user information")
-                    console.log(results)
-                    document.location.href = 'index.html';
-                    connection.end();
-                } else {              
-                    alert("로그인 정보가 일치하지 않습니다.")
-                    // connection.end();
+                    alert("비밀번호는\n"+ maskingName(results[0].password) + "\n입니다.")
                     document.getElementsByClassName("show-signin")[0].click();
+
+                } else {              
+                    document.getElementById("username").value = "";
+                    document.getElementsByClassName("show-reset")[0].click();
+                    alert("해당 ID는 가입되어있지 않습니다.")
+                    // connection.end();
                 }            
             });
     } else {
-        alert("아이디를 입력하세요")    
+        alert("아이디를 입력해주세요.")    
     }
     }
   });

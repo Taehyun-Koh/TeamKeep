@@ -1,7 +1,8 @@
 const open = require("open")
 /* -------------------------- ESTABLISH CONNECTION -------------------------- */
 const mysql = require("mysql")
-const dotenv = require('dotenv') //mysql pwd숨기기
+const dotenv = require('dotenv'); //mysql pwd숨기기
+const { options } = require("joi");
 dotenv.config();
 const connection = mysql.createConnection({
     host: process.env.DATABASE_HOST,
@@ -318,14 +319,18 @@ function createCard(entry) {
     optionsarea.style = "display: flex; flex-direction: row-reverse; column-gap: 5px;";
     cardbody.appendChild(optionsarea);
 
-
     // DOWNLOAD BUTTON
     if (entry.cardtype != CardType.URL) {
+        let a = document.createElement("a");
+        a.href = 'data:image/png;base64'+entry.file;
+        a.download = entry.filename;
+
         let downloadbutton = document.createElement("button");
         downloadbutton.className = "btn btn-light";
         downloadbutton.style.opacity = "50%";
         downloadbutton.innerHTML = '<i class = "bi bi-cloud-arrow-down-fill"></i>';
-        optionsarea.appendChild(downloadbutton);
+        a.appendChild(downloadbutton);
+        optionsarea.appendChild(a);
     }
 
 
@@ -471,10 +476,7 @@ addfilebutton.addEventListener("click", () => {
 let fileinput = document.querySelector("#fileinput");
 fileinput.addEventListener("change", (event) => {
     let file = event.target.files[0];
-    if (file.size > 1000000) {
-        alert("파일이 용량을 초과합니다.")
-        return;
-    }
+
 
     let tok = file.name.lastIndexOf(".");
     let filetype = file.name.substring(tok + 1, file.length).toLowerCase();
@@ -486,6 +488,7 @@ fileinput.addEventListener("change", (event) => {
         case 'jpg':
         case 'jpeg':
         case 'png':
+        case 'heic':
         case 'gif':
             filetype = FileType.Image;
             break;

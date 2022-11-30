@@ -243,8 +243,14 @@ function createCard(entry) {
     if (entry.filetype == FileType.URL)
         title.innerHTML = '<img src = https://s2.googleusercontent.com/s2/favicons?domain_url=' + entry.file + '>&nbsp;' + trimString(entry.filename, 40);
 
-    else
-        title.innerHTML = trimString(entry.filename, 43);
+    else{
+        //파일 이름 + 파일 크기 추가
+        var src = 'data:image/png;base64'+entry.file;
+        var base64str = src.substring(src.indexOf(',') + 1);
+        var decoded = atob(base64str);
+        title.innerHTML = trimString(entry.filename, 43) + ' ('+formatBytes(decoded.length,2)+')';
+    }
+
 
     cardbody.appendChild(title);
 
@@ -476,7 +482,10 @@ addfilebutton.addEventListener("click", () => {
 let fileinput = document.querySelector("#fileinput");
 fileinput.addEventListener("change", (event) => {
     let file = event.target.files[0];
-
+    if (file.size > 5000000) {
+        alert("파일이 용량을 초과합니다.\n (최대 5MB)")
+        return;
+    }
 
     let tok = file.name.lastIndexOf(".");
     let filetype = file.name.substring(tok + 1, file.length).toLowerCase();
@@ -631,3 +640,17 @@ leaveteambutton.addEventListener("click", () => {
     document.location.href = 'view.html';
 });
 /* ---------------------------- LEAVE TEAM BUTTON --------------------------- */
+
+/* ---------------------------- KB -> MB, GB --------------------------- */
+function formatBytes(bytes, decimals = 2) {
+    if (bytes === 0) return '0 Bytes';
+
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + sizes[i];
+}
+/* ----------------------------------------------------------------------- */

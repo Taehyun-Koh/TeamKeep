@@ -72,6 +72,33 @@ export function deleteFile(teamcode, entry) {
 /* ENTRIES */
 
 
+// 팀 만들기 구현
+        connection.query('show tables', function(error, results) { //DB에 이미 팀이 존재하는지 확인
+            if(error) throw error;
+            //팀 이름이 이미 존재하는지 확인
+            for(let i = 0; i < results.length; i++) {
+                if(results[i] == teamname) alert("이미 존재하는 팀 이름");
+            }
+        })
+
+         //새로운 테이블 만든다
+        connection.query('CREATE TABLE IF NOT EXISTS ' + teamname + '(file_id int UN AI PK, room_name VARCHAR(45) NOT NULL, user_name VARCHAR(45) NOT NULL, file_name VARCHAR(45) NOT NULL, file_content LONGBLOB NOT NULL, file_desc TINYTEXT NOT NULL, file_date VARCHAR(128) NOT NULL)', function(error, results) {
+            if(error) throw error;
+        });
+
+        connection_info.query('CREATE TABLE IF NOT EXISTS ' + teamname + '(users VARCHAR(45) NOT NULL, pw VARCHAR(45) NOT NULL)', function(error, results) {
+            if(error) throw error;
+        });
+
+        //새로운 테이블에 유저 정보 추가
+        connection.query('INSERT INTO ' + teamname + '(users, pw) VALUES (?, ?)', [username, teampw], function(error, results) {
+            if(error) throw error;
+        });
+
+        // 성공 시 localStorage의 teamname을 업데이트
+        //teams.push(teamname);
+        // modal 닫기
+        // index.html로 진입 
 
 
 /* TEAMS */

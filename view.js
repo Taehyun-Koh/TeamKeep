@@ -99,16 +99,23 @@ function createTeamCard(teamname, i, belong) {
     
     connection.query("SELECT file_date FROM " + curr_team, function (error, results, fields) {
         if (error) throw error;
-        var leng = results.length;
-        var last_update = new Date(JSON.parse(results[leng-1].file_date));
-        var now = new Date();
-        let gap = String(timeConversion(parseInt(now-last_update)));
-        updatetime.innerHTML = gap;
+        if (results.length == 0) updatetime.innerHTML = "No data";
+        else{
+            var leng = results.length;
+            var last_update = new Date(JSON.parse(results[leng-1].file_date));
+            var now = new Date();
+            let gap = String(timeConversion(parseInt(now-last_update)));
+            updatetime.innerHTML = gap;
+        }
+
     });
 
     connection.query("SELECT COUNT(*) FROM " + curr_team, function (error, results, fields) {
         if (error) throw error;
-        filecount.innerHTML = results[0]['COUNT(*)'] + " 업로드 " + '<i class="bi bi-cloud"></i>';
+        if(results.length == 0) filecount.innerHTML="0 업로드 " +'<i class="bi bi-cloud"></i>';
+        else{
+            filecount.innerHTML = results[0]['COUNT(*)'] + " 업로드 " + '<i class="bi bi-cloud"></i>';
+        }
     });
 
     

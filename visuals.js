@@ -210,6 +210,7 @@ function createCard(entry) {
     // CARD BASE
     let card = document.createElement("div");
     card.className = "card";
+    card.setAttribute("id", JSON.stringify(entry.date));
 
 
     // CARD IMAGE
@@ -307,7 +308,7 @@ function createCard(entry) {
     // USER NAME & DATE
     let namedate = document.createElement("h8");
     namedate.style = "padding-bottom: 10px; font-size: smaller; font-style: italic; opacity: 0.5;";
-    console.log(entry.date);
+    // console.log(entry.date);
     namedate.innerText = '@' + entry.username + '\n' + entry.date.toLocaleString();
     cardbody.appendChild(namedate);
 
@@ -350,9 +351,16 @@ function createCard(entry) {
     optionsarea.appendChild(deletebutton);
 
     deletebutton.addEventListener("click", () => {
+        connection.query("DELETE FROM " + localStorage.getItem("teamname") + " WHERE file_date = ?", [card.id], function (error, results, fields) {
+            if (error) 
+                throw error;
+        });
+        console.log(card.id);
         // TO DO: REMOVE THESE
         card.remove();
+        console.log("before filter"+entries);
         entries = entries.filter(element => element !== entry);
+        console.log("after filter" +entries);
         arrangeCards();
         // TO DO: REMOVE THESE
     });

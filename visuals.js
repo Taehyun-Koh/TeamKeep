@@ -619,25 +619,29 @@ let leaveteambutton = document.querySelector("#leaveteambutton");
 leaveteambutton.addEventListener("click", () => {
     connection_info.query('DELETE FROM ' + teamname + ' WHERE users = ?', [username], function (error, results) {
         if (error) throw error;
-
-        connection_info.query('SELECT * FROM ' + teamname, function(error, results) {
-            if(error) throw error;
-    
-             //팀에 사람이 더이상 없으면
-             if(results.length === 0)
-             {
-                 //테이블 없엔다
-                 connection.query('DROP TABLE ' + teamname, function (error, results) {
-                     if (error) throw error;
-                 });
-                 connection_info.query('DROP TABLE ' + teamname, function (error, results) {
-                     if (error) throw error;
-                 });
-             }
-        })
     });
 
-    document.location.href = 'view.html';
+    connection_info.query('SELECT * FROM ' + teamname, function(error, results) {
+        if(error) throw error;
+
+         //팀에 사람이 더이상 없으면
+         if(results.length === 0)
+         {
+            //테이블 없엔다
+            connection.query('DROP TABLE ' + teamname, function (error, results) {
+            if (error) throw error;
+            });
+            connection_info.query('DROP TABLE ' + teamname, function (error, results) {
+            if (error) throw error;
+            document.location.href = 'view.html';
+            });
+         }
+         else
+         {
+            document.location.href = 'view.html';
+         }
+    })
+
 });
 /* ---------------------------- LEAVE TEAM BUTTON --------------------------- */
 

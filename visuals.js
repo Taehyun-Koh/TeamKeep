@@ -94,16 +94,25 @@ connection_info.query("SELECT * FROM " + teamname, (err, rows) => {
 let entries = []; // UPLOADED CARDS
 let tempentries = []; // CARDS BEFORE UPLOAD
 let activetab = [document.querySelector("#pills-all"), CardType.Temp];
+let loading = false;
+window.addEventListener("load", () => {
+    let savedentries = localStorage.getItem(teamname + "_entries");
+    if(savedentries){
+        entries = JSON.parse(savedentries);
+        for(entry of entries) {
+            entry.date = new Date(entry.date);
+            entry.card = createCard(entry);
+        }
+    }
+    
+    loadEntries();
+})
 let lastupdate = document.createElement("h8");
 lastupdate.style.alignSelf = "center";
 lastupdate.style.fontSize = "smaller";
 lastupdate.style.fontStyle = "italic";
 lastupdate.style.opacity = "50%";
 document.querySelector("#bottomdiv").appendChild(lastupdate);
-let loading = false;
-window.addEventListener("load", () => {
-    loadEntries();
-})
 /* --------------------------------- ENTRIES -------------------------------- */
 /* -------------------------------------------------------------------------- */
 /*                                INITIALIZTION                               */
@@ -124,13 +133,12 @@ function addEntry(entry) {
     connection.query('INSERT INTO ' + teamname + '(room_name, user_name, file_type, file_name, file_content, file_desc, file_date) VALUES (?, ?, ?, ?, ?, ?, ?)', [teamname, username, entry.filetype, entry.filename, entry.file, entry.desc, JSON.stringify(entry.date)], function (error, results) {
         if (error) throw error;
     });
-
     loadEntries();
 }
 
 function loadEntries() {
     lastupdate.innerText = "마지막 동기화 " + (new Date()).toLocaleString();
-    if(loading)
+    if (loading)
         return;
     else {
         loading = true;
@@ -139,37 +147,58 @@ function loadEntries() {
 }
 
 function fetchEntries(callback) {
-    entries = [];
+    let localentryids = entries.map(entry => entry.fileid);
+    let cloudentryids;
+    let fetchentryids;
 
-    connection.query("SELECT * FROM " + teamname, (err, rows) => {
+    connection.query("SELECT file_id FROM " + teamname, (err, idrows) => {
         if (err) throw err;
-        if (!rows.length) return;
 
-        for (let row of rows) {
-            let entry = {
-                cardtype: row.file_type,
+        let cloudentryids;
+        if (!idrows.length)
+            cloudentryids = [];
+        else
+            cloudentryids = idrows.map(row => row.file_id);
 
-                file: row.file_content.toString(),
-                filename: row.file_name,
-                filetype: parseInt(row.file_type),
-                date: new Date(JSON.parse(row.file_date)),
+        entries = entries.filter(x => cloudentryids.includes(x.fileid));
+        localStorage.setItem(teamname + "_entries", JSON.stringify(entries));
 
-                username: row.user_name,
-                desc: row.file_desc,
-            }
-           
-            entries.unshift(entry);
+        fetchentryids = cloudentryids.filter(x => !localentryids.includes(x));
+
+        if (fetchentryids.length > 0) {
+            connection.query("SELECT * FROM " + teamname + " WHERE file_id >= " + fetchentryids[0], (err, rows) => {
+                if (err) throw err;
+                if (!rows.length) return;
+    
+                for (let row of rows) {
+                    let entry = {
+                        cardtype: row.file_type,
+    
+                        fileid: row.file_id,
+                        file: row.file_content.toString(),
+                        filename: row.file_name,
+                        filetype: parseInt(row.file_type),
+                        date: new Date(JSON.parse(row.file_date)),
+    
+                        username: row.user_name,
+                        desc: row.file_desc,
+                    }
+
+                    entry.card = createCard(entry);
+                    entries.unshift(entry);
+                }
+    
+                localStorage.setItem(teamname + "_entries", JSON.stringify(entries));
+                loading = false;
+                callback();
+            });
         }
 
-        for(let entry of entries) {
-            console.log(entry);
-            entry.card = createCard(entry);
+        else {
+            loading = false;
+            callback();
         }
-        
-        loading = false;
-
-        callback();
-    });
+    })
 }
 /* --------------------------------- ENTRIES -------------------------------- */
 
@@ -278,7 +307,7 @@ function createCard(entry) {
     // USER NAME & DATE
     let namedate = document.createElement("h8");
     namedate.style = "padding-bottom: 10px; font-size: smaller; font-style: italic; opacity: 0.5;";
-    let now = new Date();
+    console.log(entry.date);
     namedate.innerText = '@' + entry.username + '\n' + entry.date.toLocaleString();
     cardbody.appendChild(namedate);
 
@@ -342,7 +371,7 @@ function createCard(entry) {
     return card;
 }
 
-function arrangeCards() {  
+function arrangeCards() {
     let type = activetab[1];
     let cardlists = activetab[0].querySelectorAll("div.cardlist"); // CARDLISTS[0]: ~CARDS1, CARDLISTS[1]: ~CARDS2
 
@@ -427,18 +456,18 @@ urltab.addEventListener("click", () => {
 let addfilebutton = document.querySelector("#addfilebutton");
 addfilebutton.addEventListener("click", () => {
     document.querySelector("#fileinput").click(); // TRIGGER FILE SELECT DIALOGUE
-    if(activetab[1] != CardType.Temp)
+    if (activetab[1] != CardType.Temp)
         document.querySelector("#pills-all-tab").click();
 });
 
 let fileinput = document.querySelector("#fileinput");
 fileinput.addEventListener("change", (event) => {
     let file = event.target.files[0];
-    if(file.size > 1000000){
+    if (file.size > 1000000) {
         alert("파일이 용량을 초과합니다.")
         return;
     }
-    
+
     let tok = file.name.lastIndexOf(".");
     let filetype = file.name.substring(tok + 1, file.length).toLowerCase();
 

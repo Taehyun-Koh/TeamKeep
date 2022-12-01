@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Arvo:wght@700&family=Noto+Serif+KR&display=swap');
 
 .cardcontainer {
-    width: 740px;
+    width: 770px;
     max-height: 566px;
     min-height: 566px;
     overflow-y: scroll;
@@ -11,9 +11,8 @@
     grid-template-columns: 1fr 1fr 1fr;
     justify-items: center;
 } 
-
 .cardlist {
-    width: 240px;
+    width: 245px;
     
     display: flex;
     align-items: center;
@@ -25,7 +24,7 @@
 }
 
 .card {
-    width: 220px;
+    width: 225px;
 
     background-color: whitesmoke;
     box-shadow: 0px 0px 5px lightgrey;
@@ -34,7 +33,7 @@
 
 .card-body {
     font-family: 'Noto Serif KR', serif;
-    width: 220px; 
+    width: 225px; 
     display: flex;
     flex-direction: column;
 }
@@ -44,7 +43,7 @@
 }
 
 .card-img-top {
-    width: 220px;
+    width: 225px;
     max-height: 140px;
 
     object-fit: cover;

@@ -1,14 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Arvo:wght@700&family=Noto+Serif+KR&display=swap');
 
 .cardcontainer {
-    width: 480px;
+    width: 740px;
     max-height: 566px;
     min-height: 566px;
     overflow-y: scroll;
     overflow-x: hidden;
     
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     justify-items: center;
 } 
 
@@ -54,3 +54,4 @@
     width: 480px; 
     padding: 20px;
 }
+

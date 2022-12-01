@@ -210,45 +210,58 @@ function timeConversion(millisec) {
 function arrangeTeams() {
     var my_team1 = document.querySelector("#my_team1");
     var my_team2 = document.querySelector("#my_team2");
+    var my_team3 = document.querySelector("#my_team3");
     let notmy_team1 = document.querySelector("#all_team1");
     let notmy_team2 = document.querySelector("#all_team2");
-
-    let l1 = 0; let l2 = 0; let l3 = 0; let l4 = 0;
+    let notmy_team3 = document.querySelector("#all_team3");
     let isMyteam = 0;
     let isAllteam = 0;
     for (let i = 0; i < teams.length; i++) {
         var curr_team = teams[i]
-
+        var flagM = 0;
+        var flagA = 0;
         connection_info.query("SELECT * FROM " + curr_team + " WHERE users = ?", [username], function (error, results, fields) {
             if (error)
                 throw error;
             if (results.length > 0) { // 속한 팀이 있을경우
                 let team_card = createTeamCard(teams[i], i, true)
-                if (l1 <= l2) {
+                if (flagM % 3 === 0) {
                     my_team1.appendChild(team_card);
                     $(team_card).hide().fadeIn(200);
-                    l1 += 1;
+                    flagM += 1;
                     isMyteam += 1;
                 }
-                else {
+                else if(flagM % 3 === 1) {
                     my_team2.appendChild(team_card);
                     $(team_card).hide().fadeIn(200);
-                    l2 += 1;
+                    flagM += 1;
+                    isMyteam += 1;
+                }
+                else if(flagM % 3 === 2) {
+                    my_team3.appendChild(team_card);
+                    $(team_card).hide().fadeIn(200);
+                    flagM += 1;
                     isMyteam += 1;
                 }
             }
             else {
                 let all_card = createTeamCard(teams[i], i, false)
-                if (l3 <= l4) {
+                if (flagA % 3 === 0) {
                     notmy_team1.appendChild(all_card);
                     $(all_card).hide().fadeIn(200);
-                    l3 += 1;
+                    flagA += 1;
                     isAllteam += 1;
                 }
-                else {
+                else if(flagA % 3 === 1) {
                     notmy_team2.appendChild(all_card);
                     $(all_card).hide().fadeIn(200);
-                    l4 += 1;
+                    flagA += 1;
+                    isAllteam += 1;
+                }
+                else if(flagA % 3 === 2) {
+                    notmy_team3.appendChild(all_card);
+                    $(all_card).hide().fadeIn(200);
+                    flagA += 1;
                     isAllteam += 1;
                 }
             }

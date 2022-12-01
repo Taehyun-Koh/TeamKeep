@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Arvo:wght@700&family=Gowun+Dodum&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Arvo:wght@700&family=Noto+Serif+KR&display=swap');
 
 .cardcontainer {
     width: 480px;
@@ -33,7 +33,7 @@
 }
 
 .card-body {
-    font-family: 'Gowun Dodum', sans-serif;
+    font-family: 'Noto Serif KR', serif;
     width: 220px; 
     display: flex;
     flex-direction: column;

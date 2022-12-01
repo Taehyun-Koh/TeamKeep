@@ -261,7 +261,7 @@ function arrangeTeams() {
                 //내 팀 없으면
                 if (isMyteam === 0){
                     var p = document.createElement("p");
-                    p.innerHTML = "팀에 참가해보세요!";
+                    p.innerHTML = "새 팀을 만들거나 팀에 참가해보세요!";
                     p.style.color = "lightgray";
                     p.style.fontSize = "15px";
                     p.style.paddingTop = "20px";

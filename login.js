@@ -90,7 +90,6 @@ function resetClass(element, classname){
   document.getElementsByClassName("submitBtn")[0].addEventListener("click",function(){
 
     var class_id = document.getElementsByClassName("submitBtn")[0].id;
-    console.log(class_id + "clicked");
     if (class_id === "signup-btn"){
         var username = document.getElementById("username").value;
         var password = document.getElementById("pwd").value;
@@ -129,8 +128,6 @@ function resetClass(element, classname){
                 connection.query('SELECT * FROM Users WHERE id = ? AND password = ?', [id, pwd], function(error, results, fields) {
                     if (error) throw error;
                     if (results.length > 0) {       // db에서의 반환값이 있으면 로그인 성공
-                        console.log("user information")
-                        console.log(results)
                         localStorage.setItem("username",id);
                         // connection.end();
                         document.location.href = 'view.html';

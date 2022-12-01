@@ -95,7 +95,6 @@ connection_info.query("SELECT * FROM " + teamname, (err, rows) => {
 let entries = []; // UPLOADED CARDS
 let tempentries = []; // CARDS BEFORE UPLOAD
 let activetab = [document.querySelector("#pills-all"), CardType.Temp];
-let loading = false;
 window.addEventListener("load", () => {
     let savedentries = localStorage.getItem(teamname + "_entries");
     if(savedentries){
@@ -105,7 +104,6 @@ window.addEventListener("load", () => {
             entry.card = createCard(entry);
         }
     }
-    
     loadEntries();
 })
 let lastupdate = document.createElement("h8");
@@ -137,14 +135,20 @@ function addEntry(entry) {
     loadEntries();
 }
 
+const debounce = (func, delay) => {
+    let debounceTimer;
+    return function() {
+        const context = this;
+        const args = arguments;
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => func.apply(context, args), delay);
+    }
+} // from https://www.geeksforgeeks.org/debouncing-in-javascript/
+
+
 function loadEntries() {
     lastupdate.innerText = "마지막 동기화 " + (new Date()).toLocaleString();
-    if (loading)
-        return;
-    else {
-        loading = true;
-        fetchEntries(arrangeCards);
-    }
+    fetchEntries(arrangeCards);
 }
 
 function fetchEntries(callback) {
@@ -190,15 +194,12 @@ function fetchEntries(callback) {
                 }
     
                 localStorage.setItem(teamname + "_entries", JSON.stringify(entries));
-                loading = false;
                 callback();
             });
         }
 
-        else {
-            loading = false;
+        else
             callback();
-        }
     })
 }
 /* --------------------------------- ENTRIES -------------------------------- */
@@ -250,8 +251,6 @@ function createCard(entry) {
         var decoded = atob(base64str);
         title.innerHTML = trimString(entry.filename, 43) + ' ('+formatBytes(decoded.length,2)+')';
     }
-
-
     cardbody.appendChild(title);
 
 
@@ -315,7 +314,6 @@ function createCard(entry) {
     // USER NAME & DATE
     let namedate = document.createElement("h8");
     namedate.style = "padding-bottom: 10px; font-size: smaller; font-style: italic; opacity: 0.5;";
-    // console.log(entry.date);
     namedate.innerText = '@' + entry.username + '\n' + entry.date.toLocaleString();
     cardbody.appendChild(namedate);
 
@@ -359,21 +357,15 @@ function createCard(entry) {
     deletebutton.className = "btn btn-light";
     deletebutton.style.opacity = "50%";
     deletebutton.innerHTML = '<i class = "bi bi-trash3-fill"></i>';
-    optionsarea.appendChild(deletebutton);
+    if(entry.username == username)
+        optionsarea.appendChild(deletebutton);
 
     deletebutton.addEventListener("click", () => {
         connection.query("DELETE FROM " + localStorage.getItem("teamname") + " WHERE file_date = ?", [card.id], function (error, results, fields) {
             if (error) 
                 throw error;
         });
-        console.log(card.id);
-        // TO DO: REMOVE THESE
-        card.remove();
-        console.log("before filter"+entries);
-        entries = entries.filter(element => element !== entry);
-        console.log("after filter" +entries);
-        arrangeCards();
-        // TO DO: REMOVE THESE
+        loadEntries();
     });
 
     deletebutton.addEventListener("mouseover", () => {
@@ -580,9 +572,7 @@ addurlbutton.addEventListener("click", () => {
 
 /* ----------------------------- REFRESH BUTTON ----------------------------- */
 let refreshbutton = document.querySelector("#refreshbutton");
-refreshbutton.addEventListener("click", () => {
-    loadEntries();
-});
+refreshbutton.addEventListener("click", debounce(loadEntries, 200));
 /* ----------------------------- REFRESH BUTTON ----------------------------- */
 
 

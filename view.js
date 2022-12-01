@@ -158,8 +158,6 @@ function createTeamCard(teamname, i, belong) {
                 if (error) throw error;
                 team_pw = results[0].pw;
                 var password = document.getElementById(teamname+'pw').value;
-                console.log(password);
-                console.log(team_pw);
                 if (password){
                     if (password === team_pw){
                         connection_info.query('INSERT INTO ' + teamname + '(users, pw) VALUE (?, ?)', [username, password], function(error, results) {
@@ -263,21 +261,24 @@ createteambutton.addEventListener("click", () => {
         let createteampwinput = document.querySelector("#createteampwinput");
         let teamname = createteamnameinput.value;
         let teampw = createteampwinput.value;
-        let isExist = false;
-
+        
+        if(teamname.length == 0 || teampw.length == 0)
+            return;
+        
         // 팀 만들기 구현
+        let exists = false;
         connection.query('show tables', function(error, results) { //DB에 이미 팀이 존재하는지 확인
             if(error) throw error;
             //팀 이름이 이미 존재하는지 확인
             for(let i = 0; i < results.length; i++) {
-                if(results[i]['Tables_in_room'] === teamname)
-                {
+                if(results[i]['Tables_in_room'] === teamname){
                     alert("이미 존재하는 팀 이름");
-                    isExist = true;
+                    exists = true;
+                    break;
                 }
             }
 
-            if(!isExist)
+            if(!exists)
             {
                 //새로운 테이블 만든다
                 connection.query('CREATE TABLE IF NOT EXISTS ' + teamname + '(file_id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, room_name VARCHAR(45) NOT NULL, user_name VARCHAR(45) NOT NULL, file_type VARCHAR(45) NOT NULL, file_name VARCHAR(45) NOT NULL, file_content LONGBLOB NOT NULL, file_desc TINYTEXT NOT NULL, file_date VARCHAR(128) NOT NULL)', function(error, results) {
@@ -301,12 +302,9 @@ createteambutton.addEventListener("click", () => {
             }
         })
 
-        // modal 닫기
         $('#createteammodal').modal('hide');
-
         createteamnameinput.value = "";
         createteampwinput.value = "";
-
     });
 });
 /* --------------------------- CREATE TEAM BUTTON --------------------------- */

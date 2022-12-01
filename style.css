@@ -54,11 +54,3 @@
     width: 480px; 
     padding: 20px;
 }
-
-#logoutbutton{
-    color: white;
-    -webkit-text-stroke: 0.5px;
-    left:50px;
-    position : relative;
-    font-size: larger;
-}

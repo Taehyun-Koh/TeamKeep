@@ -276,31 +276,33 @@ createteambutton.addEventListener("click", () => {
                     isExist = true;
                 }
             }
+
+            if(!isExist)
+            {
+                //새로운 테이블 만든다
+                connection.query('CREATE TABLE IF NOT EXISTS ' + teamname + '(file_id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, room_name VARCHAR(45) NOT NULL, user_name VARCHAR(45) NOT NULL, file_type VARCHAR(45) NOT NULL, file_name VARCHAR(45) NOT NULL, file_content LONGBLOB NOT NULL, file_desc TINYTEXT NOT NULL, file_date VARCHAR(128) NOT NULL)', function(error, results) {
+                    if(error) throw error;
+                });
+
+                connection_info.query('CREATE TABLE IF NOT EXISTS ' + teamname + '(users VARCHAR(45) NOT NULL, pw VARCHAR(45) NOT NULL)', function(error, results) {
+                    if(error) throw error;
+
+                });
+
+                //새로운 테이블에 유저 정보 추가
+                connection_info.query('INSERT INTO ' + teamname + ' VALUES (?, ?)', [username, teampw], function(error, results) {
+                    if(error) throw error;
+                    // 성공 시 localStorage의 teamname을 업데이트
+                    teams.push(teamname);
+                    // index.html로 진입 
+                    localStorage.setItem("teamname", teamname);
+                    document.location.href = 'index.html';
+                });
+            }
         })
 
-        //새로운 테이블 만든다
-        connection.query('CREATE TABLE IF NOT EXISTS ' + teamname + '(file_id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, room_name VARCHAR(45) NOT NULL, user_name VARCHAR(45) NOT NULL, file_type VARCHAR(45) NOT NULL, file_name VARCHAR(45) NOT NULL, file_content LONGBLOB NOT NULL, file_desc TINYTEXT NOT NULL, file_date VARCHAR(128) NOT NULL)', function(error, results) {
-            if(error) throw error;
-        });
-
-        connection_info.query('CREATE TABLE IF NOT EXISTS ' + teamname + '(users VARCHAR(45) NOT NULL, pw VARCHAR(45) NOT NULL)', function(error, results) {
-            if(error) throw error;
-
-        });
-
-        //새로운 테이블에 유저 정보 추가
-        connection_info.query('INSERT INTO ' + teamname + ' VALUES (?, ?)', [username, teampw], function(error, results) {
-            if(error) throw error;
-
-            localStorage.setItem("teamname", teamname);
-            document.location.href = 'index.html';
-        });
-
-        // 성공 시 localStorage의 teamname을 업데이트
-        teams.push(teamname);
         // modal 닫기
         $('#createteammodal').modal('hide');
-        // index.html로 진입 
 
         createteamnameinput.value = "";
         createteampwinput.value = "";

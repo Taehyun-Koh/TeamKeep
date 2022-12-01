@@ -55,7 +55,6 @@ connection.query('show tables', function (error, results, fields) { //team 이�
 
 
 
-
 /* ------------------------------ TEAM 카드 생성 ------------------------------ */
 function createTeamCard(teamname, i, belong) {
     var card = document.createElement('div');
@@ -207,14 +206,16 @@ function timeConversion(millisec) {
 
 
 
-
 /* ---------------- 로그인한 사용자가 속해있는 그룹과 아닌 그룹 나눠서 TEAM 카드 생성 --------------- */
 function arrangeTeams() {
-    let my_team1 = document.querySelector("#my_team1");
-    let my_team2 = document.querySelector("#my_team2");
+    var my_team1 = document.querySelector("#my_team1");
+    var my_team2 = document.querySelector("#my_team2");
     let notmy_team1 = document.querySelector("#all_team1");
     let notmy_team2 = document.querySelector("#all_team2");
+
     let l1 = 0; let l2 = 0; let l3 = 0; let l4 = 0;
+    let isMyteam = 0;
+    let isAllteam = 0;
     for (let i = 0; i < teams.length; i++) {
         var curr_team = teams[i]
 
@@ -227,11 +228,13 @@ function arrangeTeams() {
                     my_team1.appendChild(team_card);
                     $(team_card).hide().fadeIn(200);
                     l1 += 1;
+                    isMyteam += 1;
                 }
                 else {
                     my_team2.appendChild(team_card);
                     $(team_card).hide().fadeIn(200);
                     l2 += 1;
+                    isMyteam += 1;
                 }
             }
             else {
@@ -240,15 +243,47 @@ function arrangeTeams() {
                     notmy_team1.appendChild(all_card);
                     $(all_card).hide().fadeIn(200);
                     l3 += 1;
+                    isAllteam += 1;
                 }
                 else {
                     notmy_team2.appendChild(all_card);
                     $(all_card).hide().fadeIn(200);
                     l4 += 1;
+                    isAllteam += 1;
                 }
             }
+
+            
+            if(i === teams.length - 1) {
+                var mt = document.getElementById("MyteamText");
+                var at = document.getElementById("AllteamText");
+                console.log(isMyteam, isAllteam)
+                //내 팀 없으면
+                if (isMyteam === 0){
+                    var p = document.createElement("p");
+                    p.innerHTML = "팀에 참가해보세요!";
+                    p.style.color = "lightgray";
+                    p.style.fontSize = "15px";
+                    p.style.paddingTop = "20px";
+                    mt.appendChild(p);
+
+                }
+                //All team 없으면
+                else if (isAllteam === 0){
+                    var p2 = document.createElement("p");
+                    p2.innerHTML = "새로운 팀을 생성해보세요!";
+                    p2.style.color = "lightgray";
+                    p2.style.fontSize = "15px";
+                    p2.style.paddingTop = "20px";
+                    at.appendChild(p2);
+
+                }
+            }
+            
         });
+        
     }
+    
 }
 /* ---------------- 로그인한 사용자가 속해있는 그룹과 아닌 그룹 나눠서 TEAM 카드 생성 --------------- */
 

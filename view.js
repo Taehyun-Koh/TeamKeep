@@ -92,19 +92,19 @@ function createTeamCard(teamname, i, belong) {
     filecount.style.opacity = "0.5";
     filecount.innerHTML = '&nbsp';
 
-    if(belong == true){
+    if (belong == true) {
         card_body.appendChild(updatetime);
         card_body.appendChild(filecount);
     }
-    
+
     connection.query("SELECT file_date FROM " + curr_team, function (error, results, fields) {
         if (error) throw error;
         if (results.length == 0) updatetime.innerHTML = "No data";
-        else{
+        else {
             var leng = results.length;
-            var last_update = new Date(JSON.parse(results[leng-1].file_date));
+            var last_update = new Date(JSON.parse(results[leng - 1].file_date));
             var now = new Date();
-            let gap = String(timeConversion(parseInt(now-last_update)));
+            let gap = String(timeConversion(parseInt(now - last_update)));
             updatetime.innerHTML = gap;
         }
 
@@ -112,13 +112,13 @@ function createTeamCard(teamname, i, belong) {
 
     connection.query("SELECT COUNT(*) FROM " + curr_team, function (error, results, fields) {
         if (error) throw error;
-        if(results.length == 0) filecount.innerHTML="0 업로드 " +'<i class="bi bi-cloud"></i>';
-        else{
+        if (results.length == 0) filecount.innerHTML = "0 업로드 " + '<i class="bi bi-cloud"></i>';
+        else {
             filecount.innerHTML = results[0]['COUNT(*)'] + " 업로드 " + '<i class="bi bi-cloud"></i>';
         }
     });
 
-    
+
     var pw_input_area = document.createElement("div");
     pw_input_area.className = "input-group mb-1";
 
@@ -126,8 +126,8 @@ function createTeamCard(teamname, i, belong) {
     pw_input.className = "form-control";
     pw_input.type = "password";
     pw_input.style = "font-size: smaller";
-    pw_input.placeholder = "암호";
-    pw_input.setAttribute("id", teamname+'pw');
+    pw_input.placeholder = "비밀번호";
+    pw_input.setAttribute("id", teamname + 'pw');
     pw_input_area.appendChild(pw_input);
 
     var joinBtn = document.createElement("button");
@@ -157,17 +157,21 @@ function createTeamCard(teamname, i, belong) {
             connection_info.query("SELECT distinct pw FROM " + tn, function (error, results, fields) {
                 if (error) throw error;
                 team_pw = results[0].pw;
-                var password = document.getElementById(teamname+'pw').value;
-                if (password){
-                    if (password === team_pw){
-                        connection_info.query('INSERT INTO ' + teamname + '(users, pw) VALUE (?, ?)', [username, password], function(error, results) {
-                            if(error) throw error;
+                var password = document.getElementById(teamname + 'pw').value;
+                if (password) {
+                    if (password === team_pw) {
+                        connection_info.query('INSERT INTO ' + teamname + '(users, pw) VALUE (?, ?)', [username, password], function (error, results) {
+                            if (error) throw error;
                         });
                         document.location.href = 'index.html';
                     }
-                    else alert("비밀번호가 틀렸습니다.");
+                    else {
+                        localStorage.setItem("teamname", "");
+                        alert("비밀번호가 틀렸어요.");
+                    }
                 }
-                else{
+                else {
+                    localStorage.setItem("teamname", "");
                     alert("비밀번호를 입력하세요.");
                 }
             });
@@ -210,16 +214,16 @@ function arrangeTeams() {
     let my_team2 = document.querySelector("#my_team2");
     let notmy_team1 = document.querySelector("#all_team1");
     let notmy_team2 = document.querySelector("#all_team2");
-    let l1  = 0; let l2 = 0; let l3 = 0; let l4 = 0;
+    let l1 = 0; let l2 = 0; let l3 = 0; let l4 = 0;
     for (let i = 0; i < teams.length; i++) {
         var curr_team = teams[i]
-        
+
         connection_info.query("SELECT * FROM " + curr_team + " WHERE users = ?", [username], function (error, results, fields) {
-            if (error) 
+            if (error)
                 throw error;
             if (results.length > 0) { // 속한 팀이 있을경우
                 let team_card = createTeamCard(teams[i], i, true)
-                if(l1 <= l2) {
+                if (l1 <= l2) {
                     my_team1.appendChild(team_card);
                     $(team_card).hide().fadeIn(200);
                     l1 += 1;
@@ -229,10 +233,10 @@ function arrangeTeams() {
                     $(team_card).hide().fadeIn(200);
                     l2 += 1;
                 }
-            } 
+            }
             else {
                 let all_card = createTeamCard(teams[i], i, false)
-                if(l3 <= l4) {
+                if (l3 <= l4) {
                     notmy_team1.appendChild(all_card);
                     $(all_card).hide().fadeIn(200);
                     l3 += 1;
@@ -261,50 +265,54 @@ createteambutton.addEventListener("click", () => {
         let createteampwinput = document.querySelector("#createteampwinput");
         let teamname = createteamnameinput.value;
         let teampw = createteampwinput.value;
-        
-        if(teamname.length == 0 || teampw.length == 0)
+
+        if (teamname.length == 0 || teampw.length == 0)
             return;
         
+        if(teamname.includes(" ") || teampw.includes(" ")) {
+            alert("팀 이름이나 비밀번호는 공백을 포함할 수 없어요.")
+            return;
+        }
+
         // 팀 만들기 구현
         let exists = false;
-        connection.query('show tables', function(error, results) { //DB에 이미 팀이 존재하는지 확인
-            if(error) throw error;
+        connection.query('show tables', function (error, results) { //DB에 이미 팀이 존재하는지 확인
+            if (error) throw error;
             //팀 이름이 이미 존재하는지 확인
-            for(let i = 0; i < results.length; i++) {
-                if(results[i]['Tables_in_room'] === teamname){
-                    alert("이미 존재하는 팀 이름");
+            for (let i = 0; i < results.length; i++) {
+                if (results[i]['Tables_in_room'] === teamname) {
+                    alert("이미 존재하는 팀 이름이예요.");
                     exists = true;
                     break;
                 }
             }
 
-            if(!exists)
-            {
+            if (!exists) {
                 //새로운 테이블 만든다
-                connection.query('CREATE TABLE IF NOT EXISTS ' + teamname + '(file_id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, room_name VARCHAR(45) NOT NULL, user_name VARCHAR(45) NOT NULL, file_type VARCHAR(45) NOT NULL, file_name VARCHAR(45) NOT NULL, file_content LONGBLOB NOT NULL, file_desc TINYTEXT NOT NULL, file_date VARCHAR(128) NOT NULL)', function(error, results) {
-                    if(error) throw error;
+                connection.query('CREATE TABLE IF NOT EXISTS ' + teamname + '(file_id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, room_name VARCHAR(45) NOT NULL, user_name VARCHAR(45) NOT NULL, file_type VARCHAR(45) NOT NULL, file_name VARCHAR(45) NOT NULL, file_content LONGBLOB NOT NULL, file_desc TINYTEXT NOT NULL, file_date VARCHAR(128) NOT NULL)', function (error, results) {
+                    if (error) throw error;
                 });
 
-                connection_info.query('CREATE TABLE IF NOT EXISTS ' + teamname + '(users VARCHAR(45) NOT NULL, pw VARCHAR(45) NOT NULL)', function(error, results) {
-                    if(error) throw error;
+                connection_info.query('CREATE TABLE IF NOT EXISTS ' + teamname + '(users VARCHAR(45) NOT NULL, pw VARCHAR(45) NOT NULL)', function (error, results) {
+                    if (error) throw error;
 
                 });
 
                 //새로운 테이블에 유저 정보 추가
-                connection_info.query('INSERT INTO ' + teamname + ' VALUES (?, ?)', [username, teampw], function(error, results) {
-                    if(error) throw error;
+                connection_info.query('INSERT INTO ' + teamname + ' VALUES (?, ?)', [username, teampw], function (error, results) {
+                    if (error) throw error;
                     // 성공 시 localStorage의 teamname을 업데이트
                     teams.push(teamname);
                     // index.html로 진입 
                     localStorage.setItem("teamname", teamname);
                     document.location.href = 'index.html';
                 });
+
+                $('#createteammodal').modal('hide');
+                createteamnameinput.value = "";
+                createteampwinput.value = "";
             }
         })
-
-        $('#createteammodal').modal('hide');
-        createteamnameinput.value = "";
-        createteampwinput.value = "";
     });
 });
 /* --------------------------- CREATE TEAM BUTTON --------------------------- */
@@ -318,6 +326,6 @@ logoutbutton.addEventListener("click", () => {
     localStorage.removeItem("username");
     localStorage.removeItem("teamname");
     localStorage.removeItem("teamlist");
-    document.location.href="login.html";
+    document.location.href = "login.html";
 })
 /* ------------------------------ LOGOUT BUTTON ----------------------------- */

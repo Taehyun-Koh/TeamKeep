@@ -97,9 +97,9 @@ let tempentries = []; // CARDS BEFORE UPLOAD
 let activetab = [document.querySelector("#pills-all"), CardType.Temp];
 window.addEventListener("load", () => {
     let savedentries = localStorage.getItem(teamname + "_entries");
-    if(savedentries){
+    if (savedentries) {
         entries = JSON.parse(savedentries);
-        for(entry of entries) {
+        for (entry of entries) {
             entry.date = new Date(entry.date);
             entry.card = createCard(entry);
         }
@@ -137,7 +137,7 @@ function addEntry(entry) {
 
 const debounce = (func, delay) => {
     let debounceTimer;
-    return function() {
+    return function () {
         const context = this;
         const args = arguments;
         clearTimeout(debounceTimer);
@@ -174,17 +174,17 @@ function fetchEntries(callback) {
             connection.query("SELECT * FROM " + teamname + " WHERE file_id >= " + fetchentryids[0], (err, rows) => {
                 if (err) throw err;
                 if (!rows.length) return;
-    
+
                 for (let row of rows) {
                     let entry = {
                         cardtype: row.file_type,
-    
+
                         fileid: row.file_id,
                         file: row.file_content.toString(),
                         filename: row.file_name,
                         filetype: parseInt(row.file_type),
                         date: new Date(JSON.parse(row.file_date)),
-    
+
                         username: row.user_name,
                         desc: row.file_desc,
                     }
@@ -192,7 +192,7 @@ function fetchEntries(callback) {
                     entry.card = createCard(entry);
                     entries.unshift(entry);
                 }
-    
+
                 localStorage.setItem(teamname + "_entries", JSON.stringify(entries));
                 callback();
             });
@@ -244,12 +244,12 @@ function createCard(entry) {
     if (entry.filetype == FileType.URL)
         title.innerHTML = '<img src = https://s2.googleusercontent.com/s2/favicons?domain_url=' + entry.file + '>&nbsp;' + trimString(entry.filename, 40);
 
-    else{
+    else {
         //파일 이름 + 파일 크기 추가
-        var src = 'data:image/png;base64'+entry.file;
+        var src = 'data:image/png;base64' + entry.file;
         var base64str = src.substring(src.indexOf(',') + 1);
         var decoded = atob(base64str);
-        title.innerHTML = trimString(entry.filename, 43) + ' ('+formatBytes(decoded.length,2)+')';
+        title.innerHTML = trimString(entry.filename, 43) + ' (' + formatBytes(decoded.length, 2) + ')';
     }
     cardbody.appendChild(title);
 
@@ -326,7 +326,7 @@ function createCard(entry) {
     // DOWNLOAD BUTTON
     if (entry.cardtype != CardType.URL) {
         let a = document.createElement("a");
-        a.href = 'data:image/png;base64'+entry.file;
+        a.href = 'data:image/png;base64' + entry.file;
         a.download = entry.filename;
 
         let downloadbutton = document.createElement("button");
@@ -357,12 +357,12 @@ function createCard(entry) {
     deletebutton.className = "btn btn-light";
     deletebutton.style.opacity = "50%";
     deletebutton.innerHTML = '<i class = "bi bi-trash3-fill"></i>';
-    if(entry.username == username)
+    if (entry.username == username)
         optionsarea.appendChild(deletebutton);
 
     deletebutton.addEventListener("click", () => {
         connection.query("DELETE FROM " + localStorage.getItem("teamname") + " WHERE file_date = ?", [card.id], function (error, results, fields) {
-            if (error) 
+            if (error)
                 throw error;
         });
         loadEntries();
@@ -475,7 +475,7 @@ let fileinput = document.querySelector("#fileinput");
 fileinput.addEventListener("change", (event) => {
     let file = event.target.files[0];
     if (file.size > 5000000) {
-        alert("파일이 용량을 초과합니다.\n (최대 5MB)")
+        alert("파일이 허용된 용량을 초과해요.\n (최대 5MB)");
         return;
     }
 
@@ -607,29 +607,29 @@ function absoluteURL(url) {
 /* ---------------------------- LEAVE TEAM BUTTON --------------------------- */
 let leaveteambutton = document.querySelector("#leaveteambutton");
 leaveteambutton.addEventListener("click", () => {
+    localStorage.removeItem(teamname + "_entries");
+    localStorage.setItem("teamname", "");
+
     connection_info.query('DELETE FROM ' + teamname + ' WHERE users = ?', [username], function (error, results) {
         if (error) throw error;
     });
 
-    connection_info.query('SELECT * FROM ' + teamname, function(error, results) {
-        if(error) throw error;
+    connection_info.query('SELECT * FROM ' + teamname, function (error, results) {
+        if (error) throw error;
 
-         //팀에 사람이 더이상 없으면
-         if(results.length === 0)
-         {
+        //팀에 사람이 더이상 없으면
+        if (results.length === 0) {
             //테이블 없엔다
             connection.query('DROP TABLE ' + teamname, function (error, results) {
-            if (error) throw error;
+                if (error) throw error;
             });
             connection_info.query('DROP TABLE ' + teamname, function (error, results) {
-            if (error) throw error;
-            document.location.href = 'view.html';
+                if (error) throw error;
+                document.location.href = 'view.html';
             });
-         }
-         else
-         {
+        }
+        else
             document.location.href = 'view.html';
-         }
     })
 
 });

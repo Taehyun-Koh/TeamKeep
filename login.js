@@ -100,15 +100,15 @@ function resetClass(element, classname){
                 if (results.length <= 0 && password === password2) {     // DB에 같은 이름의 회원아이디가 없고, 비밀번호가 올바르게 입력된 경우 
                     connection.query('INSERT INTO Users (id, password) VALUES(?,?)', [username, password], function (error, data) {
                         if (error) throw error2;
-                        alert("회원가입 성공")
+                        alert("회원가입에 성공했어요! 이제 로그인해주세요.")
                         document.getElementsByClassName("show-signin")[0].click();
                     });
                 } else if (password !== password2) {                     // 비밀번호가 올바르게 입력되지 않은 경우
-                    alert("비밀번호가 일치하지 않음")
+                    alert("비밀번호가 일치하지 않아요.")
                     document.getElementsByClassName("show-signup")[0].click();
                 }
                 else {                                                  // DB에 같은 이름의 회원아이디가 있는 경우
-                    alert("이미 존재하는 아이디")
+                    alert("이미 존재하는 아이디예요.")
                     document.getElementsByClassName("show-signup")[0].click();
                 }            
             });
@@ -132,7 +132,7 @@ function resetClass(element, classname){
                         // connection.end();
                         document.location.href = 'view.html';
                     } else {              
-                        alert("로그인 정보가 일치하지 않습니다.")
+                        alert("로그인 정보가 일치하지 않아요.")
                         // connection.end();
                         document.getElementsByClassName("show-signin")[0].click();
                     }            
@@ -141,7 +141,7 @@ function resetClass(element, classname){
 
     
         } else {
-            alert("아이디와 비밀번호를 입력하세요!")    
+            alert("아이디와 비밀번호를 입력하세요.")    
         }
     }
     else if (class_id === "reset-btn"){
@@ -152,13 +152,13 @@ function resetClass(element, classname){
             connection.query('SELECT password FROM Users WHERE id = ?', [id], function(error, results, fields) {
                 if (error) throw error;
                 if (results.length > 0) {       // db에서의 반환값이 있으면 로그인 성공
-                    alert("비밀번호는\n"+ maskingName(results[0].password) + "\n입니다.")
+                    alert("비밀번호는\n"+ maskingName(results[0].password) + "\n이예요.")
                     document.getElementsByClassName("show-signin")[0].click();
 
                 } else {              
                     document.getElementById("username").value = "";
                     document.getElementsByClassName("show-reset")[0].click();
-                    alert("해당 ID는 가입되어있지 않습니다.")
+                    alert("해당 ID는 가입되어 있지 않아요.")
                     // connection.end();
                 }            
             });

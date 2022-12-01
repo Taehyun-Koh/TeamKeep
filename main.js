@@ -5,12 +5,12 @@ const createWindow = () => {
         width: 900, //480 -> 900 (디버깅용)
         height: 770,
         resizable: false,
-        icon: __dirname + 'assets/icons/mac/icon_512@1x.png',
-        webPreferences: { 
+        icon: __dirname + 'assets/icons/png/icon.png',
+        webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
-            nodeIntegration : true,
-            contextIsolation : false,
-            enableRemoteModule : true,
+            nodeIntegration: true,
+            contextIsolation: false,
+            enableRemoteModule: true,
         },
     });
 
@@ -19,14 +19,14 @@ const createWindow = () => {
     win.webContents.openDevTools();
     win.loadFile('login.html');
 };
- 
+
 app.whenReady().then(() => {
     createWindow();
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) createWindow();
     });
 });
- 
+
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit();
 });

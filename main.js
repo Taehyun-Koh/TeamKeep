@@ -2,7 +2,7 @@ const { app, BrowserWindow, ipc } = require('electron');
 const path = require('path');
 const createWindow = () => {
     const win = new BrowserWindow({
-        width: 900, //480 -> 900 (디버깅용)
+        width: 480, //480 -> 900 (디버깅용)
         height: 770,
         resizable: false,
         show:false,
@@ -13,6 +13,7 @@ const createWindow = () => {
             nodeIntegration : true,
             contextIsolation : false,
             enableRemoteModule : true,
+            devTools: false,
         },
     });
     //페이지 모두 로딩될때까지 기다렸다가 show
@@ -21,7 +22,6 @@ const createWindow = () => {
     })
     win.setMenuBarVisibility(false);
     win.setFullScreenable(false);
-    win.webContents.openDevTools();
     win.loadFile('login.html');
 };
  

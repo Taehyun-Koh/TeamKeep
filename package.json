@@ -27,8 +27,8 @@
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "dist:mac": "electron-builder -- mac",
-    "dist:win": "electron-builder -- win"
+    "dist:mac": "electron-builder --mac",
+    "dist:win": "electron-builder --win"
   },
   "repository": {
     "type": "git",
@@ -50,12 +50,8 @@
   },
   "description": "",
   "build": {
-    "productname": "TeamKeep",
-    "asar": true,
+    "productName": "TeamKeep",
     "mac": {
-      "target": [
-        "default"
-      ],
       "icon": "./assets/icons/mac/icon.icns"
     },
     "dmg": {
@@ -68,10 +64,9 @@
     },
     "nsis": {
       "oneClick": false,
+      "installerIcon": "./assets/icons/win/icon.ico",
+      "uninstallerIcon": "./assets/icons/win/icon.ico",
       "allowToChangeInstallationDirectory": true
-    },
-    "files": [
-      "./"
-    ]
+    }
   }
 }

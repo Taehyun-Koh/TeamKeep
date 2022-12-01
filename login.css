@@ -33,7 +33,7 @@ body {
 .form .form-header > div {
   width:calc(100% / 3);
   color:#ddd;
-  font-size:18px;
+  font-size:16px;
   font-weight:600;
   cursor:pointer;
 }

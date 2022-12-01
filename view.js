@@ -26,10 +26,10 @@ const connection_info = mysql.createConnection({
 /* -------------------------------- USERNAME -------------------------------- */
 var username = localStorage.getItem("username");
 var head = document.querySelector("#teamnameheader");
-head.innerHTML = 'TeamKeep  ' + '<i class="bi bi-dot"></i>' + '  hi ' + username + '!';
+head.innerHTML = 'TeamKeep  ' + '<i class="bi bi-dot"></i>' + '  hi ' + trimString(username, 12) + '!';
 let usernameinfo = document.createElement("h6");
 usernameinfo.style.opacity = "50%";
-usernameinfo.innerText = username;
+usernameinfo.innerText = trimString(username, 20);
 document.querySelector("#usernameinfo").appendChild(usernameinfo);
 /* -------------------------------- USERNAME -------------------------------- */
 /* ---------------------------------- TEAMS --------------------------------- */
@@ -364,3 +364,15 @@ logoutbutton.addEventListener("click", () => {
     document.location.href = "login.html";
 })
 /* ------------------------------ LOGOUT BUTTON ----------------------------- */
+
+
+
+
+/* ------------------------------ STRING MODIFY ----------------------------- */
+function trimString(str, num) {
+    if (str.length > num)
+        return str.substring(0, num) + "...";
+    else
+        return str;
+}
+/* ------------------------------ STRING MODIFY ----------------------------- */

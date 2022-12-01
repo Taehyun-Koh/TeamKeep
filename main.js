@@ -7,7 +7,7 @@ const createWindow = () => {
         resizable: false,
         show:false,
         title: "TeemKeep",
-        icon: __dirname + 'assets/icons/mac/icon_512@1x.png',
+        icon: __dirname + 'assets/icons/png/icon.png',
         webPreferences: { 
             preload: path.join(__dirname, 'preload.js'),
             nodeIntegration : true,

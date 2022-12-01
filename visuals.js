@@ -396,20 +396,20 @@ function arrangeCards() {
     let filtered = entries;
 
     if (type == CardType.Temp) {
-        tempentries.forEach((entry,index) => {
+        tempentries.forEach((entry, index) => {
             if (index % 3 === 0) {
                 cardlists[0].appendChild(entry.card);
                 $(entry.card).hide().fadeIn(400);
                 console.log(entry.filename);
                 sum1 += entry.card.offsetHeight;
             }
-            else if (index % 3 === 1){
+            else if (index % 3 === 1) {
                 cardlists[1].appendChild(entry.card);
                 $(entry.card).hide().fadeIn(400);
                 console.log(entry.filename);
                 sum2 += entry.card.offsetHeight;
             }
-            else if (index%3 === 2){
+            else if (index % 3 === 2) {
                 cardlists[2].appendChild(entry.card);
                 $(entry.card).hide().fadeIn(400);
                 console.log(entry.filename);
@@ -421,20 +421,20 @@ function arrangeCards() {
     else
         filtered = entries.filter(entry => entry.cardtype == type);
 
-    filtered.forEach((entry,index) => {
+    filtered.forEach((entry, index) => {
         if (index % 3 === 0) {
             cardlists[0].appendChild(entry.card);
             $(entry.card).hide().fadeIn(400);
             console.log(entry.filename);
             sum1 += entry.card.offsetHeight;
         }
-        else if (index % 3 === 1){
+        else if (index % 3 === 1) {
             cardlists[1].appendChild(entry.card);
             $(entry.card).hide().fadeIn(400);
             console.log(entry.filename);
             sum2 += entry.card.offsetHeight;
         }
-        else if (index%3 === 2){
+        else if (index % 3 === 2) {
             cardlists[2].appendChild(entry.card);
             $(entry.card).hide().fadeIn(400);
             console.log(entry.filename);

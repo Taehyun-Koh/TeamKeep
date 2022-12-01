@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=770, initial-scale=1, user-scalable=no">
+	<meta name="viewport" content="width=780, initial-scale=1, user-scalable=no">
 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
 		integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
@@ -14,43 +14,41 @@
 </head>
 
 <body>
-	<div style="width: 770px; display: flex; flex-direction: column; row-gap: 10px;">
+	<div style="width: 780px; display: flex; flex-direction: column; row-gap: 10px;">
 		<!-- Modal Side Menu-->
-		<nav class="navbar navbar-dark bg-secondary" id="topnav">
-			<div class="container" style="height: 42px;">
-				<a class="navbar-brand" id="teamnameheader" style="font-family: 'Arvo', serif;">TeamKeep</a>
-				<button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
-					data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
-					aria-labelledby="offcanvasNavbarLabel" style="width: 360px;">
-					<div class="offcanvas-header">
-						<h5 class="offcanvas-title" style="font-family: 'Arvo', serif; font-size: 24pt;"
-							id="offcanvasNavbarLabel">My Page</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-					</div>
-					<div class="offcanvas-body">
-						<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-							<li class="nav-item" id="userinfo">
-								<div id="usernameinfo" style="display: flex; flex-direction: row; column-gap: 10px;">
-									<h6>로그인됨</h6>
-								</div>
-							</li>
-							<li class="nav-item">
-								<h6 id="logoutbutton" type="button" style="color: red;">로그아웃</h6>
-							</li>
-						</ul>
-					</div>
+		<nav class="navbar navbar-dark bg-secondary" style="width: inherit; height: 60px; padding-left: 10px; padding-right: 10px;">
+			<a class="navbar-brand" id="teamnameheader" style="font-family: 'Arvo', serif;">TeamKeep</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+				aria-controls="offcanvasNavbar">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+				aria-labelledby="offcanvasNavbarLabel" style="width: 360px;">
+				<div class="offcanvas-header">
+					<h5 class="offcanvas-title" style="font-family: 'Arvo', serif; font-size: 24pt;"
+						id="offcanvasNavbarLabel">My Page</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+				</div>
+				<div class="offcanvas-body">
+					<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+						<li class="nav-item" id="userinfo">
+							<div id="usernameinfo" style="display: flex; flex-direction: row; column-gap: 10px;">
+								<h6>로그인됨</h6>
+							</div>
+						</li>
+						<li class="nav-item">
+							<h6 id="logoutbutton" type="button" style="color: red;">로그아웃</h6>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</nav>
 		<!-- Modal Side Menu-->
-		<div style="min-height: 616px; max-height: 616px; overflow-x: hidden; overflow-y: scroll;">
+		<div style="min-height: 625px; max-height: 625px; overflow-x: hidden; overflow-y: scroll;">
 			<div style="padding: 10px;">
 				<h4 id="MyteamText">내 팀</h4>
 			</div>
-			
+
 			<div class="cardcontainer" style="min-height: unset; max-height: unset;" id="myTeam">
 				<div id="my_team1" class="cardlist">
 				</div>
@@ -59,7 +57,7 @@
 				<div id="my_team3" class="cardlist">
 				</div>
 			</div>
-		
+
 			<div style="padding: 10px;">
 				<h4 id="AllteamText">모든 팀</h4>
 			</div>
@@ -72,13 +70,14 @@
 				</div>
 			</div>
 		</div>
-		<div style="width: inherit; display:flex; flex-direction: row-reverse; column-gap: 10px; padding-left: 10px; padding-right: 10px;">
+		<div
+			style="width: inherit; display:flex; flex-direction: row-reverse; column-gap: 10px; padding-left: 10px; padding-right: 10px;">
 			<button type="button" class="btn btn-primary" id="createteambutton"
 				style="box-shadow: 0px 0px 5px lightgrey;"><i class="bi bi-plus-square"></i></button>
 		</div>
 		<!-- Modal Create Team -->
-		<div class="modal modal-center fade" id="createteammodal" tabindex="-1" role="dialog" aria-labelledby="createteammodal"
-			aria-hidden="true">
+		<div class="modal modal-center fade" id="createteammodal" tabindex="-1" role="dialog"
+			aria-labelledby="createteammodal" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content border-0">
 					<div class="modal-header">
@@ -95,18 +94,18 @@
 							<div class="modal-url">
 								<label><i class="bi bi-key"></i>&nbsp;팀 암호</label>
 								<input type="password" id="createteampwinput" class="form-control" minlength="25" />
+							</div>
 						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" id="createteamcancelbutton"
-							data-bs-dismiss="modal">취소</button>
-						<button type="button" class="btn btn-primary" id="createteamconfirmbutton">확인</button>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" id="createteamcancelbutton"
+								data-bs-dismiss="modal">취소</button>
+							<button type="button" class="btn btn-primary" id="createteamconfirmbutton">확인</button>
+						</div>
 					</div>
 				</div>
 			</div>
+			<!-- Modal Create Team -->
 		</div>
-		<!-- Modal Create Team -->
-	</div>
 </body>
 
 <script type="text/javascript" src="view.js" charset="utf-8"></script>

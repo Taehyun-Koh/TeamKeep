@@ -26,7 +26,7 @@ const connection_info = mysql.createConnection({
 /* -------------------------------- USERNAME -------------------------------- */
 var username = localStorage.getItem("username");
 var head = document.querySelector("#teamnameheader");
-head.innerHTML = 'TeamKeep  ' + '<i class="bi bi-dot"></i>' + '  hi ' + trimString(username, 12) + '!';
+head.innerHTML = 'TeamKeep  ' + '<i class="bi bi-dot"></i>' + '  hi ' + trimString(username, 20) + '!';
 let usernameinfo = document.createElement("h6");
 usernameinfo.style.opacity = "50%";
 usernameinfo.innerText = trimString(username, 20);
@@ -60,18 +60,21 @@ function createTeamCard(teamname, i, belong) {
     var card = document.createElement('div');
     card.className = "card";
     var card_header = document.createElement("h6");
+
     if (belong === true) {
         card_header.className = "card-header";
         card_header.innerHTML = "<i class='bi bi-unlock-fill'></i>&nbsp;" + teamname;
         card_header.style.fontFamily = "'Arvo', serif";
         card.appendChild(card_header);
     }
-    else if (belong === false) {
+
+    else {
         card_header.className = "card-header";
         card_header.innerHTML = "<i class='bi bi-lock-fill'></i>&nbsp;" + teamname;
         card_header.style.fontFamily = "'Arvo', serif";
         card.appendChild(card_header);
     }
+
     var card_body = document.createElement("div");
     card_body.className = "card-body";
     card_body.setAttribute("id", teamname);
@@ -103,8 +106,16 @@ function createTeamCard(teamname, i, belong) {
             var leng = results.length;
             var last_update = new Date(JSON.parse(results[leng - 1].file_date));
             var now = new Date();
-            let gap = String(timeConversion(parseInt(now - last_update)));
-            updatetime.innerHTML = gap;
+            let gap = parseInt(now - last_update);
+            if (belong) {
+                if (gap / 1000 < 60)
+                    card.style.backgroundColor = "peachpuff";
+                else if (gap / 1000 < 600)
+                    card.style.backgroundColor = "lemonchiffon";
+                else
+                    card.style.backgroundColor = "lightcyan";
+            }
+            updatetime.innerHTML = String(timeConversion(gap));
         }
 
     });
@@ -116,7 +127,6 @@ function createTeamCard(teamname, i, belong) {
             filecount.innerHTML = results[0]['COUNT(*)'] + " 업로드 " + '<i class="bi bi-cloud"></i>';
         }
     });
-
 
     var pw_input_area = document.createElement("div");
     pw_input_area.className = "input-group mb-1";
@@ -135,9 +145,9 @@ function createTeamCard(teamname, i, belong) {
     pw_input_area.appendChild(joinBtn);
 
     var btn = document.createElement("button");
+    btn.className = "btn btn-outline-dark";
+
     if (belong === true) {
-        card.style.backgroundColor = "lightcyan";
-        btn.className = "btn btn-secondary";
         btn.innerHTML = '<i class="bi bi-box-arrow-in-right"></i>';
         card_body.appendChild(btn);
 
@@ -146,9 +156,9 @@ function createTeamCard(teamname, i, belong) {
             document.location.href = 'index.html';
         }
     }
-    else if (belong === false) {
-        card_body.appendChild(pw_input_area);
 
+    else {
+        card_body.appendChild(pw_input_area);
         joinBtn.onclick = function (e) {
             localStorage.setItem("teamname", teamname);
             var tn = localStorage.getItem("teamname");
@@ -231,13 +241,13 @@ function arrangeTeams() {
                     flagM += 1;
                     isMyteam += 1;
                 }
-                else if(flagM % 3 === 1) {
+                else if (flagM % 3 === 1) {
                     my_team2.appendChild(team_card);
                     $(team_card).hide().fadeIn(200);
                     flagM += 1;
                     isMyteam += 1;
                 }
-                else if(flagM % 3 === 2) {
+                else if (flagM % 3 === 2) {
                     my_team3.appendChild(team_card);
                     $(team_card).hide().fadeIn(200);
                     flagM += 1;
@@ -252,13 +262,13 @@ function arrangeTeams() {
                     flagA += 1;
                     isAllteam += 1;
                 }
-                else if(flagA % 3 === 1) {
+                else if (flagA % 3 === 1) {
                     notmy_team2.appendChild(all_card);
                     $(all_card).hide().fadeIn(200);
                     flagA += 1;
                     isAllteam += 1;
                 }
-                else if(flagA % 3 === 2) {
+                else if (flagA % 3 === 2) {
                     notmy_team3.appendChild(all_card);
                     $(all_card).hide().fadeIn(200);
                     flagA += 1;
@@ -266,15 +276,15 @@ function arrangeTeams() {
                 }
             }
 
-            
-            if(i === teams.length - 1) {
+
+            if (i === teams.length - 1) {
                 var mt = document.getElementById("MyteamText");
                 var at = document.getElementById("AllteamText");
                 console.log(isMyteam, isAllteam)
                 //내 팀 없으면
-                if (isMyteam === 0){
+                if (isMyteam === 0) {
                     var p = document.createElement("p");
-                    p.innerHTML = "새 팀을 만들거나 팀에 참가해보세요!";
+                    p.innerHTML = "새로운 팀을 만들거나 팀에 참가해보세요!";
                     p.style.color = "lightgray";
                     p.style.fontSize = "15px";
                     p.style.paddingTop = "20px";
@@ -282,9 +292,9 @@ function arrangeTeams() {
 
                 }
                 //All team 없으면
-                else if (isAllteam === 0){
+                else if (isAllteam === 0) {
                     var p2 = document.createElement("p");
-                    p2.innerHTML = "새로운 팀을 생성해보세요!";
+                    p2.innerHTML = "새로운 팀을 만들어보세요!";
                     p2.style.color = "lightgray";
                     p2.style.fontSize = "15px";
                     p2.style.paddingTop = "20px";
@@ -292,11 +302,11 @@ function arrangeTeams() {
 
                 }
             }
-            
+
         });
-        
+
     }
-    
+
 }
 /* ---------------- 로그인한 사용자가 속해있는 그룹과 아닌 그룹 나눠서 TEAM 카드 생성 --------------- */
 
@@ -316,8 +326,8 @@ createteambutton.addEventListener("click", () => {
 
         if (teamname.length == 0 || teampw.length == 0)
             return;
-        
-        if(teamname.includes(" ") || teampw.includes(" ")) {
+
+        if (teamname.includes(" ") || teampw.includes(" ")) {
             alert("팀 이름이나 비밀번호는 공백을 포함할 수 없어요.")
             return;
         }

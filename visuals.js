@@ -1,8 +1,7 @@
 const open = require("open")
-/* -------------------------- ESTABLISH CONNECTION -------------------------- */
 const mysql = require("mysql")
 const dotenv = require('dotenv'); //mysql pwd숨기기
-const { options } = require("joi");
+/* -------------------------- ESTABLISH CONNECTION -------------------------- */
 dotenv.config();
 const connection = mysql.createConnection({
     host: process.env.DATABASE_HOST,
@@ -466,7 +465,7 @@ urltab.addEventListener("click", () => {
 /* ----------------------------- ADD FILE BUTTON ---------------------------- */
 let addfilebutton = document.querySelector("#addfilebutton");
 addfilebutton.addEventListener("click", () => {
-    document.querySelector("#fileinput").click(); // TRIGGER FILE SELECT DIALOGUE
+    document.querySelector("#fileinput").click(); // TRIGGER FILE SELECT DIALOG
     if (activetab[1] != CardType.Temp)
         document.querySelector("#pills-all-tab").click();
 });

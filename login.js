@@ -1,5 +1,5 @@
-const mysql = require("mysql")
-const dotenv = require('dotenv') //mysql pwd숨기기
+const mysql = require('mysql');
+const dotenv = require('dotenv'); //mysql pwd숨기기
 dotenv.config();
 const connection = mysql.createConnection({
     host     : process.env.DATABASE_HOST,
@@ -99,22 +99,22 @@ function resetClass(element, classname){
                 if (error) throw error;
                 if (results.length <= 0 && password === password2) {     // DB에 같은 이름의 회원아이디가 없고, 비밀번호가 올바르게 입력된 경우 
                     connection.query('INSERT INTO Users (id, password) VALUES(?,?)', [username, password], function (error, data) {
-                        if (error) throw error2;
-                        alert("회원가입에 성공했어요! 이제 로그인해주세요.")
+                        if (error) throw error;
+                        alert("회원가입에 성공했어요! 이제 로그인해주세요.");
                         document.getElementsByClassName("show-signin")[0].click();
                     });
                 } else if (password !== password2) {                     // 비밀번호가 올바르게 입력되지 않은 경우
-                    alert("비밀번호가 일치하지 않아요.")
+                    alert("비밀번호가 일치하지 않아요.");
                     document.getElementsByClassName("show-signup")[0].click();
                 }
                 else {                                                  // DB에 같은 이름의 회원아이디가 있는 경우
-                    alert("이미 존재하는 아이디예요.")
+                    alert("이미 존재하는 아이디예요.");
                     document.getElementsByClassName("show-signup")[0].click();
                 }            
             });
     
         } else {        // 입력되지 않은 정보가 있는 경우
-            alert("입력되지 않은 정보가 있음")
+            alert("입력되지 않은 정보가 있음");
             document.getElementsByClassName("show-signup")[0].click();
 
         }
@@ -124,16 +124,13 @@ function resetClass(element, classname){
         var id = document.getElementById("username").value;
         var pwd = document.getElementById("pwd").value;
         if (id && pwd) {             // id와 pw가 입력되었는지 확인
-                // if (err) throw err;
                 connection.query('SELECT * FROM Users WHERE id = ? AND password = ?', [id, pwd], function(error, results, fields) {
                     if (error) throw error;
                     if (results.length > 0) {       // db에서의 반환값이 있으면 로그인 성공
                         localStorage.setItem("username",id);
-                        // connection.end();
                         document.location.href = 'view.html';
                     } else {              
-                        alert("로그인 정보가 일치하지 않아요.")
-                        // connection.end();
+                        alert("로그인 정보가 일치하지 않아요.");
                         document.getElementsByClassName("show-signin")[0].click();
                     }            
                 });
@@ -159,7 +156,6 @@ function resetClass(element, classname){
                     document.getElementById("username").value = "";
                     document.getElementsByClassName("show-reset")[0].click();
                     alert("해당 ID는 가입되어 있지 않아요.")
-                    // connection.end();
                 }            
             });
     } else {
@@ -167,9 +163,3 @@ function resetClass(element, classname){
     }
     }
   });
-
-// let signupBtn = document.getElementById("signup-btn");
-
-// signupBtn.addEventListener("click", () => {
-//     alert("sign up button clicked");
-// });

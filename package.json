@@ -1,8 +1,10 @@
 {
   "dependencies": {
+    "@electron/remote": "^2.0.8",
     "chokidar": "^3.5.3",
     "dotenv": "^16.0.3",
     "ejs": "^3.1.8",
+    "electron": "21.3.0",
     "electron-forge": "^5.2.4",
     "electron-squirrel-startup": "^1.0.0",
     "express": "^4.18.2",
@@ -60,7 +62,7 @@
     },
     "win": {
       "target": "nsis",
-      "icon": "./assets/icons/mac/icon.icns"
+      "icon": "./assets/icons/win/icon.ico"
     },
     "nsis": {
       "oneClick": false,

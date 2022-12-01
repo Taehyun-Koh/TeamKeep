@@ -5,28 +5,33 @@ const createWindow = () => {
         width: 900, //480 -> 900 (디버깅용)
         height: 770,
         resizable: false,
-        icon: __dirname + 'assets/icons/png/icon.png',
-        webPreferences: {
+        show:false,
+        title: "TeemKeep",
+        icon: __dirname + 'assets/icons/mac/icon_512@1x.png',
+        webPreferences: { 
             preload: path.join(__dirname, 'preload.js'),
-            nodeIntegration: true,
-            contextIsolation: false,
-            enableRemoteModule: true,
+            nodeIntegration : true,
+            contextIsolation : false,
+            enableRemoteModule : true,
         },
     });
-
+    //페이지 모두 로딩될때까지 기다렸다가 show
+    win.once('ready-to-show', () => {
+        win.show()
+    })
     win.setMenuBarVisibility(false);
     win.setFullScreenable(false);
     win.webContents.openDevTools();
     win.loadFile('login.html');
 };
-
+ 
 app.whenReady().then(() => {
     createWindow();
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) createWindow();
     });
 });
-
+ 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit();
 });

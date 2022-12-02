@@ -5,6 +5,10 @@
 
 데이터베이스 정보를 입력하는 기능을 만들어 소규모 단위로 DB를 관리할 수 있도록 했습니다.
 
+자세한 설명과 데모영상은 아래 유투브 링크에서 확인해주세요.
+
+### [Youtube link](https://www.youtube.com/watch?v=UrxIPhZyB5Y)
+
 <p float="left">
     <img src="https://user-images.githubusercontent.com/89441117/205227505-2788b328-9baf-4d30-88b2-580f3da5df0d.png" alt="스크린샷_20221202_031135" style="width:300px"/>
     <img src="https://user-images.githubusercontent.com/89441117/205227608-33e13673-586d-4fc1-a3e6-f8288199d435.png" alt="스크린샷_20221202_031155" style="width:300px"/>
@@ -84,7 +88,7 @@ npm run dist:win
 4_1. 공유된 파일들을 사진 , 문서, 링크 별로 모아서 볼 수 있습니다.
 <img width="892" alt="스크린샷 2022-12-02 22 18 00" src="https://user-images.githubusercontent.com/94899919/205301512-12cb3116-56c7-47ad-b8ad-6faf94688bd5.png">
 
-  
+
 ## Contribute Guide 🚩
 
 + PR을 올려주세요. 코드리뷰 후에 merge&rebase 하도록 합니다.

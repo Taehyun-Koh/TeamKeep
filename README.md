@@ -78,7 +78,6 @@ dist 폴더 내 설치 파일 클릭
 ## Code of Conduct
 [MIcrosoft's Code Of Conduct](https://opensource.microsoft.com/codeofconduct/)
 
-
 ## Members
 김홍인
 > 성균관대학교 소프트웨어학과 21학번

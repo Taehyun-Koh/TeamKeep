@@ -46,6 +46,7 @@ npm run dist:mac
 npm run dist:win
 ```
 4. 앱 설치
+
 dist 폴더 내 설치 파일 클릭
 
 

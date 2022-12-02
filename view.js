@@ -280,7 +280,6 @@ function arrangeTeams() {
             if (i === teams.length - 1) {
                 var mt = document.getElementById("MyteamText");
                 var at = document.getElementById("AllteamText");
-                console.log(isMyteam, isAllteam)
                 //내 팀 없으면
                 if (isMyteam === 0) {
                     var p = document.createElement("p");

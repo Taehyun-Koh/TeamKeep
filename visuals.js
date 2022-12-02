@@ -380,7 +380,7 @@ function createCard(entry) {
 
     return card;
 }
-console.log("HIHI")
+
 function arrangeCards() {
     let type = activetab[1];
     let cardlists = activetab[0].querySelectorAll("div.cardlist"); // CARDLISTS[0]: ~CARDS1, CARDLISTS[1]: ~CARDS2
@@ -389,31 +389,23 @@ function arrangeCards() {
     cardlists[1].innerHTML = '';
     cardlists[2].innerHTML = '';
 
-    let sum1 = 0;
-    let sum2 = 0;
-    let sum3 = 0;
-
     let filtered = entries;
 
     if (type == CardType.Temp) {
         tempentries.forEach((entry, index) => {
-            let min = Math.min(sum1, sum2, sum3);
-            if (min == sum1) {
+            if (index % 3 == 0) {
                 cardlists[0].appendChild(entry.card);
                 $(entry.card).hide().fadeIn(400);
-                sum1 += entry.card.offsetHeight;
             }
 
-            else if (min == sum2) {
+            else if (index % 3 == 1) {
                 cardlists[1].appendChild(entry.card);
                 $(entry.card).hide().fadeIn(400);
-                sum2 += entry.card.offsetHeight;
             }
 
             else {
                 cardlists[2].appendChild(entry.card);
                 $(entry.card).hide().fadeIn(400);
-                sum3 += entry.card.offsetHeight;
             }
         });
     }
@@ -422,23 +414,19 @@ function arrangeCards() {
         filtered = entries.filter(entry => entry.cardtype == type);
 
     filtered.forEach((entry, index) => {
-        let min = Math.min(sum1, sum2, sum3);
-        if (min == sum1) {
+        if (index % 3 == 0) {
             cardlists[0].appendChild(entry.card);
             $(entry.card).hide().fadeIn(400);
-            sum1 += entry.card.offsetHeight;
         }
 
-        else if (min == sum2) {
+        else if (index % 3 == 1) {
             cardlists[1].appendChild(entry.card);
             $(entry.card).hide().fadeIn(400);
-            sum2 += entry.card.offsetHeight;
         }
 
         else {
             cardlists[2].appendChild(entry.card);
             $(entry.card).hide().fadeIn(400);
-            sum3 += entry.card.offsetHeight;
         }
     });
 }

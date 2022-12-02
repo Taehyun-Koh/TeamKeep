@@ -41,9 +41,12 @@ npm i
 
 1. 회원가입 후 로그인 해주세요.
 2. 팀 만들기 또는 비밀번호를 알고 있는 팀에 들어갈 수 있습니다.
+<img width="892" alt="스크린샷 2022-12-02 17 19 13" src="https://user-images.githubusercontent.com/94899919/205247917-096cd40c-13a0-42ab-9167-b49c32e82a33.png">
 3. 링크나 이미지를 올리거나, 팀원들이 공유한 자료를 다운로드 받을 수 있어요.
-3. 공유된 파일들을 사진 , 문서, 링크 별로 모아서 볼 수 있습니다.
+<img width="892" alt="스크린샷 2022-12-02 17 19 36" src="https://user-images.githubusercontent.com/94899919/205248013-00ac5e72-fdd7-4a18-94b0-55aee2611ab4.png">
 
+3_1. 공유된 파일들을 사진 , 문서, 링크 별로 모아서 볼 수 있습니다.
+<img width="892" alt="스크린샷 2022-12-02 17 20 12" src="https://user-images.githubusercontent.com/94899919/205248117-20ec5dd5-4902-4c64-813d-0a488604fd3e.png">
 
   
 ## Contribute Guide 🚩

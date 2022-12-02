@@ -75,6 +75,9 @@ dist 폴더 내 설치 파일 클릭
 ## MIT License
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+## Code of Conduct
+[MIcrosoft's Code Of Conduct](https://opensource.microsoft.com/codeofconduct/)
+
 ## Members
 김홍인
 > 성균관대학교 소프트웨어학과 21학번

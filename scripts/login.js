@@ -1,6 +1,8 @@
 const mysql = require('mysql');
 const dotenv = require('dotenv'); //mysql pwd숨기기
 dotenv.config();
+const remote = require("@electron/remote");
+const { dialog } = remote
 const connection = mysql.createConnection({
     host     : process.env.DATABASE_HOST,
     user     : process.env.DATABASE_USERNAME,
@@ -104,7 +106,8 @@ function resetClass(element, classname){
                         document.getElementsByClassName("show-signin")[0].click();
                     });
                 } else if (password !== password2) {                     // 비밀번호가 올바르게 입력되지 않은 경우
-                    alert("비밀번호가 일치하지 않아요.");
+                    // alert("비밀번호가 일치하지 않아요.");
+                    dialog.showMessageBox(null,{type:'info',title:'Ok', message:'비밀번호가 일치하지 않아요.'});
                     document.getElementsByClassName("show-signup")[0].click();
                 }
                 else {                                                  // DB에 같은 이름의 회원아이디가 있는 경우

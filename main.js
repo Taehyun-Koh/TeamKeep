@@ -1,5 +1,7 @@
 const { app, BrowserWindow, ipc } = require('electron');
 const path = require('path');
+const remoteMain = require('@electron/remote/main');
+remoteMain.initialize();
 const createWindow = () => {
     const win = new BrowserWindow({
         width: 780,
@@ -13,13 +15,15 @@ const createWindow = () => {
             nodeIntegration: true,
             contextIsolation: false,
             enableRemoteModule: true,
-            devTools: false,
+            // devTools: false,
         },
     });
+    remoteMain.enable(win.webContents);
     //페이지 모두 로딩될때까지 기다렸다가 show
     win.once('ready-to-show', () => {
         win.show()
     })
+    win.webContents.openDevTools();
     win.setMenuBarVisibility(false);
     win.setFullScreenable(false);
     win.loadFile('login.html');

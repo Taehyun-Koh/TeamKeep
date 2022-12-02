@@ -36,7 +36,8 @@ git clone https://github.com/Taehyun-Koh/TeamKeep.git
 npm i
 ```
 3. 설치 파일 생성
-\n (Mac OS)
+
+(Mac OS)
 ```
 npm run dist:mac
 ```

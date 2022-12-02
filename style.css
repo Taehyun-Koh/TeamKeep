@@ -19,7 +19,7 @@ body {
 }
 
 .cardlist {
-    width: 260px;
+    width: 250px;
 
     display: flex;
     align-items: center;
@@ -31,7 +31,7 @@ body {
 }
 
 .card {
-    width: 240px;
+    width: 230px;
     
     background-color: whitesmoke; 
     box-shadow: 0px 0px 5px lightgrey;
@@ -40,7 +40,7 @@ body {
 
 .card-body {
     font-family: 'Noto Sans KR', sans-serif;
-    width: 240px;
+    width: 230px;
     display: flex;
     flex-direction: column;
 }
@@ -50,7 +50,7 @@ body {
 }
 
 .card-img-top {
-    width: 240px;
+    width: 230px;
     max-height: 140px;
 
     object-fit: cover;

@@ -31,7 +31,11 @@
 ```
 git clone https://github.com/Taehyun-Koh/TeamKeep.git
 ```
-**2. dependencies 설치**
+**2. 디렉토리 이동**
+```
+cd TeamKeep
+```
+**3. dependencies 설치**
 ```
 npm i
 ```
@@ -39,7 +43,7 @@ npm i
 ```
 npm run start
 ```
-**3. 설치 파일 생성**
+**4. 설치 파일 생성**
 
 (Mac OS)
 ```
@@ -49,7 +53,7 @@ npm run dist:mac
 ```
 npm run dist:win
 ```
-**4. 앱 설치**
+**5. 앱 설치**
 
  dist 폴더 내 설치 파일 클릭
  <img width="579" alt="스크린샷 2022-12-02 17 36 01" src="https://user-images.githubusercontent.com/94899919/205250848-fc27e781-41c7-49ed-a182-ea55a4446a66.png">

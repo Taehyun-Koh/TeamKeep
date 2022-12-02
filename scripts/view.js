@@ -2,6 +2,8 @@
 const mysql = require("mysql")
 const dotenv = require('dotenv') //mysql pwd숨기기
 dotenv.config();
+const remote = require("@electron/remote");
+const { dialog } = remote
 const connection = mysql.createConnection({
     host: process.env.DATABASE_HOST,
     user: process.env.DATABASE_USERNAME,
@@ -173,12 +175,13 @@ function createTeamCard(teamname, i, belong) {
                     }
                     else {
                         localStorage.setItem("teamname", "");
-                        alert("비밀번호가 틀렸어요.");
+                        dialog.showMessageBox(null,{type:'info',buttons:['확인'], message:'비밀번호가 일치하지 않아요.'});
+                        
                     }
                 }
                 else {
                     localStorage.setItem("teamname", "");
-                    alert("비밀번호를 입력하세요.");
+                    dialog.showMessageBox(null,{type:'info',buttons:['확인'], message:"비밀번호를 입력하세요."});
                 }
             });
         }
@@ -322,7 +325,7 @@ createteambutton.addEventListener("click", () => {
             return;
 
         if (teamname.includes(" ") || teampw.includes(" ")) {
-            alert("팀 이름이나 비밀번호는 공백을 포함할 수 없어요.")
+            dialog.showMessageBox(null,{type:'info',buttons:['확인'], message:"팀 이름이나 비밀번호는 공백을 포함할 수 없어요."});
             return;
         }
 
@@ -333,7 +336,8 @@ createteambutton.addEventListener("click", () => {
             //팀 이름이 이미 존재하는지 확인
             for (let i = 0; i < results.length; i++) {
                 if (results[i]['Tables_in_room'] === teamname) {
-                    alert("이미 존재하는 팀 이름이예요.");
+                    dialog.showMessageBox(null,{type:'info',buttons:['확인'], message:"이미 존재하는 팀 이름이예요."});
+
                     exists = true;
                     break;
                 }

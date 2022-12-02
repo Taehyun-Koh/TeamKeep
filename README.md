@@ -35,6 +35,17 @@ git clone https://github.com/Taehyun-Koh/TeamKeep.git
 ```
 npm i
 ```
+3. 설치 파일 생성
+(Mac OS)
+```
+npm run dist:mac
+```
+(Windows OS)
+```
+npm run dist:win
+```
+4. 앱 설치
+dist 폴더 내 설치 파일 클릭
 
 
 ## How to use 🤔

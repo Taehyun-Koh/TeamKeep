@@ -21,21 +21,25 @@
 > 
 > 개인 자료 저장 공간을 만들고 싶을 때
 >
-> ++
+> 나만의 DB를 연결해 TeamKeep 앱을 관리/배포하고 싶을 때
 >
 
 
 ## Installation ⚙
 
-1. repo 받아오기
+**1. repo 받아오기**
 ```
 git clone https://github.com/Taehyun-Koh/TeamKeep.git
 ```
-2. dependencies 설치
+**2. dependencies 설치**
 ```
 npm i
 ```
-3. 설치 파일 생성
+설치파일 생성없이 실행시키고 싶다면 터미널에 다음 커맨드를 입력해주세요. 앱이 실행됩니다.
+```
+npm run start
+```
+**3. 설치 파일 생성**
 
 (Mac OS)
 ```
@@ -45,7 +49,7 @@ npm run dist:mac
 ```
 npm run dist:win
 ```
-4. 앱 설치
+**4. 앱 설치**
 
  dist 폴더 내 설치 파일 클릭
  <img width="579" alt="스크린샷 2022-12-02 17 36 01" src="https://user-images.githubusercontent.com/94899919/205250848-fc27e781-41c7-49ed-a182-ea55a4446a66.png">

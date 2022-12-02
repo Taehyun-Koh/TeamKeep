@@ -46,6 +46,9 @@ npm run dist:win
 4. 앱 설치
 
 dist 폴더 내 설치 파일 클릭
+<img width="579" alt="스크린샷 2022-12-02 17 36 01" src="https://user-images.githubusercontent.com/94899919/205250848-fc27e781-41c7-49ed-a182-ea55a4446a66.png">
+
+
 
 
 ## How to use 🤔

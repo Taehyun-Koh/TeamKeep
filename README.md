@@ -72,6 +72,8 @@ dist 폴더 내 설치 파일 클릭
 + AWS RDS를 사용합니다.
 + 20GB를 넘게되면 돈이 청구되니 사용하실 때 유의하시길 바랍니다.
   
+## MIT License
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Members
 김홍인

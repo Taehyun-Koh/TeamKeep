@@ -3,6 +3,7 @@ const mysql = require("mysql")
 const dotenv = require('dotenv') //mysql pwd숨기기
 dotenv.config();
 const remote = require("@electron/remote");
+
 const { dialog } = remote
 const connection = mysql.createConnection({
     host: process.env.DATABASE_HOST,

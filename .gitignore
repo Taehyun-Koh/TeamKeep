@@ -2,7 +2,7 @@ node_modules/
 package-lock.json
 .env
 .DS_Store
-
+dist/
 out/
 .gitsecret/keys/random_seed
 !*.secret

@@ -1,6 +1,8 @@
 const open = require("open")
 const mysql = require("mysql")
 const dotenv = require('dotenv'); //mysql pwd숨기기
+const remote = require("@electron/remote");
+const { dialog } = remote
 /* -------------------------- ESTABLISH CONNECTION -------------------------- */
 dotenv.config();
 const connection = mysql.createConnection({
@@ -478,7 +480,8 @@ let fileinput = document.querySelector("#fileinput");
 fileinput.addEventListener("change", (event) => {
     let file = event.target.files[0];
     if (file.size > 5000000) {
-        alert("파일이 허용된 용량을 초과해요.\n (최대 5MB)");
+        dialog.showMessageBox(null,{type:'info',buttons:['확인'], message:"파일이 허용된 용량을 초과해요.\n (최대 5MB)"});
+
         return;
     }
 

@@ -26,7 +26,7 @@ const connection_info = mysql.createConnection({
 /* -------------------------------- USERNAME -------------------------------- */
 var username = localStorage.getItem("username");
 var head = document.querySelector("#teamnameheader");
-head.innerHTML = 'TeamKeep  ' + '<i class="bi bi-dot"></i>' + '  hi ' + trimString(username, 20) + '!';
+head.innerHTML = 'TeamKeep  ' + '<i class="bi bi-dot"></i>' + '  hi ' + trimString(username, 30) + '!';
 let usernameinfo = document.createElement("h6");
 usernameinfo.style.opacity = "50%";
 usernameinfo.innerText = trimString(username, 20);
@@ -43,15 +43,13 @@ connection.query('show tables', function (error, results, fields) { //team 이�
         };
         arrangeTeams();
         localStorage.setItem("teamlist", teams);
-
-    } else {
-        alert("첫번째 팀을 만들어보세요");
     }
 });
 /* ---------------------------------- TEAMS --------------------------------- */
 /* -------------------------------------------------------------------------- */
 /*                                INITIALIZTION                               */
 /* -------------------------------------------------------------------------- */
+
 
 
 
@@ -100,8 +98,11 @@ function createTeamCard(teamname, i, belong) {
     }
 
     connection.query("SELECT file_date FROM " + curr_team, function (error, results, fields) {
+        if (belong)
+            card.style.backgroundColor = "lightcyan";
         if (error) throw error;
-        if (results.length == 0) updatetime.innerHTML = "No data";
+        if (results.length == 0)
+            updatetime.innerHTML = "No data";
         else {
             var leng = results.length;
             var last_update = new Date(JSON.parse(results[leng - 1].file_date));
@@ -112,20 +113,16 @@ function createTeamCard(teamname, i, belong) {
                     card.style.backgroundColor = "peachpuff";
                 else if (gap / 1000 < 600)
                     card.style.backgroundColor = "lemonchiffon";
-                else
-                    card.style.backgroundColor = "lightcyan";
             }
             updatetime.innerHTML = String(timeConversion(gap));
         }
-
     });
 
     connection.query("SELECT COUNT(*) FROM " + curr_team, function (error, results, fields) {
         if (error) throw error;
         if (results.length == 0) filecount.innerHTML = "0 업로드 " + '<i class="bi bi-cloud"></i>';
-        else {
+        else
             filecount.innerHTML = results[0]['COUNT(*)'] + " 업로드 " + '<i class="bi bi-cloud"></i>';
-        }
     });
 
     var pw_input_area = document.createElement("div");
@@ -216,6 +213,7 @@ function timeConversion(millisec) {
 
 
 
+
 /* ---------------- 로그인한 사용자가 속해있는 그룹과 아닌 그룹 나눠서 TEAM 카드 생성 --------------- */
 function arrangeTeams() {
     var my_team1 = document.querySelector("#my_team1");
@@ -301,11 +299,8 @@ function arrangeTeams() {
 
                 }
             }
-
         });
-
     }
-
 }
 /* ---------------- 로그인한 사용자가 속해있는 그룹과 아닌 그룹 나눠서 TEAM 카드 생성 --------------- */
 

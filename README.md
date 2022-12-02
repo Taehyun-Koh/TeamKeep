@@ -3,10 +3,10 @@
 
 팀원들과 자료공유가 가능한 데스크톱 앱입니다.
 
-![스크린샷_20221202_031135](https://user-images.githubusercontent.com/89441117/205227505-2788b328-9baf-4d30-88b2-580f3da5df0d.png)
-![스크린샷_20221202_031155](https://user-images.githubusercontent.com/89441117/205227608-33e13673-586d-4fc1-a3e6-f8288199d435.png)
-![스크린샷_20221202_031208](https://user-images.githubusercontent.com/89441117/205227614-caafedb0-b746-4455-b4bf-919dc0bb6d21.png)
-![스크린샷_20221202_031241](https://user-images.githubusercontent.com/89441117/205227621-3329b7d3-33c7-43b0-83bf-cdff38b4580c.png)
+<img src="https://user-images.githubusercontent.com/89441117/205227505-2788b328-9baf-4d30-88b2-580f3da5df0d.png" alt="스크린샷_20221202_031135" style="width:200px"/>
+<img src="https://user-images.githubusercontent.com/89441117/205227608-33e13673-586d-4fc1-a3e6-f8288199d435.png" alt="스크린샷_20221202_031155" style="width:200px"/>
+<img src="https://user-images.githubusercontent.com/89441117/205227614-caafedb0-b746-4455-b4bf-919dc0bb6d21.png" alt="스크린샷_20221202_031208" style="width:200px"/>
+<img src="https://user-images.githubusercontent.com/89441117/205227621-3329b7d3-33c7-43b0-83bf-cdff38b4580c.png" alt="스크린샷_20221202_031241" style="width:200px"/>
 
 
 ## Overview 👋

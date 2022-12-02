@@ -1,22 +1,27 @@
 const open = require("open")
 const mysql = require("mysql")
-const dotenv = require('dotenv'); //mysql pwd숨기기
 const remote = require("@electron/remote");
-const { dialog } = remote
+const { dialog } = remote;
+
+let envtxt = localStorage.getItem("env");
+let env = JSON.parse(envtxt);
+
+
+
+
 /* -------------------------- ESTABLISH CONNECTION -------------------------- */
-dotenv.config();
 const connection = mysql.createConnection({
-    host: process.env.DATABASE_HOST,
-    user: process.env.DATABASE_USERNAME,
-    password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE_NAME_ROOM
+    host: env.HOST,
+    user: env.USERNAME,
+    password: env.PASSWORD,
+    database: 'room',
 });
 
 const connection_info = mysql.createConnection({
-    host: process.env.DATABASE_HOST,
-    user: process.env.DATABASE_USERNAME,
-    password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE_NAME_ROOMINFO
+    host: env.HOST,
+    user: env.USERNAME,
+    password: env.PASSWORD,
+    database: 'room_info',
 });
 
 connection.connect((err) => {

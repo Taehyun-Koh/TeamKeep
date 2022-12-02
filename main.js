@@ -15,7 +15,7 @@ const createWindow = () => {
             nodeIntegration: true,
             contextIsolation: false,
             enableRemoteModule: true,
-            devTools: false,
+            //devTools: false,
         },
     });
     remoteMain.enable(win.webContents);
@@ -26,7 +26,7 @@ const createWindow = () => {
     // win.webContents.openDevTools();
     win.setMenuBarVisibility(false);
     win.setFullScreenable(false);
-    win.loadFile('login.html');
+    win.loadFile('env.html');
 };
 
 app.whenReady().then(() => {

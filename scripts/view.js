@@ -1,22 +1,26 @@
-/* -------------------------- ESTABLISH CONNECTION -------------------------- */
 const mysql = require("mysql")
-const dotenv = require('dotenv') //mysql pwd숨기기
-dotenv.config();
 const remote = require("@electron/remote");
+const { dialog } = remote;
 
-const { dialog } = remote
+let envtxt = localStorage.getItem("env");
+let env = JSON.parse(envtxt);
+
+
+
+
+/* -------------------------- ESTABLISH CONNECTION -------------------------- */
 const connection = mysql.createConnection({
-    host: process.env.DATABASE_HOST,
-    user: process.env.DATABASE_USERNAME,
-    password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE_NAME_ROOM
+    host: env.HOST,
+    user: env.USERNAME,
+    password: env.PASSWORD,
+    database: 'room',
 });
 
 const connection_info = mysql.createConnection({
-    host: process.env.DATABASE_HOST,
-    user: process.env.DATABASE_USERNAME,
-    password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE_NAME_ROOMINFO
+    host: env.HOST,
+    user: env.USERNAME,
+    password: env.PASSWORD,
+    database: 'room_info',
 });
 /* -------------------------- ESTABLISH CONNECTION -------------------------- */
 
@@ -177,7 +181,6 @@ function createTeamCard(teamname, i, belong) {
                     else {
                         localStorage.setItem("teamname", "");
                         dialog.showMessageBox(null,{type:'info',buttons:['확인'], message:'비밀번호가 일치하지 않아요.'});
-                        
                     }
                 }
                 else {
@@ -386,6 +389,17 @@ logoutbutton.addEventListener("click", () => {
     document.location.href = "login.html";
 })
 /* ------------------------------ LOGOUT BUTTON ----------------------------- */
+
+
+
+
+/* ------------------------------ RESET BUTTON ----------------------------- */
+let resetbutton = document.querySelector("#resetbutton");
+resetbutton.addEventListener("click", () => {
+    localStorage.clear();
+    document.location.href = "env.html";
+})
+/* ------------------------------ RESET BUTTON ----------------------------- */
 
 
 
